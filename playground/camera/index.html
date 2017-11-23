@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="author" content="@pabloorensanz">
+		<title>Camera demo</title>
+	</head>
+	<body>
+		<canvas id="source" width="320" height="320"></canvas>
+		<video id="camera" src="[object MediaStream]" autoplay="" width="320" height="320" style="display:none;"></video>
+		<canvas id="blended" width="320" height="320" style="display:none;"></canvas>
+		
+		<script src="camera.js"></script>
+		<script>
+			window.onload = run();
+		</script>
+	</body>
+</html>
