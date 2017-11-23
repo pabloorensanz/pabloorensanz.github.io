@@ -1,7 +1,6 @@
 var transcript = 
 	final_transcript = '',
-	recognizing = false,
-	start_timestamp
+	recognizing = false
 
 if (!('webkitSpeechRecognition' in window)) {
 	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome');
@@ -41,5 +40,8 @@ function run () {
 	final_transcript = '';
 	recognition.lang = 'es_ES';
 	recognition.start();
-	start_timestamp = event.timeStamp;
+}
+
+function capitalize(s) {
+	return s.replace(first_char, function(m) { return m.toUpperCase(); });
 }
