@@ -21,14 +21,15 @@ if (!('webkitSpeechRecognition' in window)) {
 				interim_transcript += event.results[i][0].transcript;
 			}
 		}
-		if(final_transcript) transcript.innerHTML = capitalize(final_transcript);
-		else transcript.innerHTML = interim_transcript;
+		if(final_transcript) transcript.value = capitalize(final_transcript);
+		else transcript.value = interim_transcript;
 	}
 	recognition.onerror = function(event) {
-		alert('Error: '+event.error);
+		console.log('Error: '+event.error);
 	}
 	recognition.onend = function() {
 		recognizing = false;
+		console.log('fin');
 	}
 }
 

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="@pabloorensanz">
+		<title>Our voice demo</title>
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link href="compiled.min.css" rel="stylesheet">
+		<style>
+			.top-nav-collapse {
+				background-color: #D30056 !important; 
+			}
+			.navbar:not(.top-nav-collapse) {
+				background: transparent !important;
+			}
+			@media (max-width: 768px) {
+				.navbar:not(.top-nav-collapse) {
+					background: #D30056 !important;
+				} 
+			}
+			.intro-1 {
+				height: 1050px;
+			}
+			@media (min-width: 770px) and (max-width: 1025px) {
+				.intro-1 {
+					height: 750px;
+				}
+			}
+			@media (max-width: 740px) {
+				.intro {
+					height: 600px;
+				}
+			}
+		</style>
+	</head>
+	
+	<body>
+	<!--Main Navigation-->
+	<header>
+		<!--Navbar-->
+		<nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+			<div class="container">
+				<a class="navbar-brand" href="index.html"><strong>BACKELITE</strong></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-7" aria-controls="navbarSupportedContent-7" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent-7">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="nosotros.html">Nosotros</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="servicios.html">Servicios</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="trabajos.html">Trabajos</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="contacto.html">Contacto</a>
+						</li>
+					</ul>
+					<form class="form-inline">
+						<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Buscar">
+					</form>
+				</div>
+			</div>
+		</nav>
+
+	</header>
+	<!--Main Navigation-->
+
+	<!--Main Layout-->
+	<main>
+		<div class="view intro hm-white-light jarallax" style="background-image: url(multimedia/nosotros.png);">
+			<div class="full-bg-img">
+				<div class="container flex-center">
+					<div class="row mt-5 py-5">
+						<div class="col-md-12 wow fadeIn mb-3">
+							<div class="text-center">
+								<h1 class="display-2 mb-2 wow fadeInDown" data-wow-delay="0.3s" style="">LOREM <a class="white-text font-bold">IPSUM</a></h1>
+								<h5 class="font-up mb-3 mt-1 font-bold wow fadeInDown" data-wow-delay="0.4s">Lorem ipsum dolor amet</h5>
+								<a class="btn btn-elegant btn-lg wow fadeInDown" data-wow-delay="0.4s">Lorem ipsum</a> 
+								<a class="btn btn-outline-white btn-lg wow fadeInDown" data-wow-delay="0.4s">Lorem ipsum</a> 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container">	
+			<!--Grid row-->
+			<div class="row">
+		
+				<!--Grid column-->
+				<div class="col-md-12 text-center my-5">
+			
+					<h1 class="font-bold grey-text mb-5">Lorem ipsum dolor sit amet, consectetur quis elit.</h1>
+					<p align="justify">Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.Lorem ipsum dolor sit amet, consectetur quis elit. Perspiciatis commodi porro, cumque provident rem corporis odit, ut quas dolores maxime nesciunt possimus quis, soluta velit debitis amet, veritatis cupiditate reprehenderit.</p>
+			
+				</div>
+				<!--Grid column-->
+			
+			</div>
+			<!--Grid row-->
+
+		</div>
+	</main>
+	<!--Main Layout-->
+
+
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="compiled.min.js"></script>
+		<script type="text/javascript" src="jarallax.js"></script>
+		<script type="text/javascript" src="jarallax-video.js"></script>
+
+	
+		<div id="transcript">
+
+		</div>
+		
+		<script src="voice.js"></script>
+		<script>
+			window.onload = function () {
+				run();
+				new WOW().init();
+			});
+		</script>
+	</body>
+</html>
