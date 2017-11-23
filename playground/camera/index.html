@@ -18,16 +18,9 @@
 		<video id="camera" width="640" height="480" autoplay></video>
 		<canvas id="canvas" width="640" height="480"></canvas>
 		
-		<script src="webgazer.js"></script>
 		<script src="camera.js"></script>
 		<script>
 			window.onload = run();
-			var prediction = webgazer.getCurrentPrediction();
-			if (prediction) {
-				var x = prediction.x;
-				var y = prediction.y;
-				console.log(x+'--'+y);
-			}
 		</script>
 	</body>
 </html>
