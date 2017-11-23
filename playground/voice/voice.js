@@ -26,6 +26,10 @@ if (!('webkitSpeechRecognition' in window)) {
 		if(final_transcript) {
 			transcript = capitalize(final_transcript);
 			console.log(transcript);
+			if(string.match(/ir a nosotros/i)) window.location.href = "nosotros.html";
+			else if(string.match(/ir a servicios/i)) window.location.href = "servicios.html";
+			else if(string.match(/ir a trabajos/i)) window.location.href = "trabajos.html";
+			else if(string.match(/ir a contacto/i)) window.location.href = "contacto.html";
 		} else {
 			transcript = interim_transcript;
 		}
