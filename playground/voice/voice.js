@@ -1,4 +1,4 @@
-var transcript = 
+var transcript = document.getElementById('transcript');
 	final_transcript = '',
 	recognizing = false
 
