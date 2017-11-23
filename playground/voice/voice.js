@@ -43,6 +43,7 @@ function run () {
 	recognition.start();
 }
 
+var first_char = /\S/;
 function capitalize(s) {
-	return s.replace(first_char, function(m) { return m.toUpperCase(); });
+  return s.replace(first_char, function(m) { return m.toUpperCase(); });
 }
