@@ -1,8 +1,7 @@
-var camera = document.getElementById('camera'),
-	source_canvas = document.getElementById('source'),
-	source = source_canvas.getContext('2d'),
-	first = true,		
-	block = false
+var canvas = document.getElementById('canvas');
+	context = canvas.getContext('2d');
+	camera = document.getElementById('camera');
+
 
 function run () {
 	// Get access to the camera!
