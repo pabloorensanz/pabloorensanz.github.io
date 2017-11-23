@@ -1,32 +1,19 @@
-var cam = document.getElementById('camera'),
+var camera = document.getElementById('camera'),
 	source_canvas = document.getElementById('source'),
 	source = source_canvas.getContext('2d'),
 	first = true,		
 	block = false
 
 function run () {
-	if(navigator.mediaDevices.getUserMedia) {
-		navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(function(stream) {
-			render(stream);		
-		}).catch(function(error) {
-			alert('Sorry but there is a problem with your webcam! Try turning it on...');
-		});
-	} else if(navigator.webkitGetUserMedia) {
-		navigator.webkitGetUserMedia({audio: true, video: true}, function(stream) {
-			render(window.webkitURL.createObjectURL(stream));
-		}).catch(function(error) {
-			alert('Sorry but there is a problem with your webcam! Try turning it on...');
+	// Get access to the camera!
+	if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+		navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+			camera.src = window.URL.createObjectURL(stream);
+			camera.play();
 		});
 	} else {
 		alert('Your browser doesn´t support playing with your webcam. Try latest Chrome version for example.');
 	}
-}
-
-function render(src) {
-	cam.src = src
-	source.translate(source_canvas.width, 0);
-	source.scale(-1, 1);
-	source.drawImage(cam, 0, 0, cam.width, cam.height);
 }
 			
 /*
