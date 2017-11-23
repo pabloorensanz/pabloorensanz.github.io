@@ -1,4 +1,4 @@
-var transcript = document.getElementById('transcript');
+var transcript_input = document.getElementById('transcript');
 	final_transcript = '',
 	recognizing = false
 
@@ -21,11 +21,14 @@ if (!('webkitSpeechRecognition' in window)) {
 				interim_transcript += event.results[i][0].transcript;
 			}
 		}
-		if(final_transcript) transcript = capitalize(final_transcript);
-		else transcript = interim_transcript;
+		if(final_transcript) {
+			transcript = capitalize(final_transcript);
+			console.log(transcript);
+		} else {
+			transcript = interim_transcript;
+		}
 		
-		console.log(transcript);
-		transcript.value = transcript;
+		transcript_input.value = transcript;
 	}
 	recognition.onerror = function(event) {
 		console.log('Error: '+event.error);
