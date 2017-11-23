@@ -1,4 +1,5 @@
-var transcript_input = document.getElementById('transcript');
+var transcript_input = document.getElementById('transcript_input'),
+	transcript_icon = document.getElementById('transcript_icon'),
 	final_transcript = '',
 	recognizing = false
 
@@ -13,6 +14,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		recognizing = true;
 	}
 	recognition.onresult = function(event) {
+		transcript_icon.className += " faa-burst animated";
 		var interim_transcript = '';
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			if (event.results[i].isFinal) {
@@ -36,6 +38,9 @@ if (!('webkitSpeechRecognition' in window)) {
 	recognition.onend = function() {
 		recognizing = false;
 		console.log('fin');
+		transcript_input = '';
+		transcript_icon.classList.remove("faa-burst");
+		transcript_icon.classList.remove("animated");
 	}
 }
 
