@@ -58,7 +58,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		recognition.start();
 		console.log('Fin');
 		recognizing = false;
-		mensaje.innerHTML = 'Ya hemos jugado. ¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
+		mensaje.innerHTML = '¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
 		microfono.classList.remove("pulse");
 	}
 }
