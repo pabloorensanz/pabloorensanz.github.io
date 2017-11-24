@@ -18,7 +18,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		//escuchando
 		console.log('Escuchando');
 		recognizing = true;
-		mensaje.innerHTML = 'Te estoy escuchando! <b>Di el nombre</b> de una fruta.';
+		mensaje.innerHTML = 'Te estoy escuchando!<br/><b>Di el nombre</b> de una fruta.';
 		microfono.className += " pulse";
 	}
 	recognition.onresult = function(event) {
@@ -62,7 +62,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		recognizing = false;
 		recognized_atleastonetry = true;
 		console.log('Fin');
-		mensaje.innerHTML = '¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
+		mensaje.innerHTML = 'Muy bien<br/>¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
 		microfono.classList.remove("pulse");
 	}
 }
