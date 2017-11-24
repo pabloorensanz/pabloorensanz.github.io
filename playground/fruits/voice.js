@@ -27,12 +27,11 @@ if (!('webkitSpeechRecognition' in window)) {
 				interim_transcript += event.results[i][0].transcript;
 			}
 		}
-		if(final_transcript) {
+		if(transcript) {
 			frutas.forEach(function(element) {
 				element.remove("activa");
 			});
 			
-			console.log(transcript);
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
 			else if(transcript.match(/cereza/i)) document.getElementById('cerezas').className += " activa";
 			else if(transcript.match(/coco/i)) document.getElementById('coco').className += " activa";
@@ -46,8 +45,11 @@ if (!('webkitSpeechRecognition' in window)) {
 			else if(transcript.match(/sandia/i)) document.getElementById('sandia').className += " activa";
 			else if(transcript.match(/uva/i)) document.getElementById('uvas').className += " activa";
 			else document.getElementById('pensando').style.visibility = "visible";
+			
+			console.log('transcript: '+transcript);
+			transcript = '';
 		} else {
-			console.log(transcript);
+			console.log('interim: '+transcript);
 		}
 	}
 	recognition.onerror = function(event) {
