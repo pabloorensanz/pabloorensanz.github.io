@@ -78,7 +78,7 @@ function hay_match (id) {
 	window.clearTimeout(timeout);
 	timeout = setTimeout(function () {
 		resultado.classList.remove('activo');
-	}, 3000);
+	}, 4000);
 }
 
 function escuchar () {
