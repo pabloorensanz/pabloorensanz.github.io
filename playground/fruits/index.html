@@ -22,17 +22,6 @@
 				background-attachment: fixed;
 				margin-top: 10%;
 			}
-			@media (max-width: 768px) {
-				body {
-					margin-top: 70px;
-				}
-				#microfono {
-					width: 75px;
-					height: 75px;
-					line-height: 75px;
-					font-size: 50px;
-				}
-			}
 			nav.bg-custom {
 				background-color: rgba(0, 187, 39, 0.7);
 			}
@@ -99,6 +88,27 @@
 				animation: pulse 0.8s ease-in infinite;
 				visibility: visible;
 			}
+			@media (max-width: 768px) {
+				body {
+					margin-top: 70px;
+				}
+				#microfono {
+					width: 75px;
+					height: 75px;
+					line-height: 75px;
+					font-size: 50px;
+				}
+				#resultado.activo {
+					top: calc(50% - 50px);
+					left: calc(50% - 50px);
+					width:100px;
+					height:100px;
+					max-width: 100px;
+					max-height: 100px;
+					padding: 5px;
+					border-radius: 50px;
+				}
+			}
 		</style>
 	</head>
 	
@@ -154,7 +164,7 @@
 					<li class="col-md-2 col-sm-3 col-3">
 						<img id="coco" src="multimedia/coco.png" alt="Coco" class="fruta" />
 					</li>
-					<img id="resultado" src="multimedia/pensando.png" alt="resultado" class="fruta" />
+					<img id="resultado" src="multimedia/pensando.png" alt="resultado" class="fruta activo" />
 				</ul>
 			</div>
 		</main>
