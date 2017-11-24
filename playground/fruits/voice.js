@@ -4,6 +4,7 @@ var mensaje = document.getElementById('mensaje'),
 	resultado = document.getElementById('resultado'),
 	pensando = document.getElementById('pensando'),
 	recognizing = false,
+	recognized_atleastonetry = false,
 	timeout
 
 if (!('webkitSpeechRecognition' in window)) {
@@ -23,6 +24,7 @@ if (!('webkitSpeechRecognition' in window)) {
 	recognition.onresult = function(event) {
 		var interim_transcript = '';
 		var final_transcript = false;
+		recognized_atleastonetry = true;
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			if (event.results[i].isFinal) {
 				transcript += event.results[i][0].transcript;
@@ -51,13 +53,15 @@ if (!('webkitSpeechRecognition' in window)) {
 		else if(final_transcript) hay_match('pensando');//no hay match	
 	}
 	recognition.onerror = function(event) {
+		recognizing = false;
 		console.log('Error: '+event.error);
 	}
 	recognition.onend = function() {
 		//no escuchando
-		recognition.start();
-		console.log('Fin');
+		if(!recognized_atleastonetry) recognition.start();//un intento más
 		recognizing = false;
+		recognized_atleastonetry = true;
+		console.log('Fin');
 		mensaje.innerHTML = '¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
 		microfono.classList.remove("pulse");
 	}
