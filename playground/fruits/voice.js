@@ -1,7 +1,7 @@
 var mensaje = document.getElementById('mensaje'),
 	microfono = document.getElementById('microfono'),
 	transcript = '',
-	resultado = document.getElementsByClassName("resultado"),
+	resultado = document.getElementsById('resultado'),
 	pensando = document.getElementById('pensando'),
 	recognizing = false
 
@@ -64,6 +64,7 @@ if (!('webkitSpeechRecognition' in window)) {
 function hay_match (id) {
 	transcript = '';
 	//resultado.classList.remove('activo');
+	console.log('mostrar: '+id);
 	resultado.src = id+'.jpg';
 	resultado.className += ' activo';
 }
