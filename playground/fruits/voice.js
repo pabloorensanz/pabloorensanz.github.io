@@ -55,6 +55,7 @@ if (!('webkitSpeechRecognition' in window)) {
 	}
 	recognition.onend = function() {
 		//no escuchando
+		recognition.start();
 		console.log('Fin');
 		recognizing = false;
 		mensaje.innerHTML = 'Ya hemos jugado. ¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
