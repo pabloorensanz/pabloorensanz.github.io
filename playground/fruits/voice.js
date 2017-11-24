@@ -1,6 +1,6 @@
 var mensaje = document.getElementById('mensaje'),
 	microfono = document.getElementById('microfono'),
-	final_transcript = '',
+	transcript = '',
 	frutas = document.getElementsByClassName("fruta"),
 	recognizing = false
 
@@ -24,7 +24,7 @@ if (!('webkitSpeechRecognition' in window)) {
 			if (event.results[i].isFinal) {
 				transcript += event.results[i][0].transcript;
 			} else {
-				transcript += event.results[i][0].transcript;
+				interim_transcript += event.results[i][0].transcript;
 			}
 		}
 		if(final_transcript) {
