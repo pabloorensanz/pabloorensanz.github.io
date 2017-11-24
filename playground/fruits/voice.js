@@ -65,7 +65,7 @@ function hay_match (id) {
 	transcript = '';
 	//resultado.classList.remove('activo');
 	console.log('mostrar: '+id);
-	resultado.src = 'multimedia/'+id+'.jpg';
+	resultado.src = 'multimedia/'+id+'.png';
 	resultado.className += ' activo';
 }
 
