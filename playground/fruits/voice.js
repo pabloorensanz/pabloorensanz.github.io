@@ -30,7 +30,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		if(transcript) {
 			for (var i = 0; i < frutas.length; i++) {
 				frutas[i].remove("activa");
-			});
+			}
 			
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
 			else if(transcript.match(/cereza/i)) document.getElementById('cerezas').className += " activa";
@@ -60,7 +60,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		console.log('Fin');
 		recognizing = false;
 		mensaje.innerHTML = 'Puedes decir el nombre de la fruta que te apecete delante de tu micro.';
-		//microfono.classList.remove("pulse");
+		microfono.classList.remove("pulse");
 	}
 }
 
