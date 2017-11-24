@@ -18,7 +18,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		//escuchando
 		console.log('Escuchando');
 		recognizing = true;
-		mensaje.innerHTML = 'Te estoy escuchando!<br/><b>Di el nombre</b> de una fruta.';
+		mensaje.innerHTML = 'Te estoy escuchando! <b>Di el nombre</b> de una fruta.';
 		microfono.className += " pulse";
 	}
 	recognition.onresult = function(event) {
