@@ -1,8 +1,7 @@
 var mensaje = document.getElementById('mensaje'),
 	microfono = document.getElementById('microfono'),
 	transcript = '',
-	final_transcript = false,
-	frutas = document.getElementsByClassName("fruta"),
+	resultado = document.getElementsByClassName("resultado"),
 	pensando = document.getElementById('pensando'),
 	recognizing = false
 
@@ -48,7 +47,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		else if(transcript.match(/sandía/i)) hay_match('sandia');
 		else if(transcript.match(/uva/i)) hay_match('uvas');
 		else if(transcript.match(/caca/i) || transcript.match(/mierda/i) || transcript.match(/culo/i)) hay_match('caca');
-		else if(final_transcript) hay_match('pensando');//no hay match		
+		else if(final_transcript) hay_match('pensando');//no hay match	
 	}
 	recognition.onerror = function(event) {
 		console.log('Error: '+event.error);
@@ -64,10 +63,9 @@ if (!('webkitSpeechRecognition' in window)) {
 
 function hay_match (id) {
 	transcript = '';
-	for (var i = 0; i < frutas.length; i++) {
-		frutas[i].classList.remove("activa");			
-	}
-	document.getElementById(id).className += " activa";
+	//resultado.classList.remove('activo');
+	resultado.src = id+'.jpg';
+	resultado.className += ' activo';
 }
 
 function escuchar () {
