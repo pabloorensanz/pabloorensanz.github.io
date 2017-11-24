@@ -52,6 +52,10 @@
 				margin: 15px auto;
 				text-align: center;
 			}
+			@keyframes pulse {
+				25%  {transform: scale(0.9);}
+				75%  {transform: scale(1.1);}
+			}
 			ul.frutas {	
 				position:relative;
 				padding-left: 0px;
@@ -91,12 +95,12 @@
 	<body>
 		<header>
 			<nav class="navbar navbar-dark bg-custom fixed-top">
-				<span class="navbar-brand mb-0 h1 pulse">Demo de interacción de voz</span>
+				<span class="navbar-brand mb-0 h1">Demo de interacción de voz</span>
 			</nav>
 		</header>
 		<main role="main" class="container col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-10 offset-1">
 				<div class="row">
-					<i id="microfono" class="fa fa-microphone pulse"></i>
+					<i id="microfono" class="fa fa-microphone"></i>
 				</div>
 				<div class="row">
 					<p id="mensaje">
