@@ -8,7 +8,7 @@ var mensaje = document.getElementById('mensaje'),
 	timeout
 
 if (!('webkitSpeechRecognition' in window)) {
-	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome. En iOS no funciona :( puedes comprarte un Android ;)');
+	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome. En iPhone / iPad no funciona :( puedes comprarte un Android ;)');
 } else {
 	var recognition = new webkitSpeechRecognition();
 	recognition.continuous = true;
