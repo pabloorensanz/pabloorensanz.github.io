@@ -1,7 +1,7 @@
 var mensaje = document.getElementById('mensaje'),
 	microfono = document.getElementById('microfono'),
 	transcript = '',
-	resultado = document.getElementsById('resultado'),
+	resultado = document.getElementById('resultado'),
 	pensando = document.getElementById('pensando'),
 	recognizing = false
 
