@@ -21,13 +21,12 @@ if (!('webkitSpeechRecognition' in window)) {
 		var interim_transcript = '';
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			if (event.results[i].isFinal) {
-				final_transcript += event.results[i][0].transcript;
+				transcript += event.results[i][0].transcript;
 			} else {
-				interim_transcript += event.results[i][0].transcript;
+				transcript += event.results[i][0].transcript;
 			}
 		}
 		if(final_transcript) {
-			transcript = final_transcript;
 			console.log(transcript);
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
 			else if(transcript.match(/cereza/i)) document.getElementById('cerezas').className += " activa";
