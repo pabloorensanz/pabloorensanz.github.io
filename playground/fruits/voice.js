@@ -27,7 +27,7 @@ if (!('webkitSpeechRecognition' in window)) {
 			}
 		}
 		if(final_transcript) {
-			transcript = capitalize(final_transcript);
+			transcript = final_transcript;
 			console.log(transcript);
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
 			else if(transcript.match(/cereza/i)) document.getElementById('cerezas').className += " activa";
@@ -43,7 +43,7 @@ if (!('webkitSpeechRecognition' in window)) {
 			else if(transcript.match(/uva/i)) document.getElementById('uvas').className += " activa";
 			else document.getElementById('pensando').style.visibility = "visible";
 		} else {
-			
+			console.log(transcript);
 		}
 	}
 	recognition.onerror = function(event) {
