@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="@pabloorensanz">
+		<title>Voice interaction demo</title>
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<style>
+			body{
+				background-color: white;
+				background-image: url("multimedia/background.jpg");
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				margin-top: 10%;
+			}
+			@media (max-width: 768px) {
+				body {
+					margin-top: 70px;
+				}
+				#microfono {
+					width: 75px;
+					height: 75px;
+					line-height: 75px;
+					font-size: 50px;
+				}
+			}
+			nav.bg-custom {
+				background-color: rgba(0, 187, 39, 0.7);
+			}
+			main {
+				padding: 15px;
+				background-color: rgba(255, 255, 255, 0.85);
+			}
+			#microfono {
+				width: 100px;
+				height: 100px;
+				margin: 15px auto;
+				border: 1px solid #00BB27;
+				border-radius: 50px;
+				font-size: 60px;
+				line-height: 100px;
+				text-align: center;
+				color: #00BB27;
+			}
+			.pulse {
+				animation: pulse 0.8s ease-in infinite;
+			}
+			#mensaje {
+				margin: 15px auto;
+				text-align: center;
+			}
+			ul.frutas {	
+				position:relative;
+				padding-left: 0px;
+			}
+			ul.frutas > li {
+				position: relative;
+				list-style-type:none;
+				float:left;
+				padding: 10px;
+			}
+			ul.frutas > li img {
+				width: 100%;
+				height: 100%;
+				max-width: 128px;
+				max-height: 128px;
+			}
+			ul.frutas > li img.activa {
+				position: absolute;
+				top: -50px;
+				left: -50px;
+				width:228px;
+				height:228px;
+				max-width: 228px;
+				max-height: 228px;
+				padding: 25px;
+				border-radius: 114px;
+				z-index: 2; 
+				animation: pulse 0.8s ease-in infinite;
+				border: solid 1px rgba(0, 187, 39, 0.6);
+				background-color: rgba(255, 255, 255, 0.6);
+			}
+			#pensando {
+				display: none;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<header>
+			<nav class="navbar navbar-dark bg-custom fixed-top">
+				<span class="navbar-brand mb-0 h1">Navbar</span>
+			</nav>
+		</header>
+		<main role="main" class="container col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-10 offset-1">
+				<div class="row">
+					<i id="microfono" class="fa fa-microphone"></i>
+				</div>
+				<div class="row">
+					<p id="mensaje">
+						Puedes decir el nombre de la fruta que te apecete delante de tu micro.
+					</p>
+				</div>
+				<ul class="row frutas">
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="pera" src="multimedia/pera.png" alt="Pera" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="manzana" src="multimedia/manzana.png" alt="Manzana" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="naranja" src="multimedia/naranja.png" alt="Naranja, Mandarina" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="pina" src="multimedia/pina.png" alt="Piña" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="sandia" src="multimedia/sandia.png" alt="Sandia" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="aguacate" src="multimedia/aguacate.png" alt="Aguacate" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="uvas" src="multimedia/uvas.png" alt="Uva" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="limon" src="multimedia/limon.png" alt="Limón" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="kiwi" src="multimedia/kiwi.png" alt="Kiwi" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="platano" src="multimedia/platano.png" alt="Plátano, Banana" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="cerezas" src="multimedia/cerezas.png" alt="Cerezas" class="fruta" />
+					</li>
+					<li class="col-md-2 col-sm-3 col-4">
+						<img id="coco" src="multimedia/coco.png" alt="Coco" class="fruta" />
+					</li>
+					<img id="pensando" src="multimedia/pensando.png" alt="Pensando" />
+				</ul>
+			</div>
+		</main>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		<script src="https://use.fontawesome.com/b5e3c605ac.js"></script>
+		<script src="voice.js"></script>
+		<script>
+			window.onload = function () {
+				escuchar();
+				$('.fruta').hover(function () {
+				
+				});
+			}
+		</script>
+	</body>
+</html>
