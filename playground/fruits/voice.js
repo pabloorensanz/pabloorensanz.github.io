@@ -16,7 +16,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		console.log('Escuchando');
 		recognizing = true;
 		mensaje.innerHTML = 'Te estoy escuchando!';
-		//microfono.className += " pulse";
+		microfono.className += " pulse";
 	}
 	recognition.onresult = function(event) {
 		var interim_transcript = '';
