@@ -16,7 +16,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		console.log('Escuchando');
 		recognizing = true;
 		mensaje.innerHTML = 'Te estoy escuchando!';
-		microfono.className += " pulse";
+		//microfono.className += " pulse";
 	}
 	recognition.onresult = function(event) {
 		var interim_transcript = '';
@@ -28,8 +28,8 @@ if (!('webkitSpeechRecognition' in window)) {
 			}
 		}
 		if(transcript) {
-			frutas.forEach(function(element) {
-				element.remove("activa");
+			for (var i = 0; i < frutas.length; i++) {
+				frutas[i].remove("activa");
 			});
 			
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
@@ -49,7 +49,7 @@ if (!('webkitSpeechRecognition' in window)) {
 			console.log('transcript: '+transcript);
 			transcript = '';
 		} else {
-			console.log('interim: '+transcript);
+			console.log('interim: '+interim_transcript);
 		}
 	}
 	recognition.onerror = function(event) {
@@ -60,7 +60,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		console.log('Fin');
 		recognizing = false;
 		mensaje.innerHTML = 'Puedes decir el nombre de la fruta que te apecete delante de tu micro.';
-		microfono.classList.remove("pulse");
+		//microfono.classList.remove("pulse");
 	}
 }
 
