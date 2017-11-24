@@ -17,7 +17,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		//escuchando
 		console.log('Escuchando');
 		recognizing = true;
-		mensaje.innerHTML = 'Te estoy escuchando!';
+		mensaje.innerHTML = 'Te estoy escuchando! Puedes decir el nombre de una fruta.';
 		microfono.className += " pulse";
 	}
 	recognition.onresult = function(event) {
@@ -34,19 +34,18 @@ if (!('webkitSpeechRecognition' in window)) {
 		if(transcript.match(/aguacate/i)) hay_match('aguacate');
 		else if(transcript.match(/cereza/i)) hay_match('cerezas');
 		else if(transcript.match(/coco/i)) hay_match('coco');
-		else if(transcript.match(/fresa/i)) hay_match('fresa');
 		else if(transcript.match(/kiwi/i)) hay_match('kiwi');
 		else if(transcript.match(/limón/i)) hay_match('limon');
 		else if(transcript.match(/manzana/i)) hay_match('manzana');
 		else if(transcript.match(/naranja/i) || transcript.match(/mandarina/i)) hay_match('naranja');
-		else if(transcript.match(/pera/i) || transcript.match(/pere/i)) ;
+		else if(transcript.match(/plátano/i) || banana) hay_match('platano');
+		else if(transcript.match(/pera/i) || transcript.match(/pere/i)) hay_match('pera');
 		else if(transcript.match(/piña/i)) hay_match('pina');
 		else if(transcript.match(/sandía/i)) hay_match('sandia');
 		else if(transcript.match(/uva/i)) hay_match('uvas');
 		else hay_match('pensando');//no hay match
 		
-		console.log('transcript: '+transcript);
-		transcript = '';
+		console.log('transcript ('+final_transcript+'): '+transcript);
 	}
 	recognition.onerror = function(event) {
 		console.log('Error: '+event.error);
@@ -61,10 +60,10 @@ if (!('webkitSpeechRecognition' in window)) {
 }
 
 function hay_match (id) {
+	transcript = '';
 	for (var i = 0; i < frutas.length; i++) {
 		frutas[i].classList.remove("activa");			
 	}
-	
 	document.getElementById(id).className += " activa";
 }
 
