@@ -1,6 +1,7 @@
 var mensaje = document.getElementById('mensaje'),
 	microfono = document.getElementById('microfono'),
 	final_transcript = '',
+	frutas = document.getElementsByClassName("fruta"),
 	recognizing = false
 
 if (!('webkitSpeechRecognition' in window)) {
@@ -27,6 +28,10 @@ if (!('webkitSpeechRecognition' in window)) {
 			}
 		}
 		if(final_transcript) {
+			frutas.forEach(function(element) {
+				element.remove("activa");
+			});
+			
 			console.log(transcript);
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
 			else if(transcript.match(/cereza/i)) document.getElementById('cerezas').className += " activa";
