@@ -3,7 +3,8 @@ var mensaje = document.getElementById('mensaje'),
 	transcript = '',
 	resultado = document.getElementById('resultado'),
 	pensando = document.getElementById('pensando'),
-	recognizing = false
+	recognizing = false,
+	eliminar_class
 
 if (!('webkitSpeechRecognition' in window)) {
 	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome');
@@ -67,6 +68,9 @@ function hay_match (id) {
 	console.log('mostrar: '+id);
 	resultado.src = 'multimedia/'+id+'.png';
 	resultado.className += ' activo';
+	eliminar_class = setTimeout(function () {
+		resultado.classList.remove('activo');
+	}, 4000)
 }
 
 function escuchar () {
