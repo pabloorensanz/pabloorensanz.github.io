@@ -38,14 +38,15 @@ if (!('webkitSpeechRecognition' in window)) {
 		else if(transcript.match(/limón/i)) hay_match('limon');
 		else if(transcript.match(/manzana/i)) hay_match('manzana');
 		else if(transcript.match(/naranja/i) || transcript.match(/mandarina/i)) hay_match('naranja');
-		else if(transcript.match(/plátano/i) || banana) hay_match('platano');
+		else if(transcript.match(/plátano/i) || transcript.match(/banana/i)) hay_match('platano');
 		else if(transcript.match(/pera/i) || transcript.match(/pere/i)) hay_match('pera');
 		else if(transcript.match(/piña/i)) hay_match('pina');
 		else if(transcript.match(/sandía/i)) hay_match('sandia');
 		else if(transcript.match(/uva/i)) hay_match('uvas');
 		else hay_match('pensando');//no hay match
 		
-		console.log('transcript ('+final_transcript+'): '+transcript);
+		console.log('transcript: '+transcript);
+		if(final_transcript) console.log('final_transcript: '+transcript);
 	}
 	recognition.onerror = function(event) {
 		console.log('Error: '+event.error);
