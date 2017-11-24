@@ -31,6 +31,9 @@ if (!('webkitSpeechRecognition' in window)) {
 			}
 		}
 		
+		console.log('transcript: '+transcript);
+		if(final_transcript) console.log('final_transcript: '+transcript);
+		
 		if(transcript.match(/aguacate/i)) hay_match('aguacate');
 		else if(transcript.match(/cereza/i)) hay_match('cerezas');
 		else if(transcript.match(/coco/i)) hay_match('coco');
@@ -43,10 +46,8 @@ if (!('webkitSpeechRecognition' in window)) {
 		else if(transcript.match(/piña/i)) hay_match('pina');
 		else if(transcript.match(/sandía/i)) hay_match('sandia');
 		else if(transcript.match(/uva/i)) hay_match('uvas');
-		else hay_match('pensando');//no hay match
-		
-		console.log('transcript: '+transcript);
-		if(final_transcript) console.log('final_transcript: '+transcript);
+		else if(transcript.match(/caca/i) || transcript.match(/mierda/i) || transcript.match(/culo/i)) hay_match('caca');
+		else if(final_transcript) hay_match('pensando');//no hay match		
 	}
 	recognition.onerror = function(event) {
 		console.log('Error: '+event.error);

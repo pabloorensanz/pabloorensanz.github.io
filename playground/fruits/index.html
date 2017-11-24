@@ -87,14 +87,15 @@
 				background-color: rgba(255, 255, 255, 0.6);
 				animation: pulse 0.8s ease-in infinite;
 			}
-			#pensando {
+			#pensando, #caca {
 				visibility: hidden;
 				width: 0;
 				height: 0;
 			}
-			#pensando.activa {
-				width:128px;
-				height:128px;
+			#pensando.activa, #caca.activa {
+				width:228px;
+				height:228px;
+				
 				visibility: visible;
 				top: calc(50% - 114px);
 				left: calc(50% - 114px);
@@ -155,6 +156,7 @@
 						<img id="coco" src="multimedia/coco.png" alt="Coco" class="fruta" />
 					</li>
 					<img id="pensando" src="multimedia/pensando.png" alt="Pensando" class="fruta" />
+					<img id="caca" src="multimedia/caca.png" alt="Caca" class="fruta" />
 				</ul>
 			</div>
 		</main>
