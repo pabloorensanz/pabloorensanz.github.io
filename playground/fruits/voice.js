@@ -22,6 +22,7 @@ if (!('webkitSpeechRecognition' in window)) {
 	}
 	recognition.onresult = function(event) {
 		var interim_transcript = '';
+		var final_transcript = false;
 		for (var i = event.resultIndex; i < event.results.length; ++i) {
 			if (event.results[i].isFinal) {
 				transcript += event.results[i][0].transcript;
@@ -74,7 +75,6 @@ function escuchar () {
 		recognition.stop();
 		return;
 	}
-	final_transcript = '';
 	recognition.lang = 'es_ES';
 	recognition.start();
 }
