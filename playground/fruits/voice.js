@@ -29,7 +29,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		}
 		if(transcript) {
 			for (var i = 0; i < frutas.length; i++) {
-				frutas[i].remove("activa");
+				frutas[i].classList.remove("activa");
 			}
 			
 			if(transcript.match(/aguacate/i)) document.getElementById('aguacate').className += " activa";
