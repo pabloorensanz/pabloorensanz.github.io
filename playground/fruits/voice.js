@@ -63,7 +63,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		recognized_atleastonetry = true;
 		console.log('Fin');
 		resultado.classList.remove('activo');
-		mensaje.innerHTML = 'Muy bien<br/>¿Quieres <a onclick="recognition.start(); return false;"><u>volver a empezar</u></a>?';
+		mensaje.innerHTML = 'Muy bien<br/>¿Quieres <a onclick="escuchar(); return false;"><u>volver a empezar</u></a>?';
 		microfono.classList.remove("pulse");
 	}
 }
@@ -82,7 +82,7 @@ function hay_match (id) {
 
 function escuchar () {
 	if(recognizing) {
-		recognition.stop();
+		//recognition.stop();
 		return;
 	}
 	recognition.lang = 'es_ES';
