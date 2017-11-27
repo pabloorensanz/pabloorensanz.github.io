@@ -1,5 +1,6 @@
 var mensaje = document.getElementById('mensaje'),
 	microfono = document.getElementById('microfono'),
+	loading = document.getElementById('loading'),
 	transcript = '',
 	resultado = document.getElementById('resultado'),
 	pensando = document.getElementById('pensando'),
@@ -20,7 +21,7 @@ if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window) &
 		console.log('Escuchando');
 		recognizing = true;
 		mensaje.innerHTML = 'Te estoy escuchando!<br/><b>Di el nombre</b> de una fruta.';
-		microfono.className += " pulse";
+		microfono.className += ' activo';
 		resultado.classList.remove('activo');
 	}
 	recognition.onresult = function(event) {
@@ -84,9 +85,11 @@ function hay_match (id) {
 
 function escuchar () {
 	if(recognizing) {
-		recognition.stop();
+		//recognition.stop();
 		return;
 	}
+	loading.style.display = 'none';
+	microfono.style.display = 'inline';
 	recognition.lang = 'es_ES';
 	recognition.start();
 }

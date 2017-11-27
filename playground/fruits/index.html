@@ -29,23 +29,36 @@
 				padding: 0 15px;
 				background-color: rgba(255, 255, 255, 0.85);
 			}
-			#microfono {
+			.microfono {
 				width: 100px;
 				height: 100px;
 				margin: 15px auto;
-				border: 1px solid #00BB27;
+				border: 1px solid #ccc;
 				border-radius: 50px;
 				font-size: 60px;
-				line-height: 100px;
 				text-align: center;
-				color: #00BB27;
+				vertical-align: middle;
 			}
-			.pulse {
+			.microfono > i {
+				color: #ccc;
+			}
+			#loading {
+				animation:spin 4s linear infinite;
+			}
+			#microfono {
+				display: none;
+			}
+			#microfono.activo {
+				border: 1px solid #00BB27;
+				color: #00BB27;
 				animation: pulse 0.5s ease-in infinite;
 			}
 			@keyframes pulse {
 				25%  {transform: scale(0.9);}
 				75%  {transform: scale(1.1);}
+			}
+			@keyframes spin { 
+				100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); }
 			}
 			#mensaje {
 				margin: 0 auto 15px auto;
@@ -95,7 +108,6 @@
 				#microfono {
 					width: 75px;
 					height: 75px;
-					line-height: 75px;
 					font-size: 50px;
 				}
 				#resultado.activo {
@@ -120,7 +132,8 @@
 		</header>
 		<main role="main" class="container col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-10 offset-1">
 				<div class="row">
-					<a id="microfono"  onclick="escuchar(); return false;"><i class="fa fa-microphone"></i></a>
+					<a id="loading" class="microfono" onclick="return false;"><i class="fa fa-cog"></i></a>
+					<a id="microfono" class="microfono" onclick="escuchar(); return false;"><i class="fa fa-microphone"></i></a>
 				</div>
 				<div class="row">
 					<p id="mensaje">
