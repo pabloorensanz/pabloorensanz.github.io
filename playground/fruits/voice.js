@@ -8,7 +8,7 @@ var mensaje = document.getElementById('mensaje'),
 	timeout
 
 if (!('webkitSpeechRecognition' in window)) {
-	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome');
+	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome. En iPhone / iPad no funciona :( puedes comprarte un Android ;)');
 } else {
 	var recognition = new webkitSpeechRecognition();
 	recognition.continuous = true;
@@ -20,6 +20,7 @@ if (!('webkitSpeechRecognition' in window)) {
 		recognizing = true;
 		mensaje.innerHTML = 'Te estoy escuchando!<br/><b>Di el nombre</b> de una fruta.';
 		microfono.className += " pulse";
+		resultado.classList.remove('activo');
 	}
 	recognition.onresult = function(event) {
 		var interim_transcript = '';
@@ -62,8 +63,8 @@ if (!('webkitSpeechRecognition' in window)) {
 		recognizing = false;
 		recognized_atleastonetry = true;
 		console.log('Fin');
-		resultado.classList.remove('activo');
-		mensaje.innerHTML = 'Muy bien<br/>¿Quieres <a onclick="escuchar(); return false;"><u>volver a empezar</u></a>?';
+		
+		mensaje.innerHTML = 'Muy bien.<br/>¿Quieres <a onclick="escuchar(); return false;"><u>volver a empezar</u></a>?';
 		microfono.classList.remove("pulse");
 	}
 }
@@ -77,12 +78,12 @@ function hay_match (id) {
 	window.clearTimeout(timeout);
 	timeout = setTimeout(function () {
 		resultado.classList.remove('activo');
-	}, 3000);
+	}, 2500);
 }
 
 function escuchar () {
 	if(recognizing) {
-		//recognition.stop();
+		recognition.stop();
 		return;
 	}
 	recognition.lang = 'es_ES';
