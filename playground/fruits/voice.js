@@ -45,7 +45,7 @@ if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window) &
 		else if(transcript.match(/cereza/i)) hay_match('cerezas');
 		else if(transcript.match(/coco/i)) hay_match('coco');
 		else if(transcript.match(/kiwi/i)) hay_match('kiwi');
-		else if(transcript.match(/limón/i)) hay_match('limon');
+		else if(transcript.match(/limón/i) || transcript.match(/lima/i)) hay_match('limon');
 		else if(transcript.match(/manzana/i)) hay_match('manzana');
 		else if(transcript.match(/naranja/i) || transcript.match(/mandarina/i)) hay_match('naranja');
 		else if(transcript.match(/plátano/i) || transcript.match(/banana/i)) hay_match('platano');
