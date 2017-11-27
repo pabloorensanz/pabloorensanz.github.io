@@ -8,7 +8,7 @@ var mensaje = document.getElementById('mensaje'),
 	timeout
 
 
-if (!('webkitSpeechRecognition' in window)) {
+if (!('SpeechRecognition' in window) && !('webkitSpeechRecognition' in window) && !('mozSpeechRecognition' in window) && !('msSpeechRecognition' in window)) {
 	alert('Sorry, no es compatible con tu navegador. Si quieres continuar puedes actualizar a la última versión de Chrome. En iPhone / iPad no funciona :( puedes comprarte un Android ;)');
 } else {
 	var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
