@@ -27,8 +27,8 @@
 				font-size: 12px;
 			}
 			button.filter {
-				font-size: 12px;
-				margin: 4px;
+				font-size: 10px;
+				margin: 2px;
 			}
 		</style>
 	</head>
@@ -71,17 +71,17 @@
 						</div>
 					</form>
 				</div>
-				<div class="col-3">
+				<div class="col-4">
 					<p><b>Productos (<span id="counter_productos">-</span>)</b></p>
 					<ol id="results_productos" class="results">
 					</ol>
 				</div>
-				<div class="col-3">
-					<p><b>Categorias (<span id="counter_categorias">-</span>)</b>No funciona por ahora</p>
+				<div class="col-2">
+					<p><b>Categorias (<span id="counter_categorias">-</span>)</b></p>
 					<div id="results_categorias" class="results filterable">
 					</div>
 				</div>
-				<div class="col-3">
+				<div class="col-2">
 					<p><b>Marcas (<span id="counter_marcas">-</span>)</b></p>
 					<div id="results_marcas" class="results filterable">
 					</div>
@@ -101,14 +101,15 @@
 			$(document).ready(function() {
 				var options = {
 						shouldSort: true,
+						tokenize: true,
+						matchAllTokens: true,
 						includeScore: true,
-						//tokenize: true,
-						includeMatches: true,
-						threshold: 0.50,
+						threshold: 0.6,
 						location: 0,
-						distance: 100,
+						distance: 200,
 						maxPatternLength: 250,
 						minMatchCharLength: 1,
+						includeMatches: true,
 						keys: [
 							"descripcion_es"
 						]
@@ -124,6 +125,7 @@
 				.done(function(response) {
 					data = response;
 					console.log('getJSON success');
+
 					var fuse = new Fuse(data, options);
 					
 					$('#search').on('keyup', function() {
@@ -148,6 +150,8 @@
 									descripcion = (value.item.descripcion_es).replace(new RegExp(marca+' ',"ig"), ''),
 									score = value.score,
 									breadcrumbs = (value.item.categoriaNivel2_es).join(' > ');
+								
+								if(score > 0.5) return false;
 								
 								marcas[marca] = (marca in marcas) ? marcas[marca] + 1 : 1;
 								$.each(value.item.categoriaNivel2_es, function (key, value) { categorias[value] = (value in categorias) ? categorias[value] + 1 : 1; });
