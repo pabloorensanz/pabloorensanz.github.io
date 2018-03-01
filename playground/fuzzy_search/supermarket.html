@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="@pabloorensanz">
+		<link rel="icon" href="">
+
+		<title>Supermercado Search</title>
+
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<style>
+			body {
+				padding-top: 4.5rem;
+			}
+			.bg-transparent {
+				background-color: rgba(0, 0, 0, 0.5) !important;
+			}
+			ol.results {
+				padding: 0;
+				max-height: 400px;
+				overflow: auto;
+			}
+			ol.results > li {
+				font-size: 12px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-transparent">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand" href="#">Supermercado Search</a>
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<!--<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Link</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link disabled" href="#">Disabled</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+						<div class="dropdown-menu" aria-labelledby="dropdown01">
+							<a class="dropdown-item" href="#">Action</a>
+							<a class="dropdown-item" href="#">Another action</a>
+							<a class="dropdown-item" href="#">Something else here</a>
+						</div>
+					</li>
+				</ul>!-->
+			</div>
+		</nav>
+		 <main role="main" class="container">
+			<div class="row">
+				<div class="col-3">
+					<form>
+						<div class="form-group">
+							<!--<label for="search">Buscar</label>!-->
+							<input type="search" class="form-control" id="search" placeholder="Buscar...">
+						</div>
+					</form>
+				</div>
+				<div class="col-3">
+					<b>Productos</b>
+					<ol id="results_productos" class="results">
+					</ol>
+				</div>
+				<div class="col-3">
+					<b>Categorias</b>
+					<ol id="results_categorias" class="results">
+					</ol>
+				</div>
+				<div class="col-3">
+					<b>Marcas</b>
+					<ol id="results_marcas" class="results">
+					</ol>
+				</div>
+			</div><!-- /.container -->
+		</main>
+		
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="jquery-3.3.1.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7rOhRLbK-bre1vowPev3OvHejTvsfia8&libraries=places"></script>
+		<script src="fuse.js"></script>
+		<script src="javascript.js"></script>
+		
+		<script>
+			$(document).ready(function() {
+				var options = {
+						shouldSort: true,
+						includeScore: true,
+						tokenize: true,
+						includeMatches: true,
+						threshold: 0.25,
+						location: 0,
+						distance: 100,
+						maxPatternLength: 250,
+						minMatchCharLength: 1,
+						keys: [
+							"descripcion_es"
+						]
+					},
+					timer,
+					data,
+					results,
+					query;
+				
+				$.getJSON('catalogue.json', function() {
+					
+				})
+				.done(function(response) {
+					data = response;
+					console.log('getJSON success');
+					var fuse = new Fuse(data, options);
+					
+					$('#search').on('keyup', function() {
+						clearTimeout(timer);
+						query = $(this).val();
+						timer = setTimeout(function () {
+							console.log('Buscando: '+query);
+							$('body').css('cursor', 'progress');
+							$('#results_productos').html('<li>Buscando...</li>');
+							$('#results_categorias').html('<li>Buscando...</li>');
+							$('#results_marcas').html('<li>Buscando...</li>');
+
+							results = fuse.search(query);
+							console.log(results);
+							var marcas = [],
+								categorias = []
+								productos = [];
+								
+							$.each(results, function(key, value) {
+								var id = value.item.id,
+									marca = value.item.marca,
+									descripcion = (value.item.descripcion_es).replace(new RegExp(marca+' ',"ig"), ''),
+									score = value.score,
+									breadcrumbs = (value.item.categoriaNivel2_es).join(' > ');
+								
+								marcas[marca] = (marca in marcas) ? marcas[marca] + 1 : 1;
+								$.each(value.item.categoriaNivel2_es, function (key, value) { categorias[value] = (value in categorias) ? categorias[value] + 1 : 1; });
+								productos.push({'id': id, 'marca': marca, 'descripcion': descripcion, 'score': score, 'breadcrumbs': breadcrumbs});
+							})
+							marcas = sort_object(marcas);
+							//console.log(marcas);
+							categorias = sort_object(categorias);
+							//console.log(categorias);
+							//console.log(productos);
+							
+							$('#results_productos').html('');
+							$.each(productos, function(key, value) {
+								$('#results_productos').append('<li><b>'+value.descripcion+'</b><br/><small>'+value.marca+' | Ref: '+value.id+' | Score: '+(value.score).toFixed(2)+'</small></li>');
+							})
+							
+							$('#results_marcas').html('');
+							for(i = 0; i < marcas.length; i++) {
+								$('#results_marcas').append('<li>'+marcas[i][0]+' ('+marcas[i][1]+')</li>');
+							}
+							
+							$('#results_categorias').html('');
+							for(i = 0; i < categorias.length; i++) {
+								$('#results_categorias').append('<li>'+categorias[i][0]+' ('+categorias[i][1]+')</li>');
+							}
+							
+							$('body').css('cursor', 'default');
+						}, 500);
+					});
+				})
+				.fail(function(error) {
+					console.log( "error" );
+					console.log(error);
+				})
+			})
+			
+			function sort_object(object) {
+				var sortable = [];
+				for (var key in object) {
+					sortable.push([key, object[key]]);
+				}
+
+				sortable.sort(function(a, b) {
+					return b[1] - a[1];
+				});
+				return sortable
+			}
+		</script>
+	</body>
+</html>

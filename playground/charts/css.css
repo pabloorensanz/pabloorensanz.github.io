@@ -1,0 +1,47 @@
+body {
+	min-height: 75rem;
+	padding-top: 4.5rem;
+}
+
+canvas {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+.bg-transparent {
+	background-color: rgba(0, 0, 0, 1) !important;
+}
+
+.navbar-brand {
+	color: #39CCCC;
+}
+
+.summarybox {
+	
+}
+
+.summarybox > canvas {
+	max-height: 100px;
+}
+
+
+.summarybox:nth-child(1) {
+	background-color:  rgba(0, 82, 156, 0.5);
+}
+
+.summarybox:nth-child(2) {
+	background-color: rgba(243, 83, 91, 0.5)
+}
+
+.summarybox:nth-child(3) {
+	background-color: rgba(236, 116, 4, 0.5)
+}
+
+.summarybox:nth-child(4) {
+	background-color: rgba(0, 133, 50, 0.5)
+}
+
+.chart > canvas {
+	min-height: 350px;
+}
