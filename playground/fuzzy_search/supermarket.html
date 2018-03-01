@@ -68,17 +68,17 @@
 					</form>
 				</div>
 				<div class="col-3">
-					<b>Productos</b>
+					<p><b>Productos (<span id="counter_productos">-</span>)</b></p>
 					<ol id="results_productos" class="results">
 					</ol>
 				</div>
 				<div class="col-3">
-					<b>Categorias</b>
+					<p><b>Categorias (<span id="counter_categorias">-</span>)</b></p>
 					<ol id="results_categorias" class="results">
 					</ol>
 				</div>
 				<div class="col-3">
-					<b>Marcas</b>
+					<p><b>Marcas (<span id="counter_marcas">-</span>)</b></p>
 					<ol id="results_marcas" class="results">
 					</ol>
 				</div>
@@ -155,19 +155,22 @@
 							//console.log(categorias);
 							//console.log(productos);
 							
+							$('#counter_productos').text(productos.length);
 							$('#results_productos').html('');
 							$.each(productos, function(key, value) {
 								$('#results_productos').append('<li><b>'+value.descripcion+'</b><br/><small>'+value.marca+' | Ref: '+value.id+' | Score: '+(value.score).toFixed(2)+'</small></li>');
 							})
 							
-							$('#results_marcas').html('');
-							for(i = 0; i < marcas.length; i++) {
-								$('#results_marcas').append('<li>'+marcas[i][0]+' ('+marcas[i][1]+')</li>');
-							}
-							
+							$('#counter_categorias').text(categorias.length);
 							$('#results_categorias').html('');
 							for(i = 0; i < categorias.length; i++) {
 								$('#results_categorias').append('<li>'+categorias[i][0]+' ('+categorias[i][1]+')</li>');
+							}
+							
+							$('#counter_marcas').text(marcas.length);
+							$('#results_marcas').html('');
+							for(i = 0; i < marcas.length; i++) {
+								$('#results_marcas').append('<li>'+marcas[i][0]+' ('+marcas[i][1]+')</li>');
 							}
 							
 							$('body').css('cursor', 'default');
