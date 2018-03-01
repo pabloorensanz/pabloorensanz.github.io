@@ -18,13 +18,17 @@
 			.bg-transparent {
 				background-color: rgba(0, 0, 0, 0.5) !important;
 			}
-			ol.results {
+			.results {
 				padding: 0;
 				max-height: 400px;
 				overflow: auto;
 			}
-			ol.results > li {
+			.results > li {
 				font-size: 12px;
+			}
+			button.filter {
+				font-size: 12px;
+				margin: 4px;
 			}
 		</style>
 	</head>
@@ -73,14 +77,14 @@
 					</ol>
 				</div>
 				<div class="col-3">
-					<p><b>Categorias (<span id="counter_categorias">-</span>)</b></p>
-					<ol id="results_categorias" class="results">
-					</ol>
+					<p><b>Categorias (<span id="counter_categorias">-</span>)</b>No funciona por ahora</p>
+					<div id="results_categorias" class="results filterable">
+					</div>
 				</div>
 				<div class="col-3">
 					<p><b>Marcas (<span id="counter_marcas">-</span>)</b></p>
-					<ol id="results_marcas" class="results">
-					</ol>
+					<div id="results_marcas" class="results filterable">
+					</div>
 				</div>
 			</div><!-- /.container -->
 		</main>
@@ -98,9 +102,9 @@
 				var options = {
 						shouldSort: true,
 						includeScore: true,
-						tokenize: true,
+						//tokenize: true,
 						includeMatches: true,
-						threshold: 0.25,
+						threshold: 0.50,
 						location: 0,
 						distance: 100,
 						maxPatternLength: 250,
@@ -156,21 +160,24 @@
 							//console.log(productos);
 							
 							$('#counter_productos').text(productos.length);
+							productos.slice(0, 99);
 							$('#results_productos').html('');
 							$.each(productos, function(key, value) {
-								$('#results_productos').append('<li><b>'+value.descripcion+'</b><br/><small>'+value.marca+' | Ref: '+value.id+' | Score: '+(value.score).toFixed(2)+'</small></li>');
+								$('#results_productos').append('<li data-marca="'+value.marca+'" data-categoria=""><b>'+value.descripcion+'</b><br/><small>'+value.marca+' | '+value.breadcrumbs+'<br/>Ref: '+value.id+' | Score: '+(value.score).toFixed(2)+'</small></li>');
 							})
 							
 							$('#counter_categorias').text(categorias.length);
+							categorias.slice(0, 99);
 							$('#results_categorias').html('');
 							for(i = 0; i < categorias.length; i++) {
-								$('#results_categorias').append('<li>'+categorias[i][0]+' ('+categorias[i][1]+')</li>');
+								$('#results_categorias').append('<button type="button" class="btn btn-primary btn-sm filter" onclick="filter(\'categoria\', \''+categorias[i][0]+'\');">'+categorias[i][0]+' ('+categorias[i][1]+')</button><br/>');
 							}
 							
 							$('#counter_marcas').text(marcas.length);
+							marcas.slice(0, 99);
 							$('#results_marcas').html('');
 							for(i = 0; i < marcas.length; i++) {
-								$('#results_marcas').append('<li>'+marcas[i][0]+' ('+marcas[i][1]+')</li>');
+								$('#results_marcas').append('<button type="button" class="btn btn-primary btn-sm filter" onclick="filter(\'marca\', \''+marcas[i][0]+'\');">'+marcas[i][0]+' ('+marcas[i][1]+')</button><br/>');
 							}
 							
 							$('body').css('cursor', 'default');
@@ -180,15 +187,24 @@
 				.fail(function(error) {
 					console.log( "error" );
 					console.log(error);
-				})
+				})		
 			})
 			
+			function filter (tipo, valor) {
+				console.log('Filtrar por '+tipo+': '+valor);
+				if(tipo == 'marca') {
+					$('#results_productos > li').show().not('[data-marca="'+valor+'"]').hide();
+					$('#counter_productos').text($('#results_productos > li:visible').length);
+				} else {
+				
+				}
+			}
+				
 			function sort_object(object) {
 				var sortable = [];
 				for (var key in object) {
 					sortable.push([key, object[key]]);
 				}
-
 				sortable.sort(function(a, b) {
 					return b[1] - a[1];
 				});
