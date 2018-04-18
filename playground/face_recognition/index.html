@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="@pabloorensanz">
 		<title>Camera demo</title>
@@ -23,8 +23,8 @@
 			}
 			#video, #canvas {
 				float:left;
-				min-width: 100%;
-				min-height: 100%;
+				width: 100%;
+				height: 100%;
 				transform: rotateY(180deg);
 				-webkit-transform:rotateY(180deg); /* Safari and Chrome */
 				-moz-transform:rotateY(180deg); /* Firefox */
@@ -37,14 +37,14 @@
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
-				font-size: 35px;
+				font-size: 25px;
 			}
 			.view form {
 				position: absolute;
-				bottom: 50px;
+				top: 50%;
 				left: 50%;
-				transform: translate(-50%, 0);
-				font-size: 30px;
+				transform: translate(-50%, -50%);
+				font-size: 25px;
 				padding: 20px;
 				background-color: rgba(255,255,255,0.75);
 				
@@ -55,7 +55,7 @@
 			.view input[type="submit"] {
 				display: block;
 				margin: 0 auto;
-				font-size: 35px;
+				font-size: 25px;
 			}
 			input[name="subject_id"] {
 				width: 100%;
@@ -63,7 +63,7 @@
 				background: none;
 				border: 0;
 				border-bottom: 2px solid #000;
-				font-size: 40px;
+				font-size: 25px;
 			}
 			input[name="subject_id"]:focus {
 				outline: none;
