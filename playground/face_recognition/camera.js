@@ -77,7 +77,7 @@ function save () {
 }
 
 function kairos (action, data) {
-	return $.ajax('http://api.kairos.com/'+action, {
+	return $.ajax('https://api.kairos.com/'+action, {
 		headers: {
 			'Content-type': 'application/json',
 			'app_id': 'fbd4af8e',
