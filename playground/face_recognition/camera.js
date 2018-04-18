@@ -22,7 +22,7 @@ function camera () {
 function snapshot () {
 	$('.view:not(#snapshot)').hide();
 	$('#snapshot').show();
-	
+	alert('snap');
 	canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
 	recognize();
 	return false;
