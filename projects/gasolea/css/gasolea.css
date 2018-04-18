@@ -1,0 +1,368 @@
+/* override */
+#container a, #container a:hover {
+	color: #3a3a3a;
+	text-decoration: none;
+	border-bottom: 1px dotted #ffd404;
+	line-height: 1.8;
+	font-weight: 600;
+}
+.btn {
+	font-size:12px;
+	padding: 6px 9px;
+}
+.btn-default.focus {
+	background-color: #fff;
+}
+li.divider {
+	clear: both;
+}
+@media (max-width: 767px) {
+	span.visible-xs {
+		display: inline-block!important;
+	}
+}
+@media (max-width: 767px) {
+	.glyphicon {
+		font-size: 1.3em;
+	}
+}
+.radio+.radio, .checkbox+.checkbox {
+	margin-top: 5px;
+}
+.dropdown-menu {
+	z-index: 9;
+}
+/* áreas */
+body {
+	padding: 50px 0 25px 0;
+}
+.container {
+	width: 100%;
+	padding: 0;
+}
+.row {
+	margin: 0;
+}
+.navbar-brand img {
+	margin: -3px 5px 0 0;
+	height: 28px;
+	width: auto;
+	display: inline;
+	border: 4px;
+}
+.navbar-brand img {
+	color: white;
+}
+
+.navbar-default {
+	padding: 0 15px;
+	background-color: #ffd404;
+	border-color: #e8bc03;
+	font-family: 'Raleway', sans-serif;
+}
+.navbar-default .navbar-brand {
+	color: #3a3a3a;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+	color: #000;
+}
+.navbar-default .navbar-text {
+	color: #3a3a3a;
+}
+.navbar-default .navbar-nav > li > a {
+	padding-top: 18px;
+	padding-bottom: 12px;
+	color: #3a3a3a;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+	color: #000;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+	color: #000;
+	background-color: #e8bc03;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+	color: #000;
+	background-color: #e8bc03;
+}
+.navbar-default .navbar-toggle {
+	border-color: #e8bc03;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: #e8bc03;//e8bc03
+}
+.navbar-default .navbar-toggle .icon-bar {
+	background-color: #3a3a3a;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+	border-color: #3a3a3a;
+}
+.navbar-default .navbar-link {
+	color: #3a3a3a;
+}
+.navbar-default .navbar-link:hover {
+	color: #000;
+}
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: #3a3a3a;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+		color: #000;
+	}
+	.navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+		color: #000;
+		background-color: #e8bc03;
+	}
+}
+#footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 22px;
+	padding: 3px 0;
+	font-size: 11px;
+	color: white;
+	background-color: #655d60;
+	border-top: 1px solid #ddd;
+}
+#footer a {
+	color: white;
+}
+/* statusBar */
+#statusBar {
+	position: fixed;
+	bottom: 22px;
+	left: 15px;
+	right: 15px;
+	height: 32px;
+	padding: 4px;
+	z-index: 2;
+	display: none;
+	background-color: rgba(230,230,230,0.75);
+}
+#statusBar div {
+	margin: 0 auto;
+	width: 240px;
+	text-align: center;
+}
+#statusBar div span{
+	margin: 4px 0 0 10px;
+	font-size: 11px;
+}
+
+/* fixedBar */
+#fixedBar {
+	position: fixed;
+	top: 50px;
+	left: 0;
+	right: 0;
+	width: 100%;
+	min-height: 130px;
+	z-index: 2;
+}
+#mapBar {
+	position: absolute;
+	top: 15px;
+	width: 480px;
+	float: left;
+	
+}
+@media (max-width: 767px) {
+	#mapBar {
+		width: 100%;
+	}
+}
+#placesContainer {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+#controlsContainer {
+	position: absolute;
+	bottom: 20px;
+	right: 15px;
+	float: right;
+	
+}
+/*#socialContainer {
+	position: absolute;
+	right: 15px;
+	bottom: 20px;
+	z-index: 11;
+}
+#socialContainer ul.dropdown-menu {
+	padding: 10px;
+}*/
+#map {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+#map div.bubble {
+	position: relative;
+	width: 185px;
+	z-index: 100;
+	font-size: 11px;
+}
+#map div.bubble div.prices {
+	float: right;
+	margin-top: 7px;
+}
+#map div.bubble address, #map div.bubble address span {
+	width: 180px;
+	color: grey;
+}
+#map div.bubble img {
+	float: left;
+	margin-top: 10px;
+}
+/* listBar */
+#listBar {
+	height: 50px;
+	padding: 10px 15px;
+	background-color: #eee;
+	border-bottom: 1px solid #ddd;
+}
+#listBar > div {
+	position: relative;
+	float: left;
+}
+#listBar > div > span {
+	font-size: 12px;
+}
+#listBar > div > button {
+	padding: 5px;
+}
+
+#listBar > div:first-child {
+	margin-right: 5px;
+}
+#listBar img.range {
+	width: 15px;
+	height: 20px;
+}
+#listBar img.fuel {
+	width: 20px;
+	height: 20px;
+}
+#listBar ul.dropdown-menu {
+	padding: 10px;
+	min-width: 180px;
+}
+#listBar ul.dropdown-menu, #listBar ul.dropdown-menu > li  {
+	font-size: 12px;
+}
+#listBar ul.dropdown-menu > li label {
+	width: 100%;
+}
+#listBar ul.dropdown-menu > li label img {
+	float: right;
+}
+@media (max-width: 767px) {
+	#listBar {
+		height: 68px;
+	}
+	#listBar > div > span {
+		display: block;
+		font-size: 12px;
+	}
+}
+/* list */
+#list {
+	margin-top: 130px;
+	z-index: 0;
+}
+#list div.list-group-item, #list div.list-group-item.disabled {
+	margin: -1px -1px;
+	cursor: default;
+	border-radius: 0;
+}
+#list div.list-group-item:hover, #list div.list-group-item.clicked {
+	background-color: #eee;
+}
+#list div.range {
+	float: left;
+}
+#list div.data {
+	margin: 0 44px 0 26px;
+}
+#list div.prices {
+	float: right;
+}
+#list div div, #list div div a {
+    font-size: 11px;
+}
+#list div div address, #list div div address span {
+	font-size: 11px;
+	color: grey;
+}
+#list div.list-group-item:last-child {
+	border-bottom-right-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+/* gasolineras */
+#directory ul {
+	list-style: none;
+	padding: 0;
+}
+#directory li {
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: -1px;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+#directory span.caret {
+	float: right;
+	color: #000;
+}
+#directory > ul > li {
+	padding-left: 15px;
+}
+#directory > ul > ul > li{
+	padding-left: 30px;
+}
+#directory > ul > ul > ul > li{
+	padding-left: 45px;
+}
+#directory > ul > ul > ul > ul > li {
+	padding-left: 60px;
+}
+/* common */
+button.custom {
+	padding: 8px 4px;
+}
+button.custom > img {
+	width: 22px;
+	height: 22px;
+}
+div.price {
+	margin: 5px 0;
+}
+div.price span {
+	padding: 2px 4px;
+}
+
+.inner-addon { 
+	position: relative; 
+}
+.inner-addon .glyphicon {
+	position: absolute;
+	padding: 9px 8px;
+	pointer-events: none;
+	color: #BDBDBD;
+	font-size: 15px;
+}
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+span.gpr { background-color: #359d07; color: white;}
+span.g98 { background-color: #4ce10b; color: white; }
+span.goa { background-color: black; color: white; }
+span.ngo { background-color: black; color: white; }
+span.bio { background-color: #d9e10b; color: white; }
+
+.twitter-share-button { width: 80px !important; }

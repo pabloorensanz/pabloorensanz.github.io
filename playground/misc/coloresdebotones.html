@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="@pabloorensanz">
+		<link rel="icon" href="">
+		<title>La importancia del UX</title>
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<style>
+			body {
+				margin: 20px;
+			}
+			
+			button:hover {
+				background-position: left center; /* curiosidad, cambia el orden del gradiente */
+			}
+
+			button {
+				border-color: white !important;
+				-webkit-transition: background 1s ease-out;
+				-moz-transition: background 1s ease-out;
+				-o-transition: background 1s ease-out;
+				transition: background 1s ease-out;
+			}
+			
+			#boton1 {
+				background: -webkit-gradient(linear, left top, right bottom, from(#f6d365), to(#fda085));
+			}
+			
+			#boton2 {
+				background: #f6d365;
+			}
+		</style>
+	</head>
+	<body>
+		<h5>¿Por qué conformarse con un botón de un color...</h5>
+		<button id="boton1" type="button" class="btn btn-primary btn-lg">...pudiendo tener un botón de todos los colores?</button>
+		<!--<br/></br><br/></br><br/></br><br/></br>
+		<button id="boton2" type="button" class="btn btn-primary btn-lg">Otra prueba</button>!-->
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		
+		<script>
+			function randomColor() {
+				return '#' + Math.floor(Math.random() * 16777215).toString(16);
+			}
+			
+			var viejoColor = '#fda085';
+			
+			function cambiarColores() {
+				var nuevoColor = randomColor();
+				var background = '';
+				
+				background = "-webkit-gradient(linear, left top, right bottom, from("+nuevoColor+"), to("+viejoColor+"))";
+				$('#boton1').css({
+					background: background
+				});
+				/*
+				background = randomColor();
+				$('#boton2').css({
+					background: background
+				});
+				*/
+				console.log(viejoColor+'-'+nuevoColor);
+				viejoColor = nuevoColor;
+			}
+			setInterval(cambiarColores, 1000);
+		</script>
+	</body>
+</html>
