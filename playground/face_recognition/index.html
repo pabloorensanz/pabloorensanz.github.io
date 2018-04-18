@@ -15,6 +15,10 @@
 			body {
 				margin: 0;
 			}
+			nav.bg-custom {
+				background-color: rgba(0, 0, 0, 0.5);
+				color: #fff;
+			}
 			video, canvas {
 				float:left;
 				width: 100%;
@@ -26,7 +30,7 @@
 			.view:not(#camera) {
 				display: none;
 			}
-			.view a {
+			.view a.btn {
 				position: absolute;
 				bottom: 50px;
 				left: 50%;
@@ -56,7 +60,7 @@
 				margin-bottom: 20px;
 				background: none;
 				border: 0;
-				border-bottom: 2px solid #007bff;
+				border-bottom: 2px solid #000;
 				font-size: 40px;
 			}
 			input[name="subject_id"]:focus {
@@ -65,27 +69,33 @@
 		</style>
 	</head>
 	<body>
+		<header>
+			<nav class="navbar navbar-dark bg-custom fixed-top">
+				<span class="navbar-brand">Reconocimiento facial</span>
+				<span class="float-sm-right">@pabloorensanz</span>
+			</nav>
+		</header>
 		<div id="camera" class="view">
 			<video id="video" width="640" height="480" autoplay></video>
-			<a href="#" class="btn btn-primary" onclick="snapshot(); return false;">¿Quién es este?</a>
+			<a href="#" class="btn btn-dark" onclick="snapshot(); return false;">¿Quién es este?</a>
 		</div>
 		<div id="snapshot" class="view">
 			<canvas id="canvas" width="640" height="480"></canvas>
 			<div id="searching" class="output">
-				<a href="#" class="btn btn-primary" disabled>Buscando...</a>
+				<a href="#" class="btn btn-dark" disabled>Buscando...</a>
 			</div>
 			<div id="nofaces" class="output">
 				<form onsubmit="return camera();">
 					<label>No he podido detectar ninguna cara :(</label>
 					<input type="hidden" name="log" value="nofaces" />
-					<input type="submit" class="btn btn-primary" value="Volver a intentar" />					
+					<input type="submit" class="btn btn-dark" value="Volver a intentar" />					
 				</form>
 			</div>
 			<div id="recognized">
 				<form onsubmit="return camera();">
 					<label></label>
 					<input type="hidden" name="log" value="recognized" />
-					<input type="submit" class="btn btn-primary" value="Continuar" />					
+					<input type="submit" class="btn btn-dark" value="Continuar" />					
 				</form>
 			</div>
 			<div id="notrecognized">
@@ -93,8 +103,8 @@
 					<label>No nos han presentado todavía.</br/>¿Quieres decirme tu nombre?</label>
 					<input name="subject_id" type="text" placeholder="Me llamo..." autofocus required />
 					<input type="hidden" name="log" value="notrecognized" />
-					<!--<a href="#" onclick="camera();"><small>Cancelar</small></a>!-->
-					<input type="submit" class="btn btn-primary" value="Continuar" />					
+					<input type="submit" class="btn btn-dark" value="Continuar" />
+					<a href="#" onclick="camera();" style="font-size: 60%; float: right; margin-top: 25px; color: #000;"><small>Cancelar</small></a>					
 				</form>
 			</div>
 			<div id="saved">
@@ -102,7 +112,7 @@
 					<label></label>
 					<input type="hidden" name="log" value="saved" />
 					<!--<a href="#" onclick="camera();"><small>Cancelar</small></a>!-->
-					<input type="submit" class="btn btn-primary" value="Conocer más personas" />					
+					<input type="submit" class="btn btn-dark" value="Conocer más personas" />					
 				</form>
 			</div>
 		</div>
