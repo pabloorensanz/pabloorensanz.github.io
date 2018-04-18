@@ -21,7 +21,7 @@
 				background-color: rgba(0, 0, 0, 0.5);
 				color: #fff;
 			}
-			video, canvas {
+			#video, #canvas {
 				float:left;
 				min-width: 100%;
 				min-height: 100%;
@@ -73,12 +73,12 @@
 	<body>
 		<header>
 			<nav class="navbar navbar-dark bg-custom fixed-top">
-				<span class="navbar-brand">Reconocimiento facial</span>
+				<span class="navbar-brand">Facial recognition</span>
 				<span class="float-sm-right">@pabloorensanz</span>
 			</nav>
 		</header>
 		<div id="camera" class="view">
-			<video id="video" width="640" height="480" autoplay></video>
+			<video id="video" autoplay></video>
 			<a href="#" class="btn btn-dark" onclick="snapshot(); return false;">¿Quién es?</a>
 		</div>
 		<div id="snapshot" class="view">
@@ -123,7 +123,7 @@
 		
 		<script>
 			$(document).ready(function() {
-				
+				$('#canvas')
 			});
 		</script>
 	</body>

@@ -14,14 +14,14 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
 //Trigger snapshot take
 function camera () {
-	$('.view:not(#camera)').hide();
-	$('#camera').show();
+	$('.view:not(#camera)').css('visibility', 'hidden');
+	$('#camera').css('visibility', 'visible');
 	return false;
 }
 
 function snapshot () {
-	$('.view:not(#snapshot)').hide();
-	$('#snapshot').show();
+	$('.view:not(#snapshot)').css('visibility', 'hidden');
+	$('#snapshot').css('visibility', 'visible');
 	
 	canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
 	recognize();
@@ -29,8 +29,8 @@ function snapshot () {
 }
 
 function recognize () {
-	$('#snapshot div:not(#searching)').hide();
-	$('#searching').show();
+	$('#snapshot div:not(#searching)').css('visibility', 'hidden');
+	$('#searching').css('visibility', 'visible');
 	
 	var data = {
 			'image': canvas.toDataURL('image/jpeg', 1.0),
@@ -40,19 +40,19 @@ function recognize () {
 		response = JSON.parse(response);
 		console.log(response);
 		if(response.hasOwnProperty('Errors')) {
-			$('#snapshot div:not(#nofaces)').hide();
-			$('#nofaces').show();
+			$('#snapshot div:not(#nofaces)').css('visibility', 'hidden');
+			$('#nofaces').css('visibility', 'visible');
 		} else {
 			if(response.images[0].hasOwnProperty('candidates')) {
-				$('#snapshot div:not(#recognized)').hide();
-				$('#recognized').show();
+				$('#snapshot div:not(#recognized)').css('visibility', 'hidden');
+				$('#recognized').css('visibility', 'visible');
 				$('#recognized label').html('Hola ');
 				$.each(response.images[0].candidates, function(index, value) {
 					$('#recognized label').append(value.subject_id+' ('+Math.floor(value.confidence*100)+'%)\r\n');
 				});
 			} else {
-				$('#snapshot div:not(#notrecognized)').hide();
-				$('#notrecognized').show();
+				$('#snapshot div:not(#notrecognized)').css('visibility', 'hidden');
+				$('#notrecognized').css('visibility', 'visible');
 			}
 		}
 	});
@@ -69,8 +69,8 @@ function save () {
 		}
 	kairos('enroll', data).done(function(response) {
 		console.log(response);
-		$('#snapshot div:not(#saved)').hide();
-		$('#saved').show();
+		$('#snapshot div:not(#saved)').css('visibility', 'hidden');
+		$('#saved').css('visibility', 'visible');
 		$('#saved label').html('Encantado de saludarte '+subject_id);
 	});
 	return false;
