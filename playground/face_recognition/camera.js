@@ -6,7 +6,9 @@ var video = document.getElementById('video'),
 if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
         video.src = window.URL.createObjectURL(stream);
+		
         video.play();
+		
     });
 } else {
 	alert('Your browser doesn´t support playing with your webcam. Try latest Chrome version for example.');
@@ -20,10 +22,14 @@ function camera () {
 }
 
 function snapshot () {
-	alert('snap');
+	var width = $('#video').width(),
+		height = $('#video').height();
+	$('#canvas').attr('width', width);
+	$('#canvas').attr('height', height);
 	$('.view:not(#snapshot)').hide();
+	console.log(video.width+'-'+video.height);
 	$('#snapshot').show();
-	canvas.getContext('2d').drawImage(video, 0, 0, 640, 480);
+	canvas.getContext('2d').drawImage(video, 0, 0, width, height);
 	recognize();
 	return false;
 }
