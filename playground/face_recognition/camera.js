@@ -6,9 +6,7 @@ var video = document.getElementById('video'),
 if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
         video.src = window.URL.createObjectURL(stream);
-		
         video.play();
-		
     });
 } else {
 	alert('Your browser doesn´t support playing with your webcam. Try latest Chrome version for example.');

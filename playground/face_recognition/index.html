@@ -18,7 +18,7 @@
 				margin: 0;
 			}
 			nav.bg-custom {
-				background-color: rgba(0, 0, 0, 0.5);
+				background-color: rgba(0, 0, 0, 1);
 				color: #fff;
 			}
 			#video, #canvas {
@@ -75,7 +75,7 @@
 	</head>
 	<body>
 		<header>
-			<nav class="navbar navbar-dark bg-custom fixed-top">
+			<nav class="navbar navbar-dark bg-custom">
 				<span class="navbar-brand">Facial recognition</span>
 				<span class="float-sm-right">@pabloorensanz</span>
 			</nav>
@@ -106,7 +106,7 @@
 			<div id="notrecognized">
 				<form onsubmit="return save();">
 					<label>No nos han presentado todavía.</br/>¿Quieres decirme tu nombre?</label>
-					<input name="subject_id" type="text" placeholder="Me llamo..." autofocus required />
+					<input name="subject_id" type="text" placeholder="Me llamo..." required />
 					<input type="hidden" name="log" value="notrecognized" />
 					<input type="submit" class="btn btn-dark" value="Continuar" />
 					<a href="#" onclick="camera();" style="font-size: 60%; float: right; margin-top: 25px; color: #000;"><small>Cancelar</small></a>					
