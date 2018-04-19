@@ -15,7 +15,9 @@
 		<script>
 			$(function () {
 				$.ajax('https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php', {
-					
+					headers : {
+						'Access-Control-Allow-Origin' : '*'
+					}
 				}).done(function(response){
 					console.log('Done');
 					console.log(response);
