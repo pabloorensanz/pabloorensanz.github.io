@@ -91,11 +91,9 @@ function enroll () {
 }
 
 function kairos (action, data) {
-	return $.ajax('https://api.kairos.com/'+action, {
-		headers: {
-			'Content-type': 'application/json',
-			'app_id': 'fbd4af8e',
-			'app_key': '03b3b9d3f8c90d5c4b8d7564c96b4fd7'
+	return $.ajax('https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php?action='+action, {
+		headers : {
+			'Access-Control-Allow-Origin' : '*'
 		},
 		type: 'POST',
 		data: JSON.stringify(data),
