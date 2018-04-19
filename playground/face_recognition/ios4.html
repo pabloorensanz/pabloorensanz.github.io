@@ -12,6 +12,8 @@
 	</head>
 	<body>
 		<video id="vid" muted autoplay playsinline></video>
+		<button id="capture">Capture</button>
+		<canvas id="canvas" width=320 height=240></canvas>
 		<script>
 			$(function () {
 				video = document.getElementById('vid');
@@ -30,6 +32,10 @@
 
 				navigator.mediaDevices.getUserMedia(constraints).then(function success(stream) {
 					video.srcObject = stream;
+				});
+				
+				captureButton.addEventListener('click', () => {
+					context.drawImage(player, 0, 0, canvas.width, canvas.height);
 				});
 			});
 		</script>
