@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="@pabloorensanz">
-		<title>Camera demo</title>
+		<title>Facial recognition demo</title>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -16,7 +16,6 @@
 		<style>
 			body {
 				margin: 0;
-				
 			}
 			nav.bg-custom {
 				background-color: rgba(0, 0, 0, 1);
@@ -86,7 +85,7 @@
 		</header>
 		<div id="camera" class="view">
 			<video id="video" autoplay></video>
-			<a href="#" class="btn btn-dark" onclick="return snapshot();">Identificar cara</a>
+			<a href="#" class="btn btn-dark" onclick="return snapshot();">Reconocer cara</a>
 		</div>
 		<div id="snapshot" class="view">
 			<canvas id="canvas" width="480" height="640"></canvas>
@@ -121,7 +120,7 @@
 					<label></label>
 					<input type="hidden" name="log" value="saved" />
 					<!--<a href="#" onclick="camera();"><small>Cancelar</small></a>!-->
-					<input type="submit" class="btn btn-dark" value="Conocer más personas" />					
+					<input type="submit" class="btn btn-dark" value="Continuar" />					
 				</form>
 			</div>
 		</div>
