@@ -71,6 +71,7 @@ function saved () {
 	$('#snapshot div:not(#saved)').hide();
 	$('#saved').show();
 	subject_id = $('input[name="subject_id"]').val();
+	$('input[name="subject_id"]').val('');
 	$('#saved label').html('Encantado de saludarte '+subject_id);
 	enroll();
 	return false;
