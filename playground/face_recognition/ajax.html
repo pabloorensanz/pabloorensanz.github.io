@@ -8,26 +8,20 @@
 		<title>Facial recognition demo</title>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 	</head>
 	<body>
-		Lalala1
+		Lalala2
 		<script>
-			$(function () {
-				$.ajax({url: 'https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php',
-					headers: {
-						'Access-Control-Allow-Origin' : '*',
-						'Content-type': 'application/json'
-					},
-					done: function(response){
-						console.log('Done');
-						console.log(response);
-					},
-					fail: function(response){
-						console.log('Fail');
-						console.log(response);
-					},
-				});
+			var url = 'https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php';
+			$.ajax({
+				url: url,
+				type: 'POST',
+				//data: JSON.stringify(data),
+				dataType: 'text',
+				complete: function(response){
+					console.log('complete');
+					console.log(response);
+				}
 			});
 		</script>
 	</body>

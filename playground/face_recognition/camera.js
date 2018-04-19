@@ -46,7 +46,6 @@ function recognize () {
 		}
 	kairos('recognize', data).done(function(response) {
 		response = JSON.parse(response);
-		console.log(response);
 		if(response.hasOwnProperty('Errors')) {
 			$('#snapshot div:not(#nofaces)').hide();
 			$('#nofaces').show();
@@ -54,9 +53,9 @@ function recognize () {
 			if(response.images[0].hasOwnProperty('candidates')) {
 				subject_id = response.images[0].candidates[0].subject_id;
 				$('#recognized label').html('Hola '+subject_id+' <small>('+Math.floor(response.images[0].candidates[0].confidence*100)+'%)</small>');
-				/*$.each(response.images[0].candidates, function(index, value) {
-					$('#recognized label').append(value.subject_id+' ('+Math.floor(value.confidence*100)+'%)\r\n');
-				});*/
+				//$.each(response.images[0].candidates, function(index, value) {
+				//	$('#recognized label').append(value.subject_id+' ('+Math.floor(value.confidence*100)+'%)\r\n');
+				//});
 				$('#snapshot div:not(#recognized)').hide();
 				$('#recognized').show();
 			} else {
@@ -84,22 +83,21 @@ function enroll () {
 			'subject_id': subject_id,
 			'gallery_name': 'MyGallery'
 		}
-	kairos('enroll', data).done(function(response) {
-		console.log(response);
-	});
+	kairos('enroll', data);
 	return false;
 }
 
 function kairos (action, data) {
-	return $.ajax('https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php?action='+action, {
-		headers : {
-			'Access-Control-Allow-Origin' : '*'
-		},
+	var url = 'https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php?action='+action;
+	//console.log(data);
+	return $.ajax({
+		url: url,
 		type: 'POST',
-		data: JSON.stringify(data),
-		dataType: 'text'
-	}).fail(function(response){
-		console.log(response);
+		data: data,
+		dataType: 'text',
+		complete: function(response){
+			//console.log(response);
+		}
 	});
 }
 
