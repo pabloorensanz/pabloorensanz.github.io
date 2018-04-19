@@ -1,12 +1,13 @@
 //Elements for taking the snapshot
 var video = document.getElementById('video'),
-	canvas = document.getElementById('canvas');
+	canvas = document.getElementById('canvas'),
+	context = canvas.getContext('2d'),
+	subject_id;
 
 //Get access to the camera!
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+if(navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-        video.src = window.URL.createObjectURL(stream);
-        video.play();
+        video.srcObject = stream;
     });
 } else {
 	alert('Your browser doesn´t support playing with your webcam. Try latest Chrome version for example.');
@@ -14,6 +15,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
 //Trigger snapshot take
 function camera () {
+	//video.srcObject.getVideoTracks().forEach(track => track.start());
 	$('.view:not(#camera)').hide();
 	$('#camera').show();
 	return false;
@@ -24,10 +26,12 @@ function snapshot () {
 		height = $('#video').height();
 	$('#canvas').attr('width', width);
 	$('#canvas').attr('height', height);
+	context.drawImage(video, 0, 0, width, height);
+	//video.srcObject.getVideoTracks().forEach(track => track.stop());
+	
 	$('.view:not(#snapshot)').hide();
-	console.log(video.width+'-'+video.height);
 	$('#snapshot').show();
-	canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+	
 	recognize();
 	return false;
 }
@@ -48,12 +52,13 @@ function recognize () {
 			$('#nofaces').show();
 		} else {
 			if(response.images[0].hasOwnProperty('candidates')) {
+				subject_id = response.images[0].candidates[0].subject_id;
+				$('#recognized label').html('Hola '+subject_id+' <small>('+Math.floor(response.images[0].candidates[0].confidence*100)+'%)</small>');
+				/*$.each(response.images[0].candidates, function(index, value) {
+					$('#recognized label').append(value.subject_id+' ('+Math.floor(value.confidence*100)+'%)\r\n');
+				});*/
 				$('#snapshot div:not(#recognized)').hide();
 				$('#recognized').show();
-				$('#recognized label').html('Hola ');
-				$.each(response.images[0].candidates, function(index, value) {
-					$('#recognized label').append(value.subject_id+' ('+Math.floor(value.confidence*100)+'%)\r\n');
-				});
 			} else {
 				$('#snapshot div:not(#notrecognized)').hide();
 				$('#notrecognized').show();
@@ -63,8 +68,16 @@ function recognize () {
 	return false;
 }
 
-function save () {
+function saved () {
+	$('#snapshot div:not(#saved)').hide();
+	$('#saved').show();
 	subject_id = $('input[name="subject_id"]').val();
+	$('#saved label').html('Encantado de saludarte '+subject_id);
+	enroll();
+	return false;
+}
+
+function enroll () {
 	console.log(subject_id);
 	var data = {
 			'image': canvas.toDataURL('image/jpeg', 1.0),
@@ -73,9 +86,6 @@ function save () {
 		}
 	kairos('enroll', data).done(function(response) {
 		console.log(response);
-		$('#snapshot div:not(#saved)').hide();
-		$('#saved').show();
-		$('#saved label').html('Encantado de saludarte '+subject_id);
 	});
 	return false;
 }

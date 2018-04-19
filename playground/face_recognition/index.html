@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="@pabloorensanz">
-		<title>Facial recognition demo</title>
+		<title>Face recognition demo</title>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -18,7 +18,7 @@
 				margin: 0;
 			}
 			nav.bg-custom {
-				background-color: rgba(0, 0, 0, 1);
+				background-color: rgba(222,205,49,1);
 				color: #fff;
 			}
 			#video, #canvas {
@@ -38,11 +38,14 @@
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
-				font-size: 25px;
 			}
 			.btn-dark {
-				background-color: rgba(0, 0, 0, 0.75);
-				border-color: rgba(0, 0, 0, 0.75);
+				background-color: rgba(222,205,49,0.75);
+				border-color: rgba(222,205,49,0.75);
+				display: block;
+				margin: 0 auto;
+				font-size: 25px;
+				text-decoration: underline;
 			}
 			.view form {
 				position: absolute;
@@ -58,11 +61,6 @@
 			.view form label {
 				margin-bottom: 16px;
 			}
-			.view input[type="submit"] {
-				display: block;
-				margin: 0 auto;
-				font-size: 25px;
-			}
 			input[name="subject_id"] {
 				width: 100%;
 				margin-bottom: 20px;
@@ -73,24 +71,30 @@
 			}
 			input[name="subject_id"]:focus {
 				outline: none;
-			}			
+			}
+			.cancel_link {
+				font-size: 75%;
+				float: right;
+				margin-top: 10px;
+				color: #000;
+			}
 		</style>
 	</head>
 	<body>
 		<header>
 			<nav class="navbar navbar-dark bg-custom">
-				<span class="navbar-brand">Facial recognition</span>
+				<span class="navbar-brand">Face recognition demo</span>
 				<span class="float-sm-right">@pabloorensanz</span>
 			</nav>
 		</header>
 		<div id="camera" class="view">
 			<video id="video" autoplay></video>
-			<a href="#" class="btn btn-dark" onclick="return snapshot();">Reconocer cara</a>
+			<a href="#" class="btn btn-dark" onclick="return snapshot();">Buscar esta cara</a>
 		</div>
 		<div id="snapshot" class="view">
 			<canvas id="canvas" width="480" height="640"></canvas>
 			<div id="searching" class="output">
-				<a href="#" class="btn btn-dark" disabled>Buscando...</a>
+				<a href="#" class="btn btn-dark" style="text-decoration: none;" disabled>Buscando...</a>
 			</div>
 			<div id="nofaces" class="output">
 				<form onsubmit="return camera();">
@@ -100,26 +104,26 @@
 				</form>
 			</div>
 			<div id="recognized">
-				<form onsubmit="return camera();">
+				<form onsubmit="enroll(); return camera();">
 					<label></label>
 					<input type="hidden" name="log" value="recognized" />
-					<input type="submit" class="btn btn-dark" value="Continuar" />					
+					<input type="submit" class="btn btn-dark" value="Continuar" />
+					<a href="#" onclick="camera(); return false;" class="cancel_link"><small>¿Me he equivocado?</small></a>					
 				</form>
 			</div>
 			<div id="notrecognized">
-				<form onsubmit="return save();">
+				<form onsubmit="return saved();">
 					<label>No nos han presentado todavía.</br/>¿Quieres decirme tu nombre?</label>
 					<input name="subject_id" type="text" placeholder="Me llamo..." required />
 					<input type="hidden" name="log" value="notrecognized" />
 					<input type="submit" class="btn btn-dark" value="Continuar" />
-					<a href="#" onclick="camera();" style="font-size: 75%; float: right; margin-top: 25px; color: #000;"><small>Cancelar</small></a>					
+					<a href="#" onclick="camera(); return false;" class="cancel_link"><small>Cancelar</small></a>					
 				</form>
 			</div>
 			<div id="saved">
 				<form onsubmit="return camera();">
 					<label></label>
 					<input type="hidden" name="log" value="saved" />
-					<!--<a href="#" onclick="camera();"><small>Cancelar</small></a>!-->
 					<input type="submit" class="btn btn-dark" value="Continuar" />					
 				</form>
 			</div>
