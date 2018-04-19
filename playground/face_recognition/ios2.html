@@ -11,30 +11,30 @@
 
 	</head>
 	<body>
-		<video id="video" controls autoplay></video>
+		<video id="video" autoplay></video>
 		<button id="capture">Capture</button>
 		<canvas id="canvas" width=320 height=240></canvas>
 		<script>
 		  var video = document.getElementById('video'),
-	canvas = document.getElementById('canvas'),
-	context = canvas.getContext('2d'),
-	subject_id;
+				canvas = document.getElementById('canvas'),
+				context = canvas.getContext('2d'),
+				captureButton = document.getElementById('capture');
 
-		  const constraints = {
-			video: true,
-		  };
-
-		  captureButton.addEventListener('click', () => {
-			context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-			// Stop all video streams.
-			video.srcObject.getVideoTracks().forEach(track => track.stop());
-		  });
+			
+			captureButton.addEventListener('click', () => {
+				context.drawImage(video, 0, 0, canvas.width, canvas.height);
+				//Stop all video streams.
+				//video.srcObject.getVideoTracks().forEach(track => track.stop());
+			});
 
 		  
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-        video.srcObject = stream;
-    });
+		if(navigator.mediaDevices.getUserMedia) {
+			navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+				video.srcObject = stream;
+			});
+		} else {
+			alert('Your browser doesn´t support playing with your webcam. Try latest Chrome version for example.');
+		}
 		</script>
 	</body>
 </html>
