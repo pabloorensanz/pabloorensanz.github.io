@@ -17,6 +17,10 @@
 		<script>
 			$(function () {
 				video = document.getElementById('vid');
+				canvas = document.getElementById('canvas');
+				context = canvas.getContext('2d');
+				captureButton = document.getElementById('capture');
+		  
 				video.style.width = document.width + 'px';
 				video.style.height = document.height + 'px';
 				video.setAttribute('autoplay', '');
