@@ -5,37 +5,36 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="@pabloorensanz">
-		<title>Camera demo</title>
+		<title>Facial recognition demo</title>
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 	</head>
 	<body>
-		<video id="player" controls autoplay></video>
+		<video id="video" controls autoplay></video>
 		<button id="capture">Capture</button>
 		<canvas id="canvas" width=320 height=240></canvas>
 		<script>
-		  const player = document.getElementById('player');
-		  const canvas = document.getElementById('canvas');
-		  const context = canvas.getContext('2d');
-		  const captureButton = document.getElementById('capture');
+		  var video = document.getElementById('video'),
+	canvas = document.getElementById('canvas'),
+	context = canvas.getContext('2d'),
+	subject_id;
 
 		  const constraints = {
 			video: true,
 		  };
 
 		  captureButton.addEventListener('click', () => {
-			context.drawImage(player, 0, 0, canvas.width, canvas.height);
+			context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
 			// Stop all video streams.
-			player.srcObject.getVideoTracks().forEach(track => track.stop());
+			video.srcObject.getVideoTracks().forEach(track => track.stop());
 		  });
 
-		  navigator.mediaDevices.getUserMedia(constraints)
-			.then((stream) => {
-			  // Attach the video stream to the video element and autoplay.
-			  player.srcObject = stream;
-			});
+		  
+    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+        video.srcObject = stream;
+    });
 		</script>
 	</body>
 </html>
