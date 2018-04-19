@@ -11,19 +11,22 @@
 
 	</head>
 	<body>
-		Lalala
+		Lalala1
 		<script>
 			$(function () {
-				$.ajax('https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php', {
-					headers : {
-						'Access-Control-Allow-Origin' : '*'
-					}
-				}).done(function(response){
-					console.log('Done');
-					console.log(response);
-				}).fail(function(response){
-					console.log('Fail');
-					console.log(response);
+				$.ajax({url: 'https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php',
+					headers: {
+						'Access-Control-Allow-Origin' : '*',
+						'Content-type': 'application/json'
+					},
+					done: function(response){
+						console.log('Done');
+						console.log(response);
+					},
+					fail: function(response){
+						console.log('Fail');
+						console.log(response);
+					},
 				});
 			});
 		</script>
