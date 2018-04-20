@@ -1,6 +1,20 @@
 (function ($) {
-	var map,
-		settings = {
+	//STATUSBAR
+	/*
+	$.fn.statusBar = function(options) {
+		var message;
+		
+		this.show = function () {
+			statusBar.slideDown({start: function () { statusBar.find('span').html('Buscando ubicación...') } });
+		},
+		
+	}
+	*/
+	
+	//GMAP
+    $.fn.gmap = function(options) {
+		this.map;
+		this.mapSettings = {
 			//URL
 			markersUrl: '',
 			markerImageUrl: '',
@@ -13,6 +27,7 @@
 				style: google.maps.ZoomControlStyle.SMALL,
 				position: google.maps.ControlPosition.TOP_RIGHT
 			},
+			viewport: null,
 			streetViewControl: false,
 			mapTypeControl: false,
 			//TEMPLATES
@@ -21,37 +36,38 @@
 			timeOutAjax: 5000,
 			timeOutChange: 1000,
 			timeOutGeolocate: 25000,
-		}
-
-    $.fn.gmap = function(options) {
-		$.extend(settings, options);
-		var self = this,
-			trigger = function (event, result) {
-				self.trigger(event);
-				event = 'on'+event.charAt(0).toUpperCase()+event.slice(1);
-				if(event in settings) settings[event].call(self, result);
-			};
-		
+		};
 		this.myPosition = {};
 		this.markers = [];
 		this.bounds = [];
 		this.bubble = new google.maps.InfoWindow({'zIndex': 1000});
 		this.timer = null;
+
 		
+		var self = this
+		$.extend(self.mapSettings, options);
+		var trigger = function (event, result) {
+			//event = 'on'+event.charAt(0).toUpperCase()+event.slice(1);
+			self.trigger(event);
+			//if(event in settings) settings[event].call(self, result);
+			console.log('trigger: '+event);
+		}		
 		this.geolocation = function () {
+			self.trigger('geolocationStart');
 			if(navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(
 					function (result) {
 						self.myPosition = {lat: result.coords.latitude, lng: result.coords.longitude};
-						if('onGeolocationDone' in settings) settings['onGeolocationDone'].call(self, self.myPosition);
-					}, function (error) {
-						trigger('geolocationFailed', error);
-					}, {
-						enableHighAccuracy: true, timeout : settings.timeOutGeolocate
-					}
+						//if('onGeolocationDone' in settings) settings['onGeolocationDone'].call(self, self.myPosition);
+						self.trigger('geolocationDone', result);
+					}, 
+					function (error) {
+						self.trigger('geolocationFailed', error);
+					}, 
+					{enableHighAccuracy: true, timeout : settings.timeOutGeolocate}
 				)
 			} else {
-				trigger('geolocationFailed');
+				self.trigger('geolocationFailed');
 			}
 			return this;
 		}
@@ -59,10 +75,10 @@
 			getJson(url, settings.timeoutAjax, function(data) {
 				if(data) {
 					self.myPosition = ({lat: data.lat, lng: data.lng});
-					trigger('iplocationDone', self.myPosition);
+					self.trigger('iplocationDone', self.myPosition);
 				}else callback();
 			}, function () {
-				trigger('iplocationFailed');
+				self.trigger('iplocationFailed');
 			})
 			return this;
 		}
@@ -73,42 +89,43 @@
 			});
 		}
 		this.mapLoad = function () {
-			var latLng = new google.maps.LatLng(settings.center.lat, settings.center.lng);
+			var latLng = new google.maps.LatLng(self.mapSettings.center.lat, self.mapSettings.center.lng);
 			map = new google.maps.Map(document.getElementById(self.attr('id')), {
 				center: latLng,
-				zoom: settings.zoom,
-				zoomControl: settings.zoomControl,
-				zoomControlOptions: settings.zoomControlOptions,
-				streetViewControl: settings.streetViewControl,
-				mapTypeControl: settings.mapTypeControl,
+				zoom: self.mapSettings.zoom,
+				zoomControl: self.mapSettings.zoomControl,
+				zoomControlOptions: self.mapSettings.zoomControlOptions,
+				streetViewControl: self.mapSettings.streetViewControl,
+				mapTypeControl: self.mapSettings.mapTypeControl,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			});
+			self.trigger('mapLoadDone', map);
 			google.maps.event.addListener(map, 'dragend', function () {
 				clearTimeout(self.timer);
 				self.timer = setTimeout(function () {
 					self.mapChanged();
-				}, settings.timeOutChange);
+				}, self.mapSettings.timeOutChange);
 			});
 			google.maps.event.addListener(map, 'zoom_changed', function () {
 				clearTimeout(self.timer);
 				self.timer = setTimeout(function () {
 					self.mapChanged();
-				}, settings.timeOutChange);
+				}, self.mapSettings.timeOutChange);
 			});
 			google.maps.event.addListenerOnce(map, 'idle', function () {
-				settings.viewport = self.getViewport();
-				settings.zoom = self.getZoom();
-				trigger('mapLoadDone', {'center': settings.center, 'viewport': settings.viewport, 'zoom': settings.zoom});
+				self.mapSettings.viewport = self.getViewport();
+				self.mapSettings.zoom = self.getZoom();
+				self.trigger('mapLoadDone', {'center': self.mapSettings.center, 'viewport': self.mapSettings.viewport, 'zoom': self.mapSettings.zoom});
 			});
 			
-			Mustache.parse(settings.bubbleTemplate);
+			Mustache.parse(self.mapSettings.bubbleTemplate);
 			return this;
 		}
 		this.mapChanged = function () {
-			settings.center = self.getCenter();
-			settings.viewport = self.getViewport();
-			settings.zoom = self.getZoom();
-			trigger('mapChanged', {'center': settings.center, 'viewport': settings.viewport, 'zoom': settings.zoom});
+			self.mapSettings.center = self.getCenter();
+			self.mapSettings.viewport = self.getViewport();
+			self.mapSettings.zoom = self.getZoom();
+			self.trigger('mapChanged', {'center': settings.center, 'viewport': settings.viewport, 'zoom': settings.zoom});
 		}
 		this.markersLoad = function (data) {
 			self.bounds = new google.maps.LatLngBounds();
@@ -123,9 +140,9 @@
 						self.bounds.extend(new google.maps.LatLng(response[i].lat, response[i].lng));						
 					}
 				}
-				trigger('markersLoadDone', markersData);
+				self.trigger('markersLoadDone', markersData);
 			}, function() {
-				trigger('markersLoadFailed');
+				self.trigger('markersLoadFailed');
 			})
 			
 			return this;
@@ -154,7 +171,7 @@
 						});
 					
 					google.maps.event.addListener(marker, 'click', function() {
-						trigger('markerClicked', marker);
+						self.trigger('markerClicked', marker);
 					});
 					
 					self.markers[markerData.id] = marker;
@@ -169,7 +186,7 @@
 			})
 			
 			google.maps.event.addListener(self.bubble, 'closeclick', function() {
-				trigger('bubbleClosed', marker.metadata.id);
+				self.trigger('bubbleClosed', marker.metadata.id);
 			});
 		}
 		this.bubbleClose = function () {
@@ -181,7 +198,7 @@
 				marker.setMap(null);
 			})
 			self.markers = [];
-			trigger('mapCleared');
+			self.trigger('mapCleared');
 			return this;
 		}
 		this.fitBounds = function () {
@@ -229,9 +246,8 @@
 
 		return this;
 	}
-}(jQuery));
 
-(function ($) {
+	//PLACES
 	var input,
 		settings = {
 			types: ['(cities)'],
@@ -242,6 +258,7 @@
 		$.extend(settings, options);
 		var self = this,
 			trigger = function (event, result) {
+				console.log(event+': '+result);
 				self.trigger(event);
 				event = 'on'+event.charAt(0).toUpperCase()+event.slice(1);
 				if(event in settings) settings[event].call(self, result);

@@ -11,19 +11,20 @@
 
 		<link href="css/bootstrap.css" rel="stylesheet"/>
 		<link href="css/gasolea.css" rel="stylesheet"/>
-		<link href="http://fonts.googleapis.com/css?family=Raleway:400,500" rel="stylesheet" type="text/css"/>
+		<link href="https://fonts.googleapis.com/css?family=Raleway:400,500" rel="stylesheet" type="text/css"/>
 
 		<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
-		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"/>
-		<script src="js/bootstrap.js"/>
-		<script src="js/mustache.js"/>
-		<script src="js/cookie.js"/>
-		<script src="js/plugins.js"/>
-		<script src="js/gasolea.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQExA4PyYQ6kXS056nQkL4HrR1tr9pYLg&libraries=places" type="text/javascript"></script>
+		<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>!-->
+		<script src="js/bootstrap.js" type="text/javascript"></script>
+		<script src="js/mustache.js" type="text/javascript"></script>
+		<script src="js/cookie.js" type="text/javascript"></script>
+		<script src="js/plugins.js" type="text/javascript"></script>
+		<!--<script src="js/gasolea.js"></script>!-->
 
 		<script>
 		//GOOGLE ANALYTICS
@@ -376,20 +377,15 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				//COOKIE
-				//$.cookie.json = true;
-				//$.cookie('lang', 'es', { expires: 7, path: '/' });
+				$.cookie.json = true;
+				$.cookie('lang', 'es', { expires: 7, path: '/' });
 
 				var timer,
 					statusBar = $('#statusBar'),
 					visits = 0//$.cookie('visits'),
 					//MAP
-					gmapOBJ = $('#map'),
-					gmapOptions = {},
-					marker = null,
-					viewport = [],
-					myPosition = {},
-					center = null,
-					zoom = 14,
+					gmapOBJ = $('#map').gmap(),
+					mapSettings = {},
 					bubbleTemplate = $('#bubbleTemplate').html(),
 					//LIST
 					listOBJ = $('#list>div'),
@@ -408,131 +404,49 @@
 					filters = {},// = filterOBJ.formToObject(),
 					ranges = filters['ranges'],
 					fuels = filters['fuels'];
-
+				
+				//SCREEN ADJUSTMENT
 				var fixedBarHeight = ($(window).height() - 50/*navbar*/) * 0.55;
 				$('#fixedBar').height(fixedBarHeight);
 				$('#list').css('margin-top', fixedBarHeight + $('#listBar').outerHeight());
 				if(visits === undefined) visits = 0;
-
-				//GMAP
 				if($(window).width() < 768) {//mobile
-					gmapOptions = {
+					mapSettings = {
 						zoom: 12
 					}
 				}
+				
+				//GMAP
 				statusBar.slideDown({start: function () { statusBar.find('span').html('Buscando ubicación...') } });
-				gmapOBJ.gmap($.extend(gmapOptions, {
-					markersUrl: 'json.php?type=findMarkers',
-					markerImageUrl: 'files/',
-					bubbleUrl: 'json.php?type=findById',
-					bubbleTemplate: bubbleTemplate,
-					onGeolocatedDone: function (result) {
-						myPosition = result;
-						$.cookie('myPosition', myPosition);
-						//placesOBJ.val('Cerca de tu ubicación');
-						//alert('tú ubicación '+myPosition.lat+'-'+myPosition.lng);
-						gmapOBJ.setSettings('center', myPosition).load();
-					},
-					onGeolocatedFail: function () {
-						if(!(visits % 5)) $('#geolocatedWarning').modal();
-
-						var zoomCookie = $.cookie('zoom'),
-							centerCookie = $.cookie('center');
-						console.log(centerCookie);
-						if(centerCookie && zoomCookie) {
-							//placesOBJ.val('Cerca de tu última ubicación');
-							gmapOBJ.setSettings('center', centerCookie).setSettings('zoom', zoomCookie).load();
-						} else {
-							gmapOBJ.load();
-						}
-					},
-					onLoadedDone: function (result) {
-						$.cookie('zoom', result.zoom);
-						$.cookie('center', result.center);
-						viewport = result.viewport;
-						//gmapOBJ.dump({'ranges': ranges, 'fuels': fuels});
-					},
-					onChanged: function (result) {
-						console.log('MAP CHANGED');
-						$.cookie('zoom', result.zoom);
-						$.cookie('center', result.center);
-						console.log(viewport);
-						viewport = result.viewport;
-						console.log(viewport);
-						statusBar.slideDown({start: function () { statusBar.find('span').html('Cargando gasolineras...') } });
-						gmapOBJ.dump({'ranges': ranges, 'fuels': fuels});
-
-					},
-					onDumpedDone: function (result) {
-						/*console.log(result);
-						$('#cheapCount').text('('+result[1]+')');
-						$('#mediumCount').text('('+result[2]+')');
-						$('#expensiveCount').text('('+result[3]+')');*/
-						//console.log(viewport);
-						round = 1;
-						listOBJ.clear().dump(round, {'viewport': viewport, 'myPosition': myPosition, 'ranges': ranges, 'fuels': fuels,'sort': sort});
-					},
-					onMarkerClicked: function (result) {
-						$('.list-group-item').removeClass('clicked');
-						$('div[data-id="'+result.metadata.id+'"]').addClass('clicked');
-						gmapOBJ.bubbleRender(result, {'ranges': ranges, 'fuels': fuels});
-					},
-					onBubbleClosed: function (result) {
-						$('.list-group-item').removeClass('clicked');
-					}
-				}));
-				if(center === null) {
-					gmapOBJ.geolocate();
-					var timer = setInterval(function(){ 
-						if(myPosition === null) gmapOBJ.load();
-						clearInterval(timer);
-					}, 10000);
-				} else {
-					gmapOBJ.setSettings('center', center).setSettings('zoom', zoom).load();
-				}
-				//LIST
-				listOBJ.list({
-					listUrl: 'json.php?type=findList',
-					itemTemplate: itemTemplate,
-					'onDumpedDone': function (result) {
-						if(round == 1 || result >= 5) infinite = true;
-						bottom = listOBJ.offset().top + $('#list').height();
-						statusBar.slideUp();
-						$('.list-group-item').click(function () {
-							var id = $(this).data('id');
-							if(id) {
-								$('.list-group-item').not(this).removeClass('clicked');
-								marker = gmapOBJ.markers[id];
-								if(marker) {
-									if($(this).hasClass('clicked')) {
-										$(this).removeClass('clicked');
-										gmapOBJ.bubbleClose();
-										marker.setAnimation(null);
-									} else {
-										$(this).addClass('clicked');
-										gmapOBJ.bubbleRender(marker, {'ranges': ranges, 'fuels': fuels});
-										marker.setAnimation(google.maps.Animation.BOUNCE);
-									}
-								}
-							}
-						}).hover(
-							function () {
-								var id = $(this).data('id')
-								if(id) {
-									marker = gmapOBJ.markers[id];
-									if(marker) marker.setAnimation(google.maps.Animation.BOUNCE);
-								}
-							},
-							function () {
-								var id = $(this).data('id');
-								if(id) {
-									marker = gmapOBJ.markers[id];
-									if(marker) marker.setAnimation(null);
-								}
-							}
-						);
+				gmapOBJ.geolocation(mapSettings)
+				.on('geolocationDone', function () {
+					gmapOBJ.mapSettings.center = gmapOBJ.myPosition;
+					gmapOBJ.mapLoad();
+				})
+				.on('geolocationFailed', function () {
+					$('#geolocatedWarning').modal();
+					gmapOBJ.mapLoad();
+				})
+				.on('mapLoadDone', function () {
+					statusBar.hide();
+				});
+					
+				$('#zoomIn').click(function () { 
+					gmapOBJ.zoomIn();
+				});
+				$('#zoomOut').click(function () {
+					gmapOBJ.zoomOut();
+				});
+				$('#myPosition').click(function () {
+					console.log(gmapOBJ.myPosition);
+					if(!$.isEmptyObject(gmapOBJ.myPosition)) {
+						gmapOBJ.pan(gmapOBJ.myPosition);
+					} else {
+						$('#geolocatedWarning').modal();
 					}
 				});
+				
+				//
 				$(window).scroll(function() {
 					if($(window).scrollTop() + $(window).height() >= bottom && infinite) {
 						infinite = false;
@@ -541,84 +455,8 @@
 						listOBJ.dump(round, {'viewport': viewport, 'myPosition': myPosition, 'ranges': ranges, 'fuels': fuels,'sort': sort});
 					}
 				});
-				sortOBJ.change(function () {
-					sort = $(this).val();
-					$.cookie('sort', sort);
-					$('#sort>button>img.fuel, #sort>button>span.placeholder').hide();
-					$('#sort>button>img.fuel[data-value="'+sort+'"]').show();
 
-					statusBar.slideDown({start: function () { statusBar.find('span').html('Ordenando...') } });
-					round = 1;
-					listOBJ.clear().dump(round, {'viewport': viewport, 'myPosition': myPosition, 'ranges': ranges, 'fuels': fuels,'sort': sort});
-				});
-				//PLACES
-				placesOBJ.places({
-					onSelected: function () {
-						center = placesOBJ.placeCenter();
-						gmapOBJ.pan(center);
-						$.cookie('center', center);
-						//listOBJ.clear().dump(round, {'viewport': gmapOBJ.getViewport(), 'myPosition': myPosition, 'ranges': ranges, 'fuels': fuels,'sort': sort});
-					}
-				}).focusin(function () { 
-					previous = placesOBJ.val();
-					placesOBJ.val(''); 
-				}).focusout(function () { 
-					placesOBJ.val(previous); 
-				}).load();
-				//FILTERS
-				$('#ranges, #fuels').find('.dropdown-menu>li>label,.dropdown-menu>li>label>input').click(function(e) { e.stopPropagation(); });
-				filterOBJ.change(function () {
-					var filterInput = $(this),
-						filterValue = filterInput.val();
-						filterImage = filterInput.closest('div').find('img[data-value="'+filterValue+'"]');
-
-					if(filterInput.attr('name') == 'fuels') {
-						sortInput = $('#sort').find('li[data-value="'+filterValue+'"]');
-						sortImage = $('#sort').find('img.fuel[data-value="'+filterValue+'"]');
-						sortPlaceholder = $('#sort').find('.placeholder');
-					}
-
-					if(filterInput.is(':checked')) {
-						filterImage.fadeIn();
-						if(filterInput.attr('name') == 'fuels') sortInput.show();
-					} else {
-						filterImage.fadeOut();
-						if(filterInput.attr('name') == 'fuels') {
-							sortInput.hide();
-							if(sortInput.find('input').prop('checked')) {
-								sortImage.fadeOut(function () { sortPlaceholder.fadeIn(); });
-								sortInput.find('input').prop('checked', false);
-							}
-						}
-					}
-
-					clearTimeout(timer);
-					timer = setTimeout(function () {
-						statusBar.slideDown({start: function () { statusBar.find('span').html('Cargando gasolineras...') } });
-
-						filters = filterOBJ.formToObject();
-						ranges = filters['ranges'];
-						fuels = filters['fuels']
-						$.cookie('ranges', ranges);
-						$.cookie('fuels', fuels);
-						gmapOBJ.clear().dump({'ranges': ranges, 'fuels': fuels});
-					}, 1000);
-				});
-				$('#zoomIn').click(function () {
-					gmapOBJ.zoomIn();
-				});
-				$('#zoomOut').click(function () {
-					gmapOBJ.zoomOut();
-				});
-				$('#myPosition').click(function () {
-					console.log(myPosition);
-					if(!$.isEmptyObject(myPosition)) {
-						gmapOBJ.pan(myPosition);
-					} else {
-						window.history.pushState(null, "", "search.php/?q=modal/Tu_Ubicacion");
-						$('#geolocatedWarning').modal();
-					}
-				});
+				
 				$('#listBar>div>span>img').click(function () {
 					alert('click');
 				});
@@ -629,7 +467,7 @@
 						socialShare({'center': gmapOBJ.getCenter(), 'zoom': gmapOBJ.getZoom(), 'ranges': ranges, 'fuels': fuels, 'place': place, 'city': city});
 					});
 				});
-				$.cookie('visits', visits + 1);
+				//$.cookie('visits', visits + 1);
 			})
 			</script>
 		</body>
