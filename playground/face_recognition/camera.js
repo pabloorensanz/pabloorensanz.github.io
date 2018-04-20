@@ -89,7 +89,7 @@ function enroll () {
 }
 
 function kairos (action, data) {
-	var url = 'https://pabloorensanz.000webhostapp.com/plaground/face_recognition/kairos.php?action='+action;
+	var url = 'https://pabloorensanz.000webhostapp.com/playground/face_recognition/kairos.php?action='+action;
 	//console.log(data);
 	return $.ajax({
 		url: url,
