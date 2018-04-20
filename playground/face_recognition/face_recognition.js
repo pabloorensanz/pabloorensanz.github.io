@@ -10,7 +10,7 @@ if(navigator.mediaDevices.getUserMedia) {
         video.srcObject = stream;
     });
 } else {
-	alert('Your browser doesn´t support playing with your webcam. Try latest Chrome version for example.');
+	alert('No puedo reconocer tu cara si no activas tu cámara y no tienes un navegador actualizado :(');
 }
 
 //Trigger snapshot take
