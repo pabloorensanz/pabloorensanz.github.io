@@ -16,31 +16,35 @@
 		this.map;
 		this.mapSettings = {
 			//URL
-			markersUrl: '',
+			markersUrl: 'https://pabloorensanz.000webhostapp.com/projects/gasolea/data.json',
 			markerImageUrl: '',
 			bubbleUrl: '',
 			//MAP
-			center: {lat: 40.416944, lng: -3.703611},
-			zoom: 14,
+			
 			zoomControl: false,
 			zoomControlOptions: {
 				style: google.maps.ZoomControlStyle.SMALL,
 				position: google.maps.ControlPosition.TOP_RIGHT
 			},
-			viewport: null,
 			streetViewControl: false,
 			mapTypeControl: false,
 			//TEMPLATES
-			bubbleTemplate: '',
+			
 			//TIMEOUT
 			timeOutAjax: 5000,
 			timeOutChange: 1000,
 			timeOutGeolocate: 25000,
 		};
+		this.center = {lat: 40.416944, lng: -3.703611};
+		this.zoom = 14;
+		this.viewport = null;
 		this.myPosition = {};
+		this.markersData = [];
 		this.markers = [];
+		
 		this.bounds = [];
 		this.bubble = new google.maps.InfoWindow({'zIndex': 1000});
+		this.bubbleTemplate = '';
 		this.timer = null;
 
 		
@@ -89,58 +93,59 @@
 			});
 		}
 		this.mapLoad = function () {
-			var latLng = new google.maps.LatLng(self.mapSettings.center.lat, self.mapSettings.center.lng);
+			var latLng = new google.maps.LatLng(self.center.lat, self.center.lng);
 			map = new google.maps.Map(document.getElementById(self.attr('id')), {
 				center: latLng,
-				zoom: self.mapSettings.zoom,
+				zoom: self.zoom,
 				zoomControl: self.mapSettings.zoomControl,
 				zoomControlOptions: self.mapSettings.zoomControlOptions,
 				streetViewControl: self.mapSettings.streetViewControl,
 				mapTypeControl: self.mapSettings.mapTypeControl,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			});
-			self.trigger('mapLoadDone', map);
+			
 			google.maps.event.addListener(map, 'dragend', function () {
-				clearTimeout(self.timer);
-				self.timer = setTimeout(function () {
+				//clearTimeout(self.timer);
+				//self.timer = setTimeout(function () {
 					self.mapChanged();
-				}, self.mapSettings.timeOutChange);
+				//}, self.mapSettings.timeOutChange);
 			});
 			google.maps.event.addListener(map, 'zoom_changed', function () {
-				clearTimeout(self.timer);
-				self.timer = setTimeout(function () {
+				//clearTimeout(self.timer);
+				//self.timer = setTimeout(function () {
 					self.mapChanged();
-				}, self.mapSettings.timeOutChange);
+				//}, self.mapSettings.timeOutChange);
 			});
 			google.maps.event.addListenerOnce(map, 'idle', function () {
-				self.mapSettings.viewport = self.getViewport();
-				self.mapSettings.zoom = self.getZoom();
-				self.trigger('mapLoadDone', {'center': self.mapSettings.center, 'viewport': self.mapSettings.viewport, 'zoom': self.mapSettings.zoom});
+				self.viewport = self.getViewport();
+				self.zoom = self.getZoom();
+				self.trigger('mapLoadDone');
 			});
 			
-			Mustache.parse(self.mapSettings.bubbleTemplate);
+			Mustache.parse(self.bubbleTemplate);
 			return this;
 		}
 		this.mapChanged = function () {
-			self.mapSettings.center = self.getCenter();
-			self.mapSettings.viewport = self.getViewport();
-			self.mapSettings.zoom = self.getZoom();
-			self.trigger('mapChanged', {'center': settings.center, 'viewport': settings.viewport, 'zoom': settings.zoom});
+			self.center = self.getCenter();
+			self.viewport = self.getViewport();
+			self.zoom = self.getZoom();
+			self.trigger('mapChanged');
 		}
-		this.markersLoad = function (data) {
+		this.markersLoad = function () {
 			self.bounds = new google.maps.LatLngBounds();
-			getJson(settings.markersUrl, settings.timeoutAjax, data, function(response) {
-				var responseCount = response.length,
-					markersData = [];
-				
+			getJson(self.mapSettings.markersUrl, self.mapSettings.timeoutAjax, function(response) {
+				var responseCount = response.length;
 				if(responseCount) {
+					console.log(self.viewport);
 					for(var i = 0; i < responseCount; i++) {
-						response[i].range = range(response[i].rank);
-						markersData[response[i].id] = response[i];
-						self.bounds.extend(new google.maps.LatLng(response[i].lat, response[i].lng));						
+						if((response[i].lng >= self.viewport[3] && response[i].lng <= self.viewport[1]) && (response[i].lat >= self.viewport[2] && response[i].lat <= self.viewport[0])) {
+							self.markersData[response[i].id] = response[i];
+							//self.bounds.extend(new google.maps.LatLng(response[i].lat, response[i].lng));
+							//console.log('ID: '+response[i].id+' -> IN: '+response[i].lat+'|'+response[i].lng);
+						}						
 					}
 				}
-				self.trigger('markersLoadDone', markersData);
+				self.trigger('markersLoadDone');
 			}, function() {
 				self.trigger('markersLoadFailed');
 			})
@@ -148,7 +153,7 @@
 			return this;
 		}
 		this.markersRender = function (markersData) {
-			markersData.forEach(function(markerData) {
+			self.markersData.forEach(function(markerData) {
 				if(!(markerData.id in self.markers)) {			
 					if(markerData.range) {
 						var image = {
@@ -211,6 +216,7 @@
 				
 				map.panTo(new google.maps.LatLng(center.lat, center.lng));
 				map.setZoom(zoom);
+				self.trigger('pan');
 			}
 			
 			return this;
@@ -219,12 +225,14 @@
 			var zoom = self.getZoom();
 			zoom++;
 			map.setZoom(zoom);
+			self.trigger('zoomIn');
 			return this;
 		}
 		this.zoomOut = function () {
 			var zoom = self.getZoom();
 			zoom--;
 			map.setZoom(zoom);
+			self.trigger('zoomOut');
 			return this;
 		}
 		this.getCenter = function () {
@@ -233,7 +241,7 @@
 		}
 		this.getViewport = function () {
 			var bounds = map.getBounds();
-			return (bounds) ? [bounds.getNorthEast().lat(), bounds.getNorthEast().lng(), bounds.getSouthWest().lat(), bounds.getSouthWest().lng()] : [];
+			return (bounds) ? [bounds.getNorthEast().lat(), bounds.getNorthEast().lng(), bounds.getSouthWest().lat(), bounds.getSouthWest().lng()] : []
 		}
 		this.getZoom = function () {
 			return map.getZoom();
@@ -388,24 +396,18 @@ function countProperties (o) {
 	return count;
 }
 
-function getJson (url, timeOutAjax, data, callbackDone, callbackFail) {
+function getJson (url, timeOutAjax, callbackDone, callbackFail) {
 	$.ajax({
 		dataType: 'json',
 		url: url, 
-		data: data, 
-		timeout: timeOutAjax/*,
-		beforeSend: function( xhr, settings ) {
-			console.log('beforeSend');
-			console.log(data);
-			console.log(settings);
-		}*/
+		timeout: timeOutAjax,
 	})
 	.done(function(response) {
-		console.log('done: '+url+'?'+$.param(data)+', success');
+		console.log('done: '+url);
 		if(callbackDone) callbackDone(response);
 	})
 	.fail(function(jqXHR, status, error) {
-		console.log('fail: '+url+'?'+$.param(data)+', '+error);
+		console.log('fail: '+url);
 		if(callbackFail) callbackFail(status);
 	})			
 	return;
