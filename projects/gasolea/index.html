@@ -4,465 +4,233 @@
 		<meta charset="utf-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-		<title>Encuentra la gasolinera más barata | gasolea.com</title>
+		<meta name="description" content="Encuentra la gasolinera más barata"/>
+		<meta name="author" content="@pabloorensanz"/>
+		<meta property='og:title' content="Encuentra la gasolinera más barata | @gasolea"/>
+		<meta property='og:image' content="screenshot.jpg"/>
+		<meta property='og:description' content="Encuentra la gasolinera más barata"/>
+		<meta property='og:url' content="https://pabloorensanz.github.io/projects/gasolea"/>
+		<title>Encuentra la gasolinera más barata | @gasolea</title>
 
 		<link rel="shortcut icon" href="files/favicon.ico"/> 
 
-		<link href="css/bootstrap.css" rel="stylesheet"/>
-		<link href="css/gasolea.css" rel="stylesheet"/>
-		<link href="https://fonts.googleapis.com/css?family=Raleway:400,500" rel="stylesheet" type="text/css"/>
-
-		<!--[if lt IE 9]>
-		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQExA4PyYQ6kXS056nQkL4HrR1tr9pYLg&libraries=places" type="text/javascript"></script>
-		<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>!-->
-		<script src="js/bootstrap.js" type="text/javascript"></script>
-		<script src="js/mustache.js" type="text/javascript"></script>
-		<script src="js/cookie.js" type="text/javascript"></script>
-		<script src="js/plugins.js" type="text/javascript"></script>
-		<!--<script src="js/gasolea.js"></script>!-->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous"/>
+		<link href="gasolea.css" rel="stylesheet" rel="stylesheet"/>
+		<link href="https://fonts.googleapis.com/css?family=Raleway:400,500" rel="stylesheet"/>
 
 		<script>
-		//GOOGLE ANALYTICS
-		//(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-57002704-1', 'auto'); ga('send', 'pageview');
+			//GOOGLE ANALYTICS
+			//(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-57002704-1', 'auto'); ga('send', 'pageview');
 		</script>
 	</head>
 	<body>
-		<form id="filter" class="" role="form">
-			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-				<div class="container">
-					<div class="navbar-header">
-						<a class="navbar-brand" href="#">
-							<img alt="Gasolea" src="files/gasolea.png"/>
-							<span style="font-size: 18px; font-weight: 500;">GASOLEA</span>
-							<span style="font-size: 14px; font-weight: 500;">.COM</span> 
-							<span style="font-size: 11px; color: white;">Beta</span>
-						</a>
-					</div>
-				</div>
+		<header>
+			<nav class="navbar navbar-light fixed-top bg-custom">
+				<a class="navbar-brand" href="#">
+					<img alt="@gasolea" src="files/gasolea.png"/>
+					<span>GASOLEA</span> <small style="color: white;">Beta</small>
+				</a>
 			</nav>
-			<div id="container" class="container">
-				<div id="fixedBar" class="row">
-					<div id="map">
-					</div>
-					<div id="mapBar">
-						<div id="placesContainer" class="inner-addon left-addon">
-							<span class="glyphicon glyphicon-search"></span>
-							<input id="places" name="places" type="text" class="form-control">
-								<!--<span class="input-group-btn">
-									<button id="placesSubmit" class="btn btn-default " type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-								</span>!-->
-							</div>	
-						</div>
-						<div id="controlsContainer" class="btn-group-vertical" role="group">
-							<button id="zoomIn" type="button" class="btn btn-default">
-								<span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
-							</button>
-							<button id="zoomOut" type="button" class="btn btn-default">
-								<span class="glyphicon glyphicon-zoom-out" aria-hidden="true"></span>
-							</button>
-							<button id="myPosition" type="button" class="btn btn-default">
-								<span class="glyphicon glyphicon-screenshot" aria-hidden="true"></span>
-							</button>
-						</div>
-						<div id="listBar" class="row">
-							<div id="ranges">
-								<span>Filtrar precio</span>
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="placeholder" style="display: none;">...</span>
-									<img class="range" data-value="cheap" src="files/cheap.png" alt="Económicas"/>
-									<img class="range" data-value="medium" src="files/medium.png" alt="Precio medio"/>
-									<img class="range" data-value="expensive" src="files/expensive.png" alt="Caras"/>	
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<b>Selecciona rangos de precio</b>
-									<li class="checkbox">
-										<label>
-											<input name="ranges" value="cheap" type="checkbox" class="filter"/> Económicas
-											<img class="range" src="files/cheap.png" alt="Marcador de gasolineras baratas"/> 
-										</label>
-									</li>
-									<li class="checkbox">
-										<label> 
-											<input name="ranges" value="medium" type="checkbox" class="filter"/> Precio medio
-											<img class="range" src="files/medium.png" alt="Marcador de gasolineras medias"/> 
-										</label>
-									</li>
-									<li class="checkbox">
-										<label>
-											<input name="ranges" value="expensive" type="checkbox" class="filter"/> Caras
-											<img class="range" src="files/expensive.png" alt="Marcador de gasolineras medias"/>
-										</label>
-									</li>
-								</ul>
-							</div>
-							<div id="fuels">
-								<span>Filtrar combustible</span>
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="placeholder" style="display: none;">...</span>
-									<img class="fuel" data-value="gpr" src="files/gpr.png" alt="Gasolina 95"/>
-									<img class="fuel" data-value="g98" src="files/g98.png" alt="Gasolina 98"/>
-									<img class="fuel" data-value="goa" src="files/goa.png" alt="Gasóleo A"/>
-									<img class="fuel" data-value="ngo" src="files/ngo.png" alt="Gasóleo A &#9733"/>
-									<img class="fuel" data-value="bio" src="files/bio.png" alt="Biodiésel"/>
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<b>Selecciona combustibles</b>
-									<li class="checkbox">
-										<label>
-											<input name="fuels" value="gpr" type="checkbox" class="filter"/> Gasolina 95
-											<img class="fuel" src="files/gpr.png" alt="Gasolina 95"/>
-										</label>
-									</li>
-									<li class="checkbox">
-										<label>
-											<input name="fuels" value="g98" type="checkbox" class="filter"/> Gasolina 98
-											<img class="fuel" src="files/g98.png" alt="Gasolina 98"/>
-										</label>
-									</li>
-									<li class="checkbox">
-										<label>
-											<input name="fuels" value="goa" type="checkbox" class="filter"/> Gasóleo A
-											<img class="fuel" src="files/goa.png" alt="Gasóleo A"/>
-										</label>
-									</li>
-									<li class="checkbox">
-										<label>
-											<input name="fuels" value="ngo" type="checkbox" class="filter"/> Gasóleo A &#9733
-											<img class="fuel" src="files/ngo.png" alt="Gasóleo A &#9733"/>
-										</label>
-									</li>
-									<li class="checkbox">
-										<label>
-											<input name="fuels" value="bio" type="checkbox" class="filter"/> Biodiesel
-											<img class="fuel" src="files/bio.png" alt="Biodiésel"/>
-										</label>
-									</li>
-								</ul>
-							</div>
-							<div id="sort" class="pull-right">
-								<span>Ordenar</span>
-								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									<span class="placeholder">...</span>
-									<img class="fuel" data-value="gpr" src="files/gpr.png" alt="Gasolina 95"/>
-									<img class="fuel" data-value="g98" src="files/g98.png" alt="Gasolina 98"/>
-									<img class="fuel" data-value="goa" src="files/goa.png" alt="Gasóleo A"/>
-									<img class="fuel" data-value="ngo" src="files/ngo.png" alt="Gasóleo A &#9733"/>
-									<img class="fuel" data-value="bio" src="files/bio.png" alt="Biodiésel"/>
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu">
-									<b>Ordenar por precio, baratas primero</b>
-									<li class="radio" data-value="gpr">
-										<label>
-											<input name="sort" value="gpr" type="radio" class="sort"/>Gasolina 95
-											<img class="fuel" src="files/gpr.png" alt="Gasolina 95"/>
-										</label>
-									</li>
-									<li class="radio" data-value="g98">
-										<label>
-											<input name="sort" value="g98" type="radio" class="sort"/>Gasolina 98
-											<img class="fuel" src="files/g98.png" alt="Gasolina 98"/>
-										</label>
-									</li>
-									<li class="radio" data-value="goa">
-										<label>
-											<input name="sort" value="goa" type="radio" class="sort"/>Gasóleo A
-											<img class="fuel" src="files/goa.png" alt="Gasóleo A"/>
-										</label>
-									</li>
-									<li class="radio" data-value="ngo">
-										<label>
-											<input name="sort" value="ngo" type="radio" class="sort"/>Gasóleo A &#9733
-											<img class="fuel" src="files/ngo.png" alt="Gasóleo A &#9733"/>
-										</label>
-									</li>
-									<li class="radio" data-value="bio">
-										<label>
-											<input name="sort" value="bio" type="radio" class="sort"/>Biodiésel
-											<img class="fuel" src="files/bio.png" alt="Biodiésel"/>
-										</label>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div id="list" class="row">
-					<div class="list-group">
-					</div>
-				</div>
-				<div id="footer" class="row">
-					<div class="row">
-						<div class="col-md-6 col-sm-6 col-xs-6">
-									GASOLEA.COM &copy;
-						</div>
-						<div class="col-md-6 col-sm-6 col-xs-6" style="text-align: right;">
-							<a id="socialContainer" href="#">Compartir</a>
-						</div>
-					</div>
-				</div>
+		</header>
 
-				<div id="fb-root"></div>
-				<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-				<!--<script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v2.0"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk')); </script>!-->
+		<main role="main">
+			<div class="container-fluid">
+				<div id="gmap">
+					<p>Cargando mapa...</p>
+				</div>
+				<div id="position_control">
+					<button title="Tu ubicación" style="">
+						<div style=""></div>
+					</button>
+				</div>
 			</div>
-		</div>
+			<div class="container-fluid">
+				<div id="list" class="list-group">
+				<script id="listTemplate" type="x-tmpl-mustache">
+					<div class="list-group-item list-group-item-action flex-column align-items-start" data-id={{id}} itemscope itemtype="http://schema.org/GasStation">
+						
+						<div class="d-flex w-100 justify-content-between">
+							<h6><img src="files/marker{{rank}}.png" alt="" width="18" height="24"> {{name}}</h6>
+							{{#distance}}<small>Distancia {{distance}} Km</small>{{/distance}}
+							
+						</div>
+						<div class="float-right">
+							{{#products.Gasolina 95 Protección}}
+								<img src="files/g95.png" alt="Gasolina 95" title="Gasolina 95" width="20" height="20"/>
+								<small><b>{{products.Gasolina 95 Protección.price}}</b></small>
+							{{/products.Gasolina 95 Protección}}
+							{{#products.Gasolina  98}}
+								<img src="files/g98.png" alt="Gasolina 98" title="Gasolina 98" width="20" height="20"/>
+								<small><b>{{products.Gasolina 98.price}}</b></small>
+							{{/products.Gasolina  98}}
+							{{#products.Gasoleo A}}
+								<img src="files/goa.png" alt="Gasóleo A" title="Gasóleo A" width="20" height="20"/>
+								<small><b>{{products.Gasoleo A.price}}</b></small>
+							{{/products.Gasoleo A}}
+							{{#products.Biodiesel}}
+								<img src="files/bio.png" alt="Biodiésel" title="Biodiésel" width="20" height="20"/>
+								<small><b>{{products.Biodiesel.price}}</b></small>
+							{{/products.Biodiesel}}
+						</div>
+						<div>
+							<small>{{address}}</small> <a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar"><small>Cómo llegar</small></a>
+								
+						</div>
+					</div>
+					</script>
+				</div>
+			</div>			
+		</main>
 
-		<!-- STATUS BAR !-->
-		<div id="statusBar">
-			<div>
-				<img src="files/loader.gif" alt="Cargando...." /><span>Cargando...</span>
-			</div>
+		<!-- FOOTER !-->
+		<div id="footer" class="fixed-bottom container-fluid">
+			
 		</div>
 
 		<!-- MODAL !-->
-		<div id="geolocatedWarning"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
+		<div id="geolocation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<h4 class="modal-title" id="myModalLabel">Tu ubicación</h4>
+						<h5 class="modal-title">Activar ubicación</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
 					</div>
 					<div class="modal-body">
-						<p>
-								Para poder encontrar tu ubicación, es necesario que autorices a tu navegador a acceder a tu ubicación.
-						</p>
-						<p>
-							<u>Puedes estar tranquilo</u>! No guardamos tus datos, ni los compartimos. Únicamente los utilizamos para poder encontrar las gasolineras cercanas a tí y para poder calcular la distancia a la que te encuentras.
-						</p>
-						<p>
-								Siempre que quieras puedes desactivar esta funcionalidad, para este sitio y para cualquier otro.
-						</p>
+						<p>Para poder encontrar donde estás, hace falta que autorices a tu navegador a acceder a tu ubicación.</p>
+						<p>Siempre que quieras puedes desactivar esta funcionalidad, para este sitio y para cualquier otro.</p>
 						<ul>
 							<li><a href="https://support.google.com/chrome/answer/142065?hl=es" target="_blank" title="Activar acceso a tu ubicación en Chrome">Activar acceso a tu ubicación en Chrome.</a></li>
 							<li><a href="https://www.mozilla.org/es-ES/firefox/geolocation/" target="_blank" title="Activar acceso a tu ubicación en Firefox">Activar acceso a tu ubicación en Firefox.</a></li>
 							<li><a href="http://windows.microsoft.com/es-es/internet-explorer/ie-security-privacy-settings#ie=ie-11" target="_blank" title="Activar acceso a tu ubicación en Explorer">Activar acceso a tu ubicación en Internet Exlorer.</a></li>
 						</ul>
 					</div>
+					<div class="modal-footer">
+
+					</div>
 				</div>
 			</div>
 		</div>
-	</form>
-	<!-- TEMPLATES !-->
-	<script id="bubbleTemplate" type="x-tmpl-mustache">
-		<div class="bubble">
-			<div class="prices">
-					{{#gpr}}
-				<div class="price" itemscope itemtype="http://schema.org/Product">
-					<span class="gpr" itemprop="price">{{gpr}}</span> <meta itemprop="name" content="Gasolina 95" />
-				</div>
-					{{/gpr}}
-					{{#g98}}
-				<div class="price" itemscope itemtype="http://schema.org/Product">
-					<span class="g98" itemprop="price">{{g98}}</span> <meta itemprop="name" content="Gasolina 98" />
-				</div>
-					{{/g98}}
-					{{#goa}}
-				<div class="price" itemscope itemtype="http://schema.org/Product">
-					<span class="goa" itemprop="price">{{goa}}</span> <meta itemprop="name" content="Gasóleo A" />
-				</div>
-					{{/goa}}
-					{{#ngo}}
-				<div class="price" itemscope itemtype="http://schema.org/Product">
-					<span class="ngo" itemprop="price">{{ngo}}</span> <meta itemprop="name" content="Gasóleo A *" />
-				</div>
-					{{/ngo}}
-					{{#bio}}
-				<div class="price" itemscope itemtype="http://schema.org/Product">
-					<span class="bio" itemprop="price">{{bio}}</span> <meta itemprop="name" content="Biodiésel" />
-				</div>
-					{{/bio}}
-			</div>
-			<div class="data">
-				<div itemprop="brand" itemscope itemtype="http://schema.org/Organization">
-					<a href="#" title="{{brand}}" itemprop="name">{{name}}</a>
-				</div>
-				<address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					<span itemprop="streetAddress">{{address}}</span><!-- - 
-						<span itemprop="postalCode">{{zip}}</span> - 
-						<span itemprop="addressLocality">{{region3}}</span>, <span itemprop="addressRegion">{{region2}}</span>, <span itemprop="addressRegion" content="ES">España</span>
-					!--></address>
-				<div>
-						Coords. <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates"><span property="latitude">{{lat}}</span>, <span property="longitude">{{lng}}</span></span>
-				</div>
-					{{#distance}}
-				<div>
-						Distancia <b>{{distance}}Km</b>
-				</div>
-					{{/distance}}
-				<div>
-					<a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar">Cómo llegar</a>
-				</div>
-			</div>
-		</div>
-	</script>
-	<script id="itemTemplate" type="x-tmpl-mustache">
-		<div class="row list-group-item" data-id={{id}} itemscope itemtype="http://schema.org/GasStation">
-			<div class="range">
-				<img src="files/{{range}}.png" alt="" width="18" height="24">
-				</div>
-				<div class="prices">
-					{{#gpr}}
-					<div class="price" itemscope itemtype="http://schema.org/Product">
-						<span class="gpr" itemprop="price">{{gpr}}</span> <span itemprop="name" class="hidden-xs">Gasolina 95</span>
-					</div>
-					{{/gpr}}
-					{{#g98}}
-					<div class="price" itemscope itemtype="http://schema.org/Product">
-						<span class="g98" itemprop="price">{{g98}}</span> <span itemprop="name" class="hidden-xs">Gasolina 98</span>
-					</div>
-					{{/g98}}
-					{{#goa}}
-					<div class="price" itemscope itemtype="http://schema.org/Product">
-						<span class="goa" itemprop="price">{{goa}}</span> <span itemprop="name" class="hidden-xs">Gasóleo A</span>
-					</div>
-					{{/goa}}
-					{{#ngo}}
-					<div class="price" itemscope itemtype="http://schema.org/Product">
-						<span class="ngo" itemprop="price">{{ngo}}</span> <span itemprop="name" class="hidden-xs">Gasóleo A &#9733</span>
-					</div>
-					{{/ngo}}
-					{{#bio}}
-					<div class="price" itemscope itemtype="http://schema.org/Product">
-						<span class="bio" itemprop="price">{{bio}}</span> <span itemprop="name" class="hidden-xs">Biodiésel</span>
-					</div>
-					{{/bio}}
-				</div>
 
-				<div class="data">
-					<div itemprop="brand" itemscope itemtype="http://schema.org/Organization">
-						<a href="#" title="{{brand}}" itemprop="name">{{name}}</a>
-					</div>
-					<address itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-						<span itemprop="streetAddress">{{address}}</span> - 
-						<span itemprop="postalCode">{{zip}}</span> - 
-						<span itemprop="addressLocality">{{region3}}</span>, <span itemprop="addressRegion">{{region2}}</span>, <span itemprop="addressRegion" content="ES">España</span>
-					</address>	
-					<div>
-						Coords. <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates"><span property="latitude">{{lat}}</span>, <span property="longitude">{{lng}}</span></span>
-					</div>
-					{{#distance}}
-					<div>
-						Distancia <b>{{distance}}Km</b>
-					</div>
-					{{/distance}}
-					<div>
-						<a href="http://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar">Cómo llegar</a>
-					</div>
-				</div>		
-			</div>
-		</script>		
-
+		<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQExA4PyYQ6kXS056nQkL4HrR1tr9pYLg&libraries=places" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js" type="text/javascript"></script>
+		<script src="gasolea.js" type="text/javascript"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				//COOKIE
-				$.cookie.json = true;
-				$.cookie('lang', 'es', { expires: 7, path: '/' });
+				var position = null,
+					data = $.getJSON('https://pabloorensanz.000webhostapp.com/projects/gasolea/data2.json'),
+					markers = [],
+					gmap = $('#gmap').gmap().set({
+						change: function () {
+							console.log('changed');
+							load();
+						},
+						clicked: function (response) {
+							gmap.animate(response);
+							$('#list .list-group-item').removeClass('active');
+							$('#list').animate({
+								scrollTop: $('.list-group-item[data-id='+response.metadata.id+']').offset().top - $('#list').offset().top + $('#list').scrollTop()
+							}, 500, function() {
+								$('.list-group-item[data-id='+response.metadata.id+']').addClass('active')
+							});
+						}
+					});
 
-				var timer,
-					statusBar = $('#statusBar'),
-					visits = 0//$.cookie('visits'),
-					//MAP
-					gmapOBJ = $('#map').gmap(),
-					mapSettings = {},
-					bubbleTemplate = $('#bubbleTemplate').html(),
-					controlsContainer = $('#controlsContainer'),
-					//LIST
-					listOBJ = $('#list>div'),
-					itemTemplate = $('#itemTemplate').html(),
-					bottom = -1,
-					round = 1,
-					infinite = false,
-					//SORT
-					sortOBJ = $('input[name="sort"]'),
-					sort = $('input[name="sort"]:checked').val(),
-					//PLACES
-					placesOBJ = $('#places'),
-					place = placesOBJ.val(),
-					//FILTERS
-					filterOBJ = $('.filter'),
-					filters = {},// = filterOBJ.formToObject(),
-					ranges = filters['ranges'],
-					fuels = filters['fuels'];
+				data.fail(function(response) {
+						console.log('no data');//completar callback
+					});
+
+				$.when(geolocation().get())
+					.then(function(response) {
+						position = response;
+						gmap.set({center: position});
+					})
+					.fail(function(response) {
+						gmap.set({center: {lat: 40.4504, lng: -3.7240}});
+					})
+					.always(function(response) {
+						$.when(gmap.render().done(), data.done())
+							.then(function() {
+								$('#position_control').show();
+								load();
+							})
+					});
 				
-				//SCREEN ADJUSTMENT
-				var fixedBarHeight = ($(window).height() - 50/*navbar*/) * 0.55;
-				$('#fixedBar').height(fixedBarHeight);
-				$('#list').css('margin-top', fixedBarHeight + $('#listBar').outerHeight());
-				if(visits === undefined) visits = 0;
-				if($(window).width() < 768) {//mobile
-					mapSettings = {
-						zoom: 12
+				$('#position_control').click(function () {
+					$.when(geolocation().get())
+						.then(function(response) {
+							position = response;
+							gmap.pan(position);
+						})
+						.fail(function(response) {
+							$('#geolocation').modal();
+						})
+				});
+				
+				
+					
+				function load () {
+					var viewport = gmap.viewport(),
+						stations = data.responseJSON.stations;
+					
+					list = [];
+					gmap.clear();
+					for(var i = 0; i < stations.length; i++) {
+						if((stations[i].lng >= viewport[3] && stations[i].lng <= viewport[1]) && (stations[i].lat >= viewport[2] && stations[i].lat <= viewport[0])) {
+							console.log(stations[i]);
+							stations[i].title = stations[i].name;
+							if(position) stations[i].distance = Math.round(distance(position.lat, position.lng, stations[i].lat, stations[i].lng) * 10) / 10;
+							stations[i].image = {
+								url: 'files/marker'+stations[i].rank+'.png',
+								size: new google.maps.Size(27, 37),
+								origin: new google.maps.Point(0,0),
+								anchor: new google.maps.Point(0, 37)
+							}
+
+							list[stations[i].id] = stations[i];
+							
+							gmap.markit(stations[i]);
+						}
 					}
+					list.sort(compare);
+					$('#list .list-group-item').fadeOut();
+					for(var key in list) {
+						$('#list').append(Mustache.render($('#listTemplate').html(), list[key]));
+					}
+					
+					$('#list .list-group-item').on('click', function () {
+						for(i = 0; i < gmap.markers.length; i++) {
+							if(gmap.markers[i].metadata.id == $(this).data('id')) {
+								gmap.animate(gmap.markers[i]);
+								console.log(gmap.markers[i].metadata.id+'-'+$(this).data('id'));
+							}
+						}
+						$('#list .list-group-item').removeClass('active');
+						$(this).addClass('active');
+						return false;
+					});
 				}
 				
-				//GMAP
-				statusBar.slideDown({start: function () { statusBar.find('span').html('Buscando ubicación...') } });
-				gmapOBJ.geolocation(mapSettings)
-				.on('geolocationDone', function () {
-					gmapOBJ.center = gmapOBJ.myPosition;
-					gmapOBJ.mapLoad();
-				})
-				.on('geolocationFailed', function () {
-					$('#geolocatedWarning').modal();
-					gmapOBJ.mapLoad();
-					gmapOBJ.markersLoad();
-				})
-				.on('mapLoadDone', function () {
-					controlsContainer.show();
-					gmapOBJ.markersLoad();
-					statusBar.hide();
-				}).on('mapChanged', function () {
-					gmapOBJ.markersLoad();
-				}).on('markersLoadDone', function () {
-					gmapOBJ.markersRender();
-				});
-					
-				$('#zoomIn').click(function () { 
-					gmapOBJ.zoomIn();
-				});
-				$('#zoomOut').click(function () {
-					gmapOBJ.zoomOut();
-				});
-				$('#myPosition').click(function () {
-					console.log(gmapOBJ.myPosition);
-					if(!$.isEmptyObject(gmapOBJ.myPosition)) {
-						gmapOBJ.pan(gmapOBJ.myPosition);
-					} else {
-						$('#geolocatedWarning').modal();
-					}
-				});
+				function compare(a,b) {
+					if(a.rank < b.rank) return -1;
+					if(a.rank > b.rank) return 1;
+					return 0;
+				}
 				
-				//
-				$(window).scroll(function() {
-					if($(window).scrollTop() + $(window).height() >= bottom && infinite) {
-						infinite = false;
-						round++;
-						statusBar.slideDown({start: function () { statusBar.find('span').html('Cargando gasolineras...') } });
-						listOBJ.dump(round, {'viewport': viewport, 'myPosition': myPosition, 'ranges': ranges, 'fuels': fuels,'sort': sort});
-					}
-				});
-
-				
-				$('#listBar>div>span>img').click(function () {
-					alert('click');
-				});
-				$('#socialContainer').click(function () {
-					var city = gmapOBJ.getCity(function (city) {
-						city = city.replace(/\s/g, '');
-						console.log('city: '+city);
-						socialShare({'center': gmapOBJ.getCenter(), 'zoom': gmapOBJ.getZoom(), 'ranges': ranges, 'fuels': fuels, 'place': place, 'city': city});
-					});
-				});
-				//$.cookie('visits', visits + 1);
+				function distance(lat1, lng1, lat2, lng2) {
+					var R = 6371; //Radius of the earth in km
+					var dlat = (lat2-lat1) * (Math.PI/180);
+					var dlng = (lng2-lng1) * (Math.PI/180); 
+					var a = Math.sin(dlat/2) * Math.sin(dlat/2) + Math.cos(lat1 * (Math.PI/180)) * Math.cos(lat2 * (Math.PI/180)) * Math.sin(dlng/2) * Math.sin(dlng/2); 
+					var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+					var d = R * c; // Distance in km
+					return d;
+				}
 			})
-			</script>
-		</body>
-	</html>
+		</script>
+	</body>
+</html>
