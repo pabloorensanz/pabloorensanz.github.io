@@ -127,15 +127,6 @@
 					gmap = $('#gmap').gmap().set({
 						change: function () {
 							load();
-						},
-						clicked: function (response) {
-							gmap.animate(response);
-							$('#list .list-group-item').removeClass('active');
-							$('#list').animate({
-								scrollTop: $('.list-group-item[data-id='+response.metadata.id+']').offset().top - $('#list').offset().top + $('#list').scrollTop()
-							}, 500, function() {
-								$('.list-group-item[data-id='+response.metadata.id+']').addClass('active')
-							});
 						}
 					});
 
@@ -199,6 +190,18 @@
 					for(var key in list) {
 						$('#list').append(Mustache.render($('#listTemplate').html(), list[key]));
 					}
+					
+					gmap.set({
+						clicked: function (response) {
+							gmap.animate(response);
+							$('#list .list-group-item').removeClass('active');
+							$('#list').animate({
+								scrollTop: $('.list-group-item[data-id='+response.metadata.id+']').offset().top - $('#list').offset().top + $('#list').scrollTop()
+							}, 500, function() {
+								$('.list-group-item[data-id='+response.metadata.id+']').addClass('active')
+							});
+						}
+					});
 					
 					$('#list .list-group-item').on('click', function () {
 						for(i = 0; i < gmap.markers.length; i++) {
