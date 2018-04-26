@@ -35,6 +35,8 @@ a.[title="Cómo llegar"], a.[title="Cómo llegar"]:hover {
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 	background-color: rgba(233,236,239,1);
+	border-color: rgba(204,206,209,1);
+	color: #495057;
 }
 
 #position_control {

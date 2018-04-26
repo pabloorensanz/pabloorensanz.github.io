@@ -61,7 +61,7 @@
 							{{/products.Gasolina 95 Protección}}
 							{{#products.Gasolina  98}}
 								<img src="files/g98.png" alt="Gasolina 98" title="Gasolina 98" width="20" height="20"/>
-								<small><b>{{products.Gasolina 98.price}}</b></small>
+								<small><b>{{products.Gasolina  98.price}}</b></small>
 							{{/products.Gasolina  98}}
 							{{#products.Gasoleo A}}
 								<img src="files/goa.png" alt="Gasóleo A" title="Gasóleo A" width="20" height="20"/>
@@ -122,11 +122,10 @@
 		<script type="text/javascript">
 			$(document).ready(function() {
 				var position = null,
-					data = $.getJSON('https://pabloorensanz.000webhostapp.com/projects/gasolea/data2.json'),
+					data = $.getJSON('https://pabloorensanz.000webhostapp.com/projects/gasolea/data.json'),
 					markers = [],
 					gmap = $('#gmap').gmap().set({
 						change: function () {
-							console.log('changed');
 							load();
 						},
 						clicked: function (response) {
@@ -141,7 +140,7 @@
 					});
 
 				data.fail(function(response) {
-						console.log('no data');//completar callback
+						//completar callback
 					});
 
 				$.when(geolocation().get())
@@ -181,7 +180,6 @@
 					gmap.clear();
 					for(var i = 0; i < stations.length; i++) {
 						if((stations[i].lng >= viewport[3] && stations[i].lng <= viewport[1]) && (stations[i].lat >= viewport[2] && stations[i].lat <= viewport[0])) {
-							console.log(stations[i]);
 							stations[i].title = stations[i].name;
 							if(position) stations[i].distance = Math.round(distance(position.lat, position.lng, stations[i].lat, stations[i].lng) * 10) / 10;
 							stations[i].image = {
@@ -206,7 +204,6 @@
 						for(i = 0; i < gmap.markers.length; i++) {
 							if(gmap.markers[i].metadata.id == $(this).data('id')) {
 								gmap.animate(gmap.markers[i]);
-								console.log(gmap.markers[i].metadata.id+'-'+$(this).data('id'));
 							}
 						}
 						$('#list .list-group-item').removeClass('active');

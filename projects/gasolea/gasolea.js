@@ -42,7 +42,6 @@
 				});
 			this.markers.push(marker);
 			google.maps.event.addListener(marker, 'click', function() {
-				console.log(marker);
 				settings.clicked.call(this, marker);
 			});
 			return this;
@@ -69,7 +68,6 @@
 		this.viewport = function () {
 			if(this.map) {
 				var bounds = this.map.getBounds();
-				console.log(bounds.getNorthEast().lat()+' '+bounds.getNorthEast().lng()+' '+bounds.getSouthWest().lat()+' '+bounds.getSouthWest().lng());
 				return (bounds) ? [bounds.getNorthEast().lat(), bounds.getNorthEast().lng(), bounds.getSouthWest().lat(), bounds.getSouthWest().lng()] : []
 			} else {
 				return [];
@@ -112,7 +110,6 @@
 		this.get = function(){
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(function (response) {
-					console.log('geolo ok');
 					deferred.resolve({
 						lat: response.coords.latitude,
 						lng: response.coords.longitude
