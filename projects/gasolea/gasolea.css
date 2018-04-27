@@ -23,20 +23,38 @@ a.[title="Cómo llegar"], a.[title="Cómo llegar"]:hover {
 	background-color: rgba(229,227,223,1);
 }
 
-#list {
-	width: 100%;
-	max-height: calc(60vh - 58px);
-	overflow-y: auto;
+#gmap > p {
+	text-align: center;
+	padding-top: 15vh;
 }
 
-.list-group-item.active {
+#list {
+	width: 100%;
+	height: calc(60vh - 58px);
+	overflow-y: auto;
+	background-color: rgba(229,227,223,1);
+}
+
+#list .list-group-item.active {
 	-webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
-	background-color: rgba(233,236,239,1);
+	/*background-color: rgba(233,236,239,1);
 	border-color: rgba(204,206,209,1);
-	color: #495057;
+	color: #495057;*/
+	background-color: rgba(222,205,49,1);
+	border-color: rgba(222,205,49,1);
+}
+
+#list .list-group-item:last-child {
+	box-shadow: rgba(0, 0, 0, 0.3) 0 2px 1px;
+    border-radius: 0;
+}
+#list > p {
+	text-align: center;
+	padding-top: 15vh;
+	display: none;
 }
 
 #position_control {
@@ -53,7 +71,7 @@ a.[title="Cómo llegar"], a.[title="Cómo llegar"]:hover {
 	width: 28px;
 	height: 28px;
 	border-radius: 2px;
-	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 20px 0px
 	cursor: pointer;
 	margin-right: 10px;
 	padding: 0px;

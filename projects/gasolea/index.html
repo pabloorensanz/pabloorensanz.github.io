@@ -46,13 +46,14 @@
 			</div>
 			<div class="container-fluid">
 				<div id="list" class="list-group">
-				<script id="listTemplate" type="x-tmpl-mustache">
-					<div class="list-group-item list-group-item-action flex-column align-items-start" data-id={{id}} itemscope itemtype="https://schema.org/GasStation">
-						
+					<p>
+						No hay gasolineras en este área.<br/><a href="#">¿Ampliar área?</a>
+					</p>
+					<script id="listTemplate" type="x-tmpl-mustache">
+					<div id=list-item-{{id}} data-id="{{id}}" class="list-group-item list-group-item-action flex-column align-items-start{{#active}} active{{/active}}" itemscope itemtype="https://schema.org/GasStation">
 						<div class="d-flex w-100 justify-content-between">
 							<h6><img src="files/marker{{rank}}.png" alt="" width="18" height="24"> {{name}}</h6>
 							{{#distance}}<small>Distancia {{distance}} Km</small>{{/distance}}
-							
 						</div>
 						<div class="float-right">
 							{{#products.Gasolina 95 Protección}}
@@ -73,8 +74,7 @@
 							{{/products.Biodiesel}}
 						</div>
 						<div>
-							<small>{{address}}</small> <a href="https://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar"><small>Cómo llegar</small></a>
-								
+							<small>{{address}}</small><!--<a href="https://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar"><small>Cómo llegar</small></a>!-->
 						</div>
 					</div>
 					</script>
@@ -124,14 +124,20 @@
 				var position = null,
 					data = $.getJSON('https://pabloorensanz.000webhostapp.com/projects/gasolea/data.json'),
 					markers = [],
+					active = null,
 					gmap = $('#gmap').gmap().set({
 						change: function () {
 							load();
+						},
+						clicked: function (response) {
+							lalala(response);
+							return false;
 						}
 					});
-
+				
+				//LOADING
 				data.fail(function(response) {
-						//completar callback
+						alert('No se ha podido descargar la información. Vuelve a intentarlo pasados unos minuntos, porfa.');//completar callback
 					});
 
 				$.when(geolocation().get())
@@ -143,14 +149,29 @@
 						gmap.set({center: {lat: 40.4504, lng: -3.7240}});
 					})
 					.always(function(response) {
-						$.when(gmap.render().done(), data.done())
-							.then(function() {
+						data.done(function () {
+							gmap.render().done(function () {
+								if(position) {
+									gmap.markit({
+										lat: position.lat,
+										lng: position.lng,
+										title: 'me!',
+										image: {
+											url: 'files/me.png',
+											size: new google.maps.Size(30, 42),
+											origin: new google.maps.Point(0,0),
+											anchor: new google.maps.Point(0, 42)
+										}
+									});
+								}
 								$('#position_control').show();
 								load();
 							})
+						});
 					});
 				
-				$('#position_control').click(function () {
+				//POSITION CONTROL
+				$('#position_control').on('click', function () {
 					$.when(geolocation().get())
 						.then(function(response) {
 							position = response;
@@ -161,13 +182,21 @@
 						})
 				});
 				
+				//LIST-GROUP-ITEM CLICKED
+				$('#list').on('click', '.list-group-item:not(a)', function () {
+					lalala($(this));
+					return false;
+				});
 				
-					
+				$('#list > p').on('click', function () {
+					gmap.zoomOut();
+					return false;
+				});
+									
 				function load () {
 					var viewport = gmap.viewport(),
 						stations = data.responseJSON.stations;
 					
-					list = [];
 					gmap.clear();
 					for(var i = 0; i < stations.length; i++) {
 						if((stations[i].lng >= viewport[3] && stations[i].lng <= viewport[1]) && (stations[i].lat >= viewport[2] && stations[i].lat <= viewport[0])) {
@@ -179,45 +208,58 @@
 								origin: new google.maps.Point(0,0),
 								anchor: new google.maps.Point(0, 37)
 							}
-
-							list[stations[i].id] = stations[i];
-							
-							gmap.markit(stations[i]);
-						}
-					}
-					list.sort(compare);
-					$('#list .list-group-item').fadeOut();
-					for(var key in list) {
-						$('#list').append(Mustache.render($('#listTemplate').html(), list[key]));
-					}
-					
-					gmap.set({
-						clicked: function (response) {
-							gmap.animate(response);
-							$('#list .list-group-item').removeClass('active');
-							$('#list').animate({
-								scrollTop: $('.list-group-item[data-id='+response.metadata.id+']').offset().top - $('#list').offset().top + $('#list').scrollTop()
-							}, 500, function() {
-								$('.list-group-item[data-id='+response.metadata.id+']').addClass('active')
-							});
-						}
-					});
-					
-					$('#list .list-group-item').on('click', function () {
-						for(i = 0; i < gmap.markers.length; i++) {
-							if(gmap.markers[i].metadata.id == $(this).data('id')) {
-								gmap.animate(gmap.markers[i]);
+							var marker = gmap.markit(stations[i]);
+							if(stations[i].id == active) {
+								stations[i].active = true;
+								gmap.animate(marker);
 							}
 						}
-						$('#list .list-group-item').removeClass('active');
-						$(this).addClass('active');
-						return false;
+					}
+					$('#list .list-group-item').fadeOut(function () {
+						$(this).remove();
 					});
+					if(gmap.markers.length) {
+						$('#list > p').fadeOut();
+						gmap.markers.sort(compare);
+						for(var key in gmap.markers) {
+							$('#list').append(Mustache.render($('#listTemplate').html(), gmap.markers[key].metadata));
+						}
+					} else {
+						$('#list > p').fadeIn();
+					}
+				}
+				
+				function lalala (object) {
+					if(object instanceof jQuery) {
+						//LIST ITEM CLICKED
+						active = object.data('id');
+						marker = markerWithID(active);
+						list_item = object;
+						gmap.pan({lat: marker.metadata.lat, lng: marker.metadata.lng});
+					} else {
+						//MARKER CLICKED
+						active = object.metadata.id;
+						marker = object;
+						list_item = $('#list-item-'+active);
+						window.location.hash = 'list-item-'+active;
+					}
+					gmap.animate(marker);
+					$('#list .list-group-item').removeClass('active');
+					list_item.addClass('active');
+					return false;
+				}
+				
+				function markerWithID (id) {
+					for(i = 0; i < gmap.markers.length; i++) {
+						if(gmap.markers[i].metadata.id == id) {
+							return gmap.markers[i];
+						}
+					}
 				}
 				
 				function compare(a,b) {
-					if(a.rank < b.rank) return -1;
-					if(a.rank > b.rank) return 1;
+					if(a.metadata.rank < b.metadata.rank) return -1;
+					if(a.metadata.rank > b.metadata.rank) return 1;
 					return 0;
 				}
 				

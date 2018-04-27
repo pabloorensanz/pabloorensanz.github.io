@@ -3,7 +3,7 @@
     $.fn.gmap = function(options) {
 		var settings = {
 				center: {},
-				zoom: 15,
+				zoom: 16,
 				markers: [],
 				change: function () {},
 				clicked: function () {}
@@ -11,6 +11,7 @@
 			deferred = new $.Deferred();
 		
 		this.render = function () {
+			var timer;
 			this.map = new google.maps.Map(document.getElementById('gmap'), {
 				center: new google.maps.LatLng(settings.center.lat, settings.center.lng),
 				zoom: settings.zoom,
@@ -20,11 +21,17 @@
 				fullscreenControl: false,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			});
-			google.maps.event.addListener(this.map, 'center_changed', function () {
-				settings.change.call(this);
+			google.maps.event.addListener(this.map, 'dragend', function () {
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					settings.change.call(this);
+				}, 500);
 			});
 			google.maps.event.addListener(this.map, 'zoom_changed', function () {
-				settings.change.call(this);
+				clearTimeout(timer);
+				timer = setTimeout(function () {
+					settings.change.call(this);
+				}, 500);
 			});
 			google.maps.event.addListenerOnce(this.map, 'idle', function () {
 				deferred.resolve();
@@ -44,10 +51,18 @@
 			google.maps.event.addListener(marker, 'click', function() {
 				settings.clicked.call(this, marker);
 			});
-			return this;
+			return marker;
 		}
 		this.pan = function (center) {
 			this.map.panTo(new google.maps.LatLng(center.lat, center.lng));
+			return this;
+		}
+		this.zoomIn = function () {
+			this.map.setZoom(this.zoom() + 1);
+			return this;
+		}
+		this.zoomOut = function () {
+			this.map.setZoom(this.zoom() - 1);
 			return this;
 		}
 		this.fitbounds = function () {
@@ -64,6 +79,7 @@
 			this.markers.forEach(function (marker) {
 				marker.setMap(null);
 			})
+			this.markers = [];
 		}
 		this.viewport = function () {
 			if(this.map) {
@@ -76,7 +92,10 @@
 		this.center = function () {
 			var center = this.map.getCenter();
 			return (center) ? {lat: center.lat(), lng: center.lng()} : {};
-		} 
+		}
+		this.zoom = function () {
+			return this.map.getZoom();
+		}		
 		this.set = function (options) {
 			$.extend(settings, options);
 			return this;
@@ -85,7 +104,6 @@
 		this.set(options);
 		return this;
     };
-	
 	list = function(options) {
 		var settings = {
 				enableHighAccuracy: true,
