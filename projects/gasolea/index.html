@@ -147,10 +147,13 @@
 					})
 					.fail(function(response) {
 						gmap.set({center: {lat: 40.4504, lng: -3.7240}});
+						
 					})
 					.always(function(response) {
 						data.done(function () {
 							gmap.render().done(function () {
+								$('#position_control').show();
+								load();
 								if(position) {
 									gmap.markit({
 										lat: position.lat,
@@ -164,8 +167,6 @@
 										}
 									});
 								}
-								$('#position_control').show();
-								load();
 							})
 						});
 					});
