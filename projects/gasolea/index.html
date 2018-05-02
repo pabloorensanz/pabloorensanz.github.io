@@ -34,7 +34,7 @@
 		</header>
 
 		<main role="main">
-			<div class="container-fluid">
+			<div id="gmap-container" class="container-fluid">
 				<div id="gmap">
 					<p>Cargando mapa...</p>
 				</div>
@@ -44,37 +44,47 @@
 					</button>
 				</div>
 			</div>
-			<div class="container-fluid">
+			<div id="list-container" class="container-fluid">
 				<div id="list" class="list-group">
 					<p>
 						No hay gasolineras en este área.<br/><a href="#">¿Ampliar área?</a>
 					</p>
 					<script id="listTemplate" type="x-tmpl-mustache">
 					<div id=list-item-{{id}} data-id="{{id}}" class="list-group-item list-group-item-action flex-column align-items-start{{#active}} active{{/active}}" itemscope itemtype="https://schema.org/GasStation">
-						<div class="d-flex w-100 justify-content-between">
-							<h6><img src="files/marker{{rank}}.png" alt="" width="18" height="24"> {{name}}</h6>
+						<div class="">
+							<div>
+								<img src="files/marker{{rank}}.png" alt="" width="18" height="24"> <b>{{name}}</b>
+							</div>
+							<small>{{address}}</small><!--<a href="https://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar"><small>Cómo llegar</small></a>!-->
 							{{#distance}}<small>Distancia {{distance}} Km</small>{{/distance}}
 						</div>
 						<div class="float-right">
 							{{#products.Gasolina 95 Protección}}
-								<img src="files/g95.png" alt="Gasolina 95" title="Gasolina 95" width="20" height="20"/>
+							<div>
+								<img src="files/g95.png" alt="Gasolina 95" title="Gasolina 95" width="15" height="15"/>
 								<small><b>{{products.Gasolina 95 Protección.price}}</b></small>
+							</div>
 							{{/products.Gasolina 95 Protección}}
 							{{#products.Gasolina  98}}
-								<img src="files/g98.png" alt="Gasolina 98" title="Gasolina 98" width="20" height="20"/>
+							<div>
+								<img src="files/g98.png" alt="Gasolina 98" title="Gasolina 98" width="15" height="15"/>
 								<small><b>{{products.Gasolina  98.price}}</b></small>
+							</div>
 							{{/products.Gasolina  98}}
 							{{#products.Gasoleo A}}
-								<img src="files/goa.png" alt="Gasóleo A" title="Gasóleo A" width="20" height="20"/>
+							<div>
+								<img src="files/goa.png" alt="Gasóleo A" title="Gasóleo A" width="15" height="15"/>
 								<small><b>{{products.Gasoleo A.price}}</b></small>
+							</div>
 							{{/products.Gasoleo A}}
 							{{#products.Biodiesel}}
-								<img src="files/bio.png" alt="Biodiésel" title="Biodiésel" width="20" height="20"/>
+							<div>
+								<img src="files/bio.png" alt="Biodiésel" title="Biodiésel" width="15" height="15"/>
 								<small><b>{{products.Biodiesel.price}}</b></small>
+							</div>
 							{{/products.Biodiesel}}
 						</div>
 						<div>
-							<small>{{address}}</small><!--<a href="https://maps.google.com/maps?z=12&t=m&q=loc:{{lat}}+{{lng}}" target="_blank" title="Cómo llegar"><small>Cómo llegar</small></a>!-->
 						</div>
 					</div>
 					</script>
@@ -147,7 +157,6 @@
 					})
 					.fail(function(response) {
 						gmap.set({center: {lat: 40.4504, lng: -3.7240}});
-						
 					})
 					.always(function(response) {
 						data.done(function () {
@@ -177,18 +186,19 @@
 						.then(function(response) {
 							position = response;
 							gmap.pan(position);
+							load();
+							return false;
 						})
 						.fail(function(response) {
 							$('#geolocation').modal();
 						})
 				});
-				
 				//LIST-GROUP-ITEM CLICKED
-				$('#list').on('click', '.list-group-item:not(a)', function () {
+				$('#list').on('click', '.list-group-item', function () {
 					lalala($(this));
 					return false;
 				});
-				
+				//EXTEND AREA
 				$('#list > p').on('click', function () {
 					gmap.zoomOut();
 					return false;
@@ -197,39 +207,42 @@
 				function load () {
 					var viewport = gmap.viewport(),
 						stations = data.responseJSON.stations;
-					
-					gmap.clear();
-					for(var i = 0; i < stations.length; i++) {
-						if((stations[i].lng >= viewport[3] && stations[i].lng <= viewport[1]) && (stations[i].lat >= viewport[2] && stations[i].lat <= viewport[0])) {
-							stations[i].title = stations[i].name;
-							if(position) stations[i].distance = Math.round(distance(position.lat, position.lng, stations[i].lat, stations[i].lng) * 10) / 10;
-							stations[i].image = {
-								url: 'files/marker'+stations[i].rank+'.png',
-								size: new google.maps.Size(27, 37),
-								origin: new google.maps.Point(0,0),
-								anchor: new google.maps.Point(0, 37)
-							}
-							var marker = gmap.markit(stations[i]);
-							if(stations[i].id == active) {
-								stations[i].active = true;
-								gmap.animate(marker);
+					if(stations) {
+						gmap.clear();
+						for(var i = 0; i < stations.length; i++) {
+							if((stations[i].lng >= viewport[3] && stations[i].lng <= viewport[1]) && (stations[i].lat >= viewport[2] && stations[i].lat <= viewport[0])) {
+								stations[i].title = stations[i].name;
+								if(position) stations[i].distance = Math.round(distance(position.lat, position.lng, stations[i].lat, stations[i].lng) * 10) / 10;
+								stations[i].image = {
+									url: 'files/marker'+stations[i].rank+'.png',
+									size: new google.maps.Size(27, 37),
+									origin: new google.maps.Point(0,0),
+									anchor: new google.maps.Point(0, 37)
+								}
+								stations[i].active = false;
+								var marker = gmap.markit(stations[i]);
+								if(stations[i].id == active) {
+									stations[i].active = true;
+									gmap.animate(marker);
+								}
 							}
 						}
-					}
-					$('#list .list-group-item').fadeOut(function () {
-						$(this).remove();
-					});
-					if(gmap.markers.length) {
-						$('#list > p').fadeOut();
-						gmap.markers.sort(compare);
-						for(var key in gmap.markers) {
-							$('#list').append(Mustache.render($('#listTemplate').html(), gmap.markers[key].metadata));
+						$('#list .list-group-item').fadeOut(function () {
+							$(this).remove();
+						});
+						if(gmap.markers.length) {
+							$('#list > p').fadeOut();
+							gmap.markers.sort(compare);
+							for(var key in gmap.markers) {
+								$('#list').append(Mustache.render($('#listTemplate').html(), gmap.markers[key].metadata));
+							}
+						} else {
+							$('#list > p').fadeIn();
 						}
 					} else {
-						$('#list > p').fadeIn();
+						alert('No se ha podido descargar la información. Vuelve a intentarlo pasados unos minuntos, porfa.');//completar callback
 					}
 				}
-				
 				function lalala (object) {
 					if(object instanceof jQuery) {
 						//LIST ITEM CLICKED
@@ -242,14 +255,13 @@
 						active = object.metadata.id;
 						marker = object;
 						list_item = $('#list-item-'+active);
-						window.location.hash = 'list-item-'+active;
 					}
 					gmap.animate(marker);
 					$('#list .list-group-item').removeClass('active');
 					list_item.addClass('active');
+					window.location.hash = 'list-item-'+active;
 					return false;
 				}
-				
 				function markerWithID (id) {
 					for(i = 0; i < gmap.markers.length; i++) {
 						if(gmap.markers[i].metadata.id == id) {
@@ -257,7 +269,6 @@
 						}
 					}
 				}
-				
 				function compare(a,b) {
 					if(a.metadata.rank < b.metadata.rank) return -1;
 					if(a.metadata.rank > b.metadata.rank) return 1;
