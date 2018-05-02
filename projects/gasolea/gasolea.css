@@ -64,10 +64,23 @@ a.[title="Cómo llegar"], a.[title="Cómo llegar"]:hover {
 	width: 100%;
 	height: calc(55vh - 58px);
 	overflow-y: auto;
-	background-color: rgba(229,227,223,1);
-	-webkit-box-shadow: 0px -5px 25px 0px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0px -5px 25px 0px rgba(0,0,0,0.3);
-	box-shadow: 0px -5px 25px 0px rgba(0,0,0,0.3);
+	/*background-color: rgba(229,227,223,1);*/
+	background-color: white;
+	-webkit-box-shadow: 0px -5px 15px 0px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px -5px 15px 0px rgba(0,0,0,0.3);
+	box-shadow: 0px -5px 15px 0px rgba(0,0,0,0.3);
+}
+#list > span {
+	text-align: center;
+	padding-top: 20vh;
+}
+#list > p {
+	text-align: center;
+	padding-top: 15vh;
+	display: none;
+}
+#list div {
+	line-height: 1.15;
 }
 #list .list-group-item {
 	 border-radius: 0;
@@ -78,9 +91,9 @@ a.[title="Cómo llegar"], a.[title="Cómo llegar"]:hover {
 	box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.3);
 }*/
 #list .list-group-item:last-child {
-	-webkit-box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.3);
-	-moz-box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.3);
-	box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.3);
+	-webkit-box-shadow: 0px 5px 15px -5px rgba(0,0,0,0.3);
+	-moz-box-shadow: 0px 5px 15px -5px rgba(0,0,0,0.3);
+	box-shadow: 0px 5px 15px -5px rgba(0,0,0,0.3);
 }
 #list .list-group-item.active {
 	-webkit-transition: all 0.5s ease;
@@ -93,13 +106,7 @@ a.[title="Cómo llegar"], a.[title="Cómo llegar"]:hover {
 	background-color: rgba(222,205,49,1);
 	border-color: rgba(222,205,49,1);
 }
-#list > p {
-	text-align: center;
-	padding-top: 15vh;
-	display: none;
-}
 #list .list-group-item > div:first-child {
 	width: calc(100% - 75px);
 	float: left;
-	line-height: 1.15;
 }
