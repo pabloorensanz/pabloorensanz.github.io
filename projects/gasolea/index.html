@@ -137,8 +137,8 @@
 			$(document).ready(function() {
 				var position = null,
 					data = $.ajax({
-							//url: 'https://pabloorensanz.000webhostapp.com/projects/gasolea/data.json.gz',
-							url: 'data.json',
+							url: 'https://pabloorensanz.000webhostapp.com/projects/gasolea/data.json',
+							//url: 'data2.json.gz',
 							dataType: 'json',
 							timeout: 5000
 						}).fail(function(response) {
@@ -279,12 +279,12 @@
 					gmap.markit({
 						lat: position.lat,
 						lng: position.lng,
-						title: 'me!',
+						title: 'Tú posición',
 						image: {
 							url: 'files/me.png',
-							size: new google.maps.Size(30, 42),
+							size: new google.maps.Size(30, 30),
 							origin: new google.maps.Point(0,0),
-							anchor: new google.maps.Point(0, 42)
+							anchor: new google.maps.Point(0, 30)
 						}
 					});
 				}
