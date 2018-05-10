@@ -52,7 +52,7 @@ function recognize () {
 		} else {
 			if(response.images[0].hasOwnProperty('candidates')) {
 				subject_id = response.images[0].candidates[0].subject_id;
-				$('#recognized label').html('Hola '+subject_id+' <small>('+Math.floor(response.images[0].candidates[0].confidence*100)+'%)</small>');
+				$('#recognized label').html('<b>¡Hola '+subject_id+'!</b> <small>('+Math.floor(response.images[0].candidates[0].confidence*100)+'%)</small>');
 				//$.each(response.images[0].candidates, function(index, value) {
 				//	$('#recognized label').append(value.subject_id+' ('+Math.floor(value.confidence*100)+'%)\r\n');
 				//});
@@ -89,7 +89,7 @@ function enroll () {
 }
 
 function kairos (action, data) {
-	var url = 'https://pabloorensanz.000webhostapp.com/playground/face_recognition/kairos.php?action='+action;
+	var url = 'https://pabloorensanz.000webhostapp.com/demos/face_recognition/kairos.php?action='+action;
 	//console.log(data);
 	return $.ajax({
 		url: url,
