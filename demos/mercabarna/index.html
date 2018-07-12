@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+		<meta name="description" content=""/>
+		<link rel="canonical" href=""/>
+		<meta property="og:title" content=""/>
+		<meta property="og:description" content=""/>
+		<meta property="og:url" content=""/>
+		<meta property="og:image" content="assets/320x320.jpg"/>
+		<meta property="og:type" content="website"/>
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/apple-touch-icon.png"/>
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/apple-touch-icon.png"/>
+		<link rel="apple-touch-icon-precomposed" href="assets/apple-touch-icon.png"/>
+		<link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon"/>
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"/>
+
+		<title>Hello, world!</title>
+
+		<style>
+			body {
+				margin: 0;
+			}
+			.bg-dark {
+				background-color: rgba(0, 0, 0, 0.7) !important;
+			}
+			#video {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				transform: rotateY(180deg);
+				-webkit-transform:rotateY(180deg); /* Safari and Chrome */
+				-moz-transform:rotateY(180deg); /* Firefox */
+			}
+			#layer {
+				position: absolute;
+				top: calc(25vw - 25vw / 2 + 40px);
+				left: calc(50% - 25vw / 2);
+				width: 25vw;
+			}
+			#result {
+				color: #bdd630;
+			}
+			svg .circ{
+				opacity: 0;
+				stroke-dasharray: 130;
+				stroke-dashoffset: 130;
+				-webkit-transition: all 1s;
+				-moz-transition: all 1s;
+				-ms-transition: all 1s;
+				-o-transition: all 1s;
+				transition: all 1s;
+			}
+			svg .tick{
+				stroke-dasharray: 50;
+				stroke-dashoffset: 50;
+				-webkit-transition: stroke-dashoffset 1s 0.5s ease-out;
+				-moz-transition: stroke-dashoffset 1s 0.5s ease-out;
+				-ms-transition: stroke-dashoffset 1s 0.5s ease-out;
+				-o-transition: stroke-dashoffset 1s 0.5s ease-out;
+				transition: stroke-dashoffset 1s 0.5s ease-out;
+			}
+			.drawn + svg .path{
+				opacity: 1;
+				stroke-dashoffset: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+				<a class="navbar-brand" href="#">
+					<img src="assets/logo.png" width="30" height="30" alt="Mercabarna"/> Mercabarna
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"/>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav">
+						<a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span>
+						</a>
+						<a class="nav-item nav-link" href="#">Features</a>
+						<a class="nav-item nav-link" href="#">Pricing</a>
+						<a class="nav-item nav-link disabled" href="#">Disabled</a>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<main role="main" class="container-fluid">
+			<video muted autoplay playsinline id="video"></video>
+			<div id="layer">
+			<div id="result"></div>
+			<svg version="1.1" id="tick" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 37 37" style="enable-background:new 0 0 37 37;" xml:space="preserve">
+				<path class="circ path" style="fill: none; stroke:#bdd630; stroke-width: 3; stroke-linejoin: round; stroke-miterlimit: 10;" d="M30.5,6.5L30.5,6.5c6.6,6.6,6.6,17.4,0,24l0,0c-6.6,6.6-17.4,6.6-24,0l0,0c-6.6-6.6-6.6-17.4,0-24l0,0C13.1-0.2,23.9-0.2,30.5,6.5z"/>
+				<polyline class="tick path" style="fill: none; stroke:#bdd630; stroke-width: 3; stroke-linejoin: round; stroke-miterlimit: 10;" points="11.6,20 15.9,24.2 26.4,13.8 "/>
+			</svg>
+			</div>
+		</main>
+
+	
+		<script type="module">
+			import QrScanner from "./js/qr-scanner.min.js";
+			const video = document.getElementById('video');
+			function setResult(result) {
+				var element = document.getElementById("result");
+				element.classList.add("drawn");
+				element.textContent = result;
+				console.log(result);
+			}
+			const scanner = new QrScanner(video, result => setResult(result));
+			scanner.start();
+	</script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"/>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"/>
+</body>
+</html>
