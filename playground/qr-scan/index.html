@@ -32,7 +32,7 @@
 			function setResult(result) {
 				var element = document.getElementById("result");
 				element.classList.add("drawn");
-				//element.textContent = result;
+				$(element).append('<a class="btn btn-primary" style="background-color: #18AC44;border-color: #18AC44; width: 100%;" href="https://zm18p2.axshare.com/#g=1&p=scanned&c=2" role="button">Continuar</a>');
 				console.log(result);
 			}
 			const scanner = new QrScanner(video, result => setResult(result));
