@@ -33,7 +33,7 @@
 			function setResult(result) {
 				var element = document.getElementById("result");
 				element.classList.add("drawn");
-				document.getElementById('continuar').style.visibility = "visible";
+				//document.getElementById('continuar').style.visibility = "visible";
 				console.log(result);
 			}
 			const scanner = new QrScanner(video, result => setResult(result));
