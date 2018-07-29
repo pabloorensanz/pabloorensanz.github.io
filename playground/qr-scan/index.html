@@ -35,7 +35,7 @@
 				element.classList.add("drawn");
 				var continuar = document.getElementById("continuar");
 				continuar.style.visibility = "visible";
-				console.log(result);
+				console.log('link: '+result);
 			}
 			const scanner = new QrScanner(video, result => setResult(result));
 			scanner.start();
