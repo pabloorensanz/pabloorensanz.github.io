@@ -165,9 +165,9 @@
 						gap = Math.floor(Math.random()*(max-min+1)+min);
 						height = Math.floor(Math.random()*(max-min+1)+min);
 												
-						obstacle_name = "axa-tree.svg";
+						obstacles = ["cex-tree.svg", "cex-house.svg"];
 						obstacle_icon_width = 35;
-						obstacle_icon_height = 37;
+						obstacle_icon_height = 35;
 						
 						//OBSTACLE TOP
 						obstacle_height = height;
@@ -176,7 +176,7 @@
 						console.log("1 - height:"+obstacle_height+"  x:"+x+" y:0"+" Número de nubes:"+number_of_obstacles);
 						for(i = -1; i <= number_of_obstacles; i++) {
 							console.log(obstacle_y * i);
-							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacle_name, x, obstacle_y + obstacle_icon_height * i, "image"));
+							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacles[Math.floor(Math.random()*obstacles.length)], x, obstacle_y + obstacle_icon_height * i, "image"));
 						}
 						
 						//OBSTACLE BOTTOM
@@ -185,7 +185,7 @@
 						number_of_obstacles = Math.floor(obstacle_height / obstacle_icon_height);// + 1;
 						console.log("2 - height:"+obstacle_height+" x:"+x+" y:"+obstacle_y+" Número de nubes:"+number_of_obstacles);
 						for(i = 0; i <= number_of_obstacles; i++) {
-							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacle_name, x, obstacle_y + obstacle_icon_height * i, "image"));
+							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacles[Math.floor(Math.random()*obstacles.length)], x, obstacle_y + obstacle_icon_height * i, "image"));
 						}
 						//(width, height, color, x, y, type)
 						//myObstacles.push(new component(obstacle_icon_width, obstacle_height, "grey", x, obstacle_y));
@@ -230,7 +230,7 @@
 				} else if(e.key == 'ArrowUp') {
 					moveup()
 				} else if(e.key == 'ArrowRight') {
-					//moveright()
+					moveright()
 				} else if(e.key == 'ArrowLeft') {
 					//moveleft()
 				} else if(e.key == 'Escape') {
