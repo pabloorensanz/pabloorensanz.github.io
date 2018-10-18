@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<style>
+			body {	
+				font-family: 'Roboto', sans-serif;
+			}
+			canvas {
+				border:1px solid #d3d3d3;
+				background-color: #f1f1f1;
+				/*background: url('axa-background.jpg');*/
+			}
+			button {
+				border: solid thin #00008f;
+				background-color: white;
+				color: #00008f;
+				padding: 10px;
+				text-transform: uppercase;
+			}
+			p {
+				color: white;
+			}
+		</style>
+	</head>
+	<body onload="startGame(false)">
+		<div id="myfilter" style="position: absolute; background-color: rgb(0, 0, 0, 0.65); width: calc(480px + 2px); height: calc(360px + 2px); display: none"></div>
+		<div id="myrestartbutton" style="position: absolute; text-align: center; padding-top: calc(360px / 2 - 80px / 2); padding-left: calc(480px / 2 - 150px / 2); display: none;">
+			<p>You crashed :(</p>
+			<button onclick="restartGame()">Start again!</button>
+		</div>
+		<div id="intro" style="position: absolute; text-align: center; background-color: rgb(0, 0, 0, 0.65); width: calc(480px + 2px); height: calc(360px + 2px); color: white;">
+			<p style="margin-top: 100px; padding: 0 25px;font-size: 1.1em; color: white; ">Will the AXA ambulance get to the hospital?<br/>Help the ambulance to drive through the obstacles :)</p>
+			<p style="padding: 0 25px; font-size: 0.8em; color: white;">Use your keyboard arrows to navigate 
+				<strong><span style="font-size: 1.5em; font-weight: 800; color: #00008f;">↑</span> Top</strong> or <strong>
+				<span style="font-size: 1.5em; font-weight: 800; color: #00008f;">↓</span> Down.</strong>
+			</p>
+			<p><button onclick="restartGame(true)">Start driving!</button></p>
+		</div>
+		<div id="canvascontainer"></div>
+		<script>
+			var myGameArea;
+			var myGamePiece;
+			var myObstacles = [];
+			var myscore;
+			var keySpeed = 0.4;
+			
+			function restartGame() {
+				document.getElementById("myfilter").style.display = "none";
+				document.getElementById("myrestartbutton").style.display = "none";
+				myGameArea.stop();
+				myGameArea.clear();
+				myGameArea = {};
+				myGamePiece = {};
+				myObstacles = [];
+				myscore = {};
+				document.getElementById("canvascontainer").innerHTML = "";
+				startGame(true);
+			}
+			
+			function startGame(autoStart) {
+				myGameArea = new gamearea();
+				//myGamePiece = new component(50, 50, "red", 10, 75);
+				myGamePiece = new component(42.4098, 40, "axa-ambulance.svg", 10, 75, "image");
+				myscore = new component("15px", "Consolas", "#00008f", 25, 25, "text");
+				if(!autoStart) {
+					myGameArea.start();
+					setTimeout(function(){
+						myGameArea.pause = true;
+					}, 250);
+				} else {
+					document.getElementById("intro").style.display = "none";
+					myGamePiece.speedX = 0.15;
+					myGameArea.pause = false;
+					myGameArea.start();
+				}
+			}
+						
+			function gamearea() {
+				this.canvas = document.createElement("canvas");
+				this.canvas.width = 480;
+				this.canvas.height = 360;    
+				document.getElementById("canvascontainer").appendChild(this.canvas);
+				this.context = this.canvas.getContext("2d");
+				this.pause = false;
+				this.frameNo = 0;
+				this.start = function(animate) {
+					this.interval = setInterval(updateGameArea, 20);
+				}
+				this.stop = function() {
+					clearInterval(this.interval);
+					this.pause = true;
+				}
+				this.clear = function(){
+					this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				}
+			}
+			
+			function component(width, height, color, x, y, type) {
+				this.type = type;
+				if (type == "text") {
+					this.text = color;
+				} else if (type == "image") {
+					this.image = new Image();
+					this.image.src = color;
+				}
+				this.score = 0;    
+				this.width = width;
+				this.height = height;
+				this.speedX = 0;
+				this.speedY = 0;    
+				this.x = x;
+				this.y = y;    
+				this.update = function() {
+					ctx = myGameArea.context;
+					if (this.type == "text") {
+						ctx.fillStyle = "black";
+						ctx.fillRect(this.x, this.y, this.width, this.height);
+						ctx.font = this.width + " " + this.height;
+						ctx.fillStyle = color;
+						ctx.fillText(this.text, this.x, this.y);
+					} else if (type == "image") {
+						ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+					} else {
+						ctx.fillStyle = color;
+						ctx.fillRect(this.x, this.y, this.width, this.height);
+					}
+				}
+				this.crashWith = function(otherobj) {
+					var myleft = this.x;
+					var myright = this.x + (this.width);
+					var mytop = this.y;
+					var mybottom = this.y + (this.height);
+					var otherleft = otherobj.x;
+					var otherright = otherobj.x + (otherobj.width);
+					var othertop = otherobj.y;
+					var otherbottom = otherobj.y + (otherobj.height);
+					var crash = true;
+					if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+						crash = false;
+					}
+					return crash;
+				}
+			}
+			function updateGameArea() {
+				var x, y, min, max, height, gap;
+				for (i = 0; i < myObstacles.length; i += 1) {
+					if (myGamePiece.crashWith(myObstacles[i])) {
+						myGameArea.stop();
+						document.getElementById("myfilter").style.display = "block";
+						document.getElementById("myrestartbutton").style.display = "block";
+						return;
+					} 
+				}
+				if (myGameArea.pause == false) {
+					myGameArea.clear();
+					myGameArea.frameNo += 1;
+					myscore.score +=1;        
+					if (myGameArea.frameNo == 1 || everyinterval(200)) {
+						x = myGameArea.canvas.width;
+						y = myGameArea.canvas.height - 100;											
+						min = 80;
+						max = 120;
+						gap = Math.floor(Math.random()*(max-min+1)+min);
+						height = Math.floor(Math.random()*(max-min+1)+min);
+												
+						obstacle_name = "axa-tree.svg";
+						obstacle_icon_width = 35;
+						obstacle_icon_height = 37;
+						
+						//OBSTACLE TOP
+						obstacle_height = height;
+						obstacle_y = 0;
+						number_of_obstacles = Math.floor(obstacle_height / obstacle_icon_height);// + 1;
+						console.log("1 - height:"+obstacle_height+"  x:"+x+" y:0"+" Número de nubes:"+number_of_obstacles);
+						for(i = -1; i <= number_of_obstacles; i++) {
+							console.log(obstacle_y * i);
+							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacle_name, x, obstacle_y + obstacle_icon_height * i, "image"));
+						}
+						
+						//OBSTACLE BOTTOM
+						obstacle_height = x - height - gap;
+						obstacle_y = height + gap;
+						number_of_obstacles = Math.floor(obstacle_height / obstacle_icon_height);// + 1;
+						console.log("2 - height:"+obstacle_height+" x:"+x+" y:"+obstacle_y+" Número de nubes:"+number_of_obstacles);
+						for(i = 0; i <= number_of_obstacles; i++) {
+							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacle_name, x, obstacle_y + obstacle_icon_height * i, "image"));
+						}
+						//(width, height, color, x, y, type)
+						//myObstacles.push(new component(obstacle_icon_width, obstacle_height, "grey", x, obstacle_y));
+						//myObstacles.push(new component(obstacle_icon_width, obstacle_height, "grey", x, obstacle_y));
+					}
+					for (i = 0; i < myObstacles.length; i += 1) {
+						myObstacles[i].x += -1;
+						myObstacles[i].update();
+					}
+					myscore.text="Points: " + myscore.score;        
+					myscore.update();
+					myGamePiece.x += myGamePiece.speedX;
+					myGamePiece.y += myGamePiece.speedY;    
+					myGamePiece.update();
+				}
+			}
+			function everyinterval(n) {
+				if ((myGameArea.frameNo / n) % 1 == 0) {
+					return true;
+				}
+				return false;
+			}
+			function moveup(e) {
+				myGamePiece.speedY = -1 * keySpeed; 
+			}
+			function movedown() {
+				myGamePiece.speedY = keySpeed; 
+			}
+			function moveleft() {
+				myGamePiece.speedX = -0.5 * keySpeed; 
+			}
+			function moveright() {
+				myGamePiece.speedX = keySpeed / 2; 
+			}
+			function clearmove(e) {
+				myGamePiece.speedX = 0; 
+				myGamePiece.speedY = 0; 
+			}
+			document.body.addEventListener('keyup', (e) => {
+				if(e.key == 'ArrowDown') {
+					movedown()
+				} else if(e.key == 'ArrowUp') {
+					moveup()
+				} else if(e.key == 'ArrowRight') {
+					//moveright()
+				} else if(e.key == 'ArrowLeft') {
+					//moveleft()
+				} else if(e.key == 'Escape') {
+					restartGame();
+				}
+				console.log('Tecla: '+e.key);
+			});
+		</script>
+	</body>
+</html>
