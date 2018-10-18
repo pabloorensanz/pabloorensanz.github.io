@@ -10,28 +10,33 @@
 			canvas {
 				border:1px solid #d3d3d3;
 				background-color: #f1f1f1;
+				/*background: url('axa-background.jpg');*/
 			}
 			button {
-				border: solid thin #e84056;
+				border: solid thin #e84059;
 				background-color: white;
-				color: #e84056;
+				color: #e84059;
 				padding: 10px;
 				text-transform: uppercase;
 			}
+			p {
+				color: white;
+			}
 		</style>
 	</head>
-	<body onload="loadGame()">
-		<div id="myfilter" style="position: absolute; background-color: #000000; opacity:0.25; width: calc(1200px + 2px); height: calc(420px + 2px); display: none"></div>
-		<div id="myrestartbutton" style="position: absolute; padding-top: calc(420px / 2 - 56px / 2); padding-left: calc(1200px / 2 - 150px / 2); display: none;">
-			<button onclick="reloadGame()">Volver a empezar!</button>
+	<body onload="startGame(false)">
+		<div id="myfilter" style="position: absolute; background-color: rgb(0, 0, 0, 0.65); width: calc(480px + 2px); height: calc(360px + 2px); display: none"></div>
+		<div id="myrestartbutton" style="position: absolute; text-align: center; padding-top: calc(360px / 2 - 80px / 2); padding-left: calc(480px / 2 - 150px / 2); display: none;">
+			<p>Chocaste :(</p>
+			<button onclick="restartGame()">¡Volver a empezar!</button>
 		</div>
-		<div id="intro" style="position: absolute; text-align: center; background-color: rgb(0, 0, 0, 0.75); width: calc(1200px + 2px); height: calc(420px + 2px); color: white;">
-			<p style="margin-top: 100px; padding: 0 25px;font-size: 1.1em; color: white; ">¿Podrá llegar nuestro pajarito hasta el nuevo Alex?<br/>Ayúdale a volar a través de los obstaculos</p>
-			<p style="padding: 0 25px; font-size: 0.8em; color: white;">Utiliza las flechas del teclado para moverte 
-				<strong><span style="font-size: 1.5em; font-weight: 800; color: #e84056;">↑</span> Arriba</strong> o <strong>
-				<span style="font-size: 1.5em; font-weight: 800; color: #e84056;">↓</span> Abajo.</strong>
+		<div id="intro" style="position: absolute; text-align: center; background-color: rgb(0, 0, 0, 0.65); width: calc(480px + 2px); height: calc(360px + 2px); color: white;">
+			<p style="margin-top: 100px; padding: 0 25px;font-size: 1.1em; color: white; ">¿Podrá llegar nuestro pajarito a Manhattan?<br/>Ayúdale a volar a través de los obstáculos :)</p>
+			<p style="padding: 0 25px; font-size: 0.8em; color: white;">Utiliza las <span style="font-size: 1.1em;">flechas del teclado</span> para moverte
+				<strong><span style="font-size: 1.5em; font-weight: 800; color: #e84059;">↑</span> Arriba</strong> o <strong>
+				<span style="font-size: 1.5em; font-weight: 800; color: #e84059;">↓</span> Abajo.</strong>
 			</p>
-			<p><button onclick="startGame()">¡Empezar a volar!</button></p>
+			<p><button onclick="restartGame(true)">¡Empezar a volar!</button></p>
 		</div>
 		<div id="canvascontainer"></div>
 		<script>
@@ -39,8 +44,9 @@
 			var myGamePiece;
 			var myObstacles = [];
 			var myscore;
+			var keySpeed = 0.4;
 			
-			function reloadGame() {
+			function restartGame() {
 				document.getElementById("myfilter").style.display = "none";
 				document.getElementById("myrestartbutton").style.display = "none";
 				myGameArea.stop();
@@ -50,31 +56,31 @@
 				myObstacles = [];
 				myscore = {};
 				document.getElementById("canvascontainer").innerHTML = "";
-				loadGame();
+				startGame(true);
 			}
 			
-			function loadGame() {
+			function startGame(autoStart) {
 				myGameArea = new gamearea();
 				//myGamePiece = new component(50, 50, "red", 10, 75);
-				myGamePiece = new component(49, 40, "kidsandus-bird.png", 10, 75, "image");
-				myscore = new component("15px", "Consolas", "#e84056", 25, 25, "text");
-				myGameArea.start();
-				setTimeout(function(){
-					myGameArea.pause = true;
-				}, 250);
+				myGamePiece = new component(41, 35, "kidsandus-bird.png", 10, 75, "image");
+				myscore = new component("15px", "Consolas", "#e84059", 25, 25, "text");
+				if(!autoStart) {
+					myGameArea.start();
+					setTimeout(function(){
+						myGameArea.pause = true;
+					}, 250);
+				} else {
+					document.getElementById("intro").style.display = "none";
+					myGamePiece.speedX = 0.15;
+					myGameArea.pause = false;
+					myGameArea.start();
+				}
 			}
-			
-			function startGame() {
-				document.getElementById("intro").style.display = "none";
-				myGamePiece.speedX = 0.10;
-				myGameArea.pause = false;
-				myGameArea.start();
-			}
-			
+						
 			function gamearea() {
 				this.canvas = document.createElement("canvas");
-				this.canvas.width = 1200;
-				this.canvas.height = 420;    
+				this.canvas.width = 480;
+				this.canvas.height = 360;    
 				document.getElementById("canvascontainer").appendChild(this.canvas);
 				this.context = this.canvas.getContext("2d");
 				this.pause = false;
@@ -151,26 +157,45 @@
 					myGameArea.clear();
 					myGameArea.frameNo += 1;
 					myscore.score +=1;        
-					if (myGameArea.frameNo == 1 || everyinterval(150)) {
+					if (myGameArea.frameNo == 1 || everyinterval(200)) {
 						x = myGameArea.canvas.width;
-						y = myGameArea.canvas.height - 100;
-						
-						min = 25;
-						max = 100;
-						height = Math.floor(Math.random()*(max-min+1)+min);
-						
+						y = myGameArea.canvas.height - 100;											
 						min = 80;
 						max = 120;
 						gap = Math.floor(Math.random()*(max-min+1)+min);
+						height = Math.floor(Math.random()*(max-min+1)+min);
+												
+						obstacle_name = "axa-tree.svg";
+						obstacle_icon_width = 35;
+						obstacle_icon_height = 37;
 						
-						myObstacles.push(new component(20, height, "grey", x, 0));
-						myObstacles.push(new component(20, x - height - gap, "grey", x, height + gap));
+						//OBSTACLE TOP
+						obstacle_height = height;
+						obstacle_y = 0;
+						number_of_obstacles = Math.floor(obstacle_height / obstacle_icon_height);// + 1;
+						console.log("1 - height:"+obstacle_height+"  x:"+x+" y:0"+" Número de nubes:"+number_of_obstacles);
+						for(i = -1; i <= number_of_obstacles; i++) {
+							console.log(obstacle_y * i);
+							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacle_name, x, obstacle_y + obstacle_icon_height * i, "image"));
+						}
+						
+						//OBSTACLE BOTTOM
+						obstacle_height = x - height - gap;
+						obstacle_y = height + gap;
+						number_of_obstacles = Math.floor(obstacle_height / obstacle_icon_height);// + 1;
+						console.log("2 - height:"+obstacle_height+" x:"+x+" y:"+obstacle_y+" Número de nubes:"+number_of_obstacles);
+						for(i = 0; i <= number_of_obstacles; i++) {
+							myObstacles.push(new component(obstacle_icon_width, obstacle_icon_height, obstacle_name, x, obstacle_y + obstacle_icon_height * i, "image"));
+						}
+						//(width, height, color, x, y, type)
+						//myObstacles.push(new component(obstacle_icon_width, obstacle_height, "grey", x, obstacle_y));
+						//myObstacles.push(new component(obstacle_icon_width, obstacle_height, "grey", x, obstacle_y));
 					}
 					for (i = 0; i < myObstacles.length; i += 1) {
 						myObstacles[i].x += -1;
 						myObstacles[i].update();
 					}
-					myscore.text="Tus puntos: " + myscore.score;        
+					myscore.text="Tus Kidpuntos: " + myscore.score;        
 					myscore.update();
 					myGamePiece.x += myGamePiece.speedX;
 					myGamePiece.y += myGamePiece.speedY;    
@@ -184,16 +209,16 @@
 				return false;
 			}
 			function moveup(e) {
-				myGamePiece.speedY = -0.35; 
+				myGamePiece.speedY = -1 * keySpeed; 
 			}
 			function movedown() {
-				myGamePiece.speedY = 0.35; 
+				myGamePiece.speedY = keySpeed; 
 			}
 			function moveleft() {
-				myGamePiece.speedX = -0.35; 
+				myGamePiece.speedX = -0.5 * keySpeed; 
 			}
 			function moveright() {
-				myGamePiece.speedX = 0.35; 
+				myGamePiece.speedX = keySpeed / 2; 
 			}
 			function clearmove(e) {
 				myGamePiece.speedX = 0; 
@@ -208,12 +233,10 @@
 					//moveright()
 				} else if(e.key == 'ArrowLeft') {
 					//moveleft()
-				} else if(e.key == 'ArrowLeft') {
-					//moveleft()
 				} else if(e.key == 'Escape') {
-					reloadGame();
+					restartGame();
 				}
-				console.log(e.key);
+				console.log('Tecla: '+e.key);
 			});
 		</script>
 	</body>
