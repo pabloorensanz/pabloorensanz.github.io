@@ -74,6 +74,7 @@
 					myGamePiece.speedX = 0.15;
 					myGameArea.pause = false;
 					myGameArea.start();
+					console.log('figura: '+myGamePiece.x+'-'+myGamePiece.width);
 				}
 			}
 						
@@ -132,6 +133,8 @@
 					var myright = this.x + (this.width);
 					var mytop = this.y;
 					var mybottom = this.y + (this.height);
+					//console.log("left:"+myleft+" top:"+mytop+" right:"+myright+" bottom:"+mybottom);
+					if(myright < 30) alert('Has llegado');
 					var otherleft = otherobj.x;
 					var otherright = otherobj.x + (otherobj.width);
 					var othertop = otherobj.y;
@@ -139,25 +142,14 @@
 					var crash = true;
 					if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
 						crash = false;
+					} else {
+						console.log("left:"+myleft+" top:"+mytop+" right:"+myright+" bottom:"+mybottom);
 					}
 					return crash;
 				}
 			}
-			function updateGameArea() {
-				var x, y, min, max, height, gap;
-				for (i = 0; i < myObstacles.length; i += 1) {
-					if (myGamePiece.crashWith(myObstacles[i])) {
-						myGameArea.stop();
-						document.getElementById("myfilter").style.display = "block";
-						document.getElementById("myrestartbutton").style.display = "block";
-						return;
-					} 
-				}
-				if (myGameArea.pause == false) {
-					myGameArea.clear();
-					myGameArea.frameNo += 1;
-					myscore.score +=1;        
-					if (myGameArea.frameNo == 1 || everyinterval(200)) {
+			function generateObstacle() {
+			if (myGameArea.frameNo == 1 || everyinterval(200)) {
 						x = myGameArea.canvas.width;
 						y = myGameArea.canvas.height - 100;											
 						min = 90;
@@ -195,8 +187,32 @@
 						myObstacles[i].x += -1;
 						myObstacles[i].update();
 					}
+			}
+			function updateGameArea() {
+				var x, y, min, max, height, gap;
+				for (i = 0; i < myObstacles.length; i += 1) {
+					var recorrido = myGamePiece.x + myGamePiece.width;
+					if (myGamePiece.crashWith(myObstacles[i])) {
+						myGameArea.stop();
+						document.getElementById("myfilter").style.display = "block";
+						document.getElementById("myrestartbutton").style.display = "block";
+						return;
+					} else if(recorrido > 480 - 30) {
+						console.log('Has ganado');
+					}
+					
+					//console.log('lleva recorrido:'+recorrido);
+				}
+				if (myGameArea.pause == false) {
+					myGameArea.clear();
+					myGameArea.frameNo += 1;
+					myscore.score +=1;        
+					
+					generateObstacle();
+					
 					myscore.text="Tus CEXpoints: " + myscore.score;        
 					myscore.update();
+					
 					myGamePiece.x += myGamePiece.speedX;
 					myGamePiece.y += myGamePiece.speedY;    
 					myGamePiece.update();
