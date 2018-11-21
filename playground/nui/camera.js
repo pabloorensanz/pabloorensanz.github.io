@@ -5,7 +5,7 @@ var blendedCanvas = document.getElementById('blendedCanvas');
 var blendedContext = blendedCanvas.getContext('2d');
 var lastImageData = null;
 var first = true;
-var block = false;
+var blockIt = false;
 
 function run () {
 	//get access to the camera!
@@ -39,22 +39,38 @@ function checkZone () {
 	}
 }
 
+function delayIt () {
+	blockIt = true;
+	setTimeout(function() {
+		blockIt = false;
+	}, 1000);
+}
+
 function go() {
 	blendedContext.drawImage(camera, 0, 0, camera.width, camera.height);
 	blend();
 	outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
 	//checkZone();
 	
-	if(detectMovementInArea(0, 0, 100, 480)) {
-		//acción izda
-		console.log('IZDA');
-		outputCanvas.classList.remove('rotate');
-		first = false;
-	}
-	if(detectMovementInArea(540, 0, 100, 480)) {
-		//acción dcha
-		outputCanvas.classList.add('rotate');
-		console.log('DCHA');
+	if(!blockIt) {
+		if(detectMovementInArea(0, 0, 100, 480)) {
+			//acción izda
+			console.log('IZDA');
+			if(!first) {
+				outputCanvas.classList.remove('rotate');
+			}	
+			delayIt();
+			first = false;			
+		}
+		if(detectMovementInArea(540, 0, 100, 480)) {
+			//acción dcha
+			console.log('DCHA');
+			if(!first) {
+				outputCanvas.classList.add('rotate');
+			}	
+			delayIt();
+			first = false;
+		}
 	}
 	
 	timeOut = setTimeout(go, 1000/60);
@@ -133,9 +149,7 @@ function detectMovementInArea(left, top, width, height) {
 	}
 	//calculate an average between of the color values of the note area
 	average = Math.round(average / (blendedData.data.length * 0.25));
-	if(average > 20) {
-		//over a small limit, consider that a movement is detected
-		block = true;
+	if(average > 10) {//over a small limit, consider that a movement is detected
 		console.log('moved in');
 		return true;
 	} else {
