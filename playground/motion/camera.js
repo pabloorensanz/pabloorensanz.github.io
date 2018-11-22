@@ -1,13 +1,26 @@
+//camera
 var camera = document.getElementById('camera');
+//output
 var outputCanvas = document.getElementById('outputCanvas');
 var outputContext = outputCanvas.getContext('2d');
+//blended
 var blendedCanvas = document.getElementById('blendedCanvas');
 var blendedContext = blendedCanvas.getContext('2d');
 var lastImageData = null;
-var first = true;
-var blockIt = false;
+//object
+var object = new Image();
+var objectArea = [];
+setObjectArea();
+object.src = 'apple.png';
+//gameconfig
+var gameStatus = 'intro';
+var areaChanged = false;
+var points = 0;
+var countDown = 3;
+var frame = 0;
+var framesPerSecond = 10;
 
-function run () {
+function init () {
 	//get access to the camera!
 	if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
@@ -16,64 +29,97 @@ function run () {
 			} catch (error) {
 				camera.src = window.URL.createObjectURL(stream);
 			}
-			
-			console.log(camera.width+'x'+camera.height+'px');
-			go();
+			run();
 		});
 	} else {
 		alert('Your browser doesn´t support playing with your webcamera. Try latest Chrome version for example.');
 	}
 }
 
-function checkZone () {
-	var zoneSize = 10;
-	for(i = 0; i < camera.width / zoneSize; i++) {
-		for(j = 0; j < camera.height / zoneSize; j++) {
-			//console.log(i+'-'+j);
-			if(detectMovementInArea(i*zoneSize, j*zoneSize, (i+1)*zoneSize, (j+1)*zoneSize)) {
-				outputContext.beginPath();
-				outputContext.arc(i*zoneSize,j*zoneSize,zoneSize,0,2*Math.PI);
-				outputContext.stroke();
+function frameToSecond () {
+	
+}
+
+function setObjectArea () {
+	var x = Math.floor(Math.random() * (640-object.width));
+	var y = Math.floor(Math.random() * (480-object.height));
+	objectArea = [x, y, object.width, object.height];
+	//console.log(objectArea);
+}
+
+function run () {
+	frame++;
+	//console.log('gameStatus: '+gameStatus);
+	switch (gameStatus) {
+		case 'intro':
+			//draw
+			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
+			outputContext.drawImage(object, objectArea[0], objectArea[1]);
+			//layer
+			outputContext.fillStyle = 'rgba(0, 0, 0, 0.75)';
+			outputContext.fillRect(0, 0, 640, 480);
+			//text
+			//outputContext.scale(-1, 1, camera.width, camera.height);
+			outputContext.fillStyle = 'white';
+			outputContext.textAlign = 'center'; 
+			outputContext.font = '36px Arial';
+			outputContext.fillText('¡Vamos a coger manzanas!', 320, 200);
+			outputContext.font = '18px Arial';
+			outputContext.fillText('Mueve las manos delante de la cámara hasta coger la manzana', 320, 250);
+			//countdown
+			pauseTime = 5;
+			countDown = pauseTime - Math.floor(frame / framesPerSecond);
+			outputContext.fillText('Empezamos en '+countDown+'...', 320, 300);
+			if(countDown <= 1) {
+				setObjectArea();
+				gameStatus = 'play';	
 			}
-		}
+			break;
+		case 'play':
+			//draw
+			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
+			outputContext.drawImage(object, objectArea[0], objectArea[1]);
+			//checking
+			if(isImageAreaChanged(objectArea) && !areaChanged) {
+				console.log('checking... OK!!');
+				blendedContext.clearRect(0, 0, blendedCanvas.width, blendedCanvas.height);
+				gameStatus = 'pause';
+				pauseFrame = frame;
+				points++;
+				areaChanged = true;
+			} else {
+				console.log('checking... KO');
+				areaChanged = false;
+			}
+			//points
+			outputContext.font = '14px Arial';
+			outputContext.fillText('Manzanas cogidas '+points, 320, 25);
+			break;
+		case 'pause':
+			//draw
+			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
+			//layer
+			outputContext.fillStyle = 'rgba(0, 0, 0, 0.75)';
+			outputContext.fillRect(0, 0, 640, 480);
+			//text
+			outputContext.fillStyle = 'white';
+			outputContext.textAlign = 'center'; 
+			outputContext.font = '36px Arial';
+			outputContext.fillText('¡Perfecto has cogido '+points+' manzanas!', 320, 200);
+			outputContext.font = '18px Arial';
+			outputContext.fillText('Mueve las manos delante de la cámara hasta coger la manzana', 320, 250);
+			//countdown
+			pauseTime = 3;
+			countDown = pauseTime - Math.floor((frame - pauseFrame) / framesPerSecond );
+			outputContext.fillText('Volvemos a empezar en '+countDown+'...', 320, 300);
+			if(countDown <= 1) {
+				setObjectArea();
+				gameStatus = 'play';	
+			}
+			break;
 	}
-}
-
-function delayIt () {
-	blockIt = true;
-	setTimeout(function() {
-		blockIt = false;
-	}, 1000);
-}
-
-function go() {
-	blendedContext.drawImage(camera, 0, 0, camera.width, camera.height);
-	blend();
-	outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
-	//checkZone();
-	
-	if(!blockIt) {
-		if(detectMovementInArea(0, 0, 100, 480)) {
-			//acción izda
-			console.log('IZDA');
-			if(!first) {
-				outputCanvas.classList.remove('rotate');
-			}	
-			delayIt();
-			first = false;			
-		}
-		if(detectMovementInArea(540, 0, 100, 480)) {
-			//acción dcha
-			console.log('DCHA');
-			if(!first) {
-				outputCanvas.classList.add('rotate');
-			}	
-			delayIt();
-			first = false;
-		}
-	}
-	
-	timeOut = setTimeout(go, 1000/60);
+	//console.log('frame: '+frame)
+	setTimeout(run, 1000 / framesPerSecond);
 }
 
 function blend () {
@@ -91,6 +137,8 @@ function blend () {
 	differenceAccuracy(blendedData.data, sourceData.data, lastImageData.data);
 	//draw the result in a blendedCanvas
 	blendedContext.putImageData(blendedData, 0, 0);
+	blendedContext.strokeStyle = "#FF0000";
+	blendedContext.strokeRect(objectArea[0], objectArea[1], objectArea[2], objectArea[3]);
 	//store the current webcamera image
 	lastImageData = sourceData;
 }
@@ -136,9 +184,11 @@ function differenceAccuracy(target, data1, data2) {
 	}
 }
 
-function detectMovementInArea(left, top, width, height) {
+function isImageAreaChanged() {
+	blendedContext.drawImage(camera, 0, 0, camera.width, camera.height);
+	blend();
 	//get the pixels in an area
-	var blendedData = blendedContext.getImageData(left, top, width, height);
+	var blendedData = blendedContext.getImageData(objectArea[0], objectArea[1], objectArea[2], objectArea[3]);
 	var i = 0;
 	var average = 0;
 	//oop over the pixels
@@ -149,8 +199,8 @@ function detectMovementInArea(left, top, width, height) {
 	}
 	//calculate an average between of the color values of the note area
 	average = Math.round(average / (blendedData.data.length * 0.25));
-	if(average > 10) {//over a small limit, consider that a movement is detected
-		console.log('moved in');
+	if(average > 50) {//over a small limit, consider that a movement is detected
+		//console.log('moved in');
 		return true;
 	} else {
 		//console.log('stopped or moved out');

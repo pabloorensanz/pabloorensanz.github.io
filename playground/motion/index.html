@@ -5,33 +5,26 @@
 		<meta name="author" content="@pabloorensanz">
 		<title>Motion detection demo | @pabloorensanz</title>
 		<style>
-			body {
+			html, body {
 				margin: 0;
+				
 			}
 			#outputCanvas {
-				width: 100%;
-				height: 100%;
-				transform-style: preserve-3d;
-				transition: all 0.5s linear;
+				
 			}
 			#camera, #blendedCanvas {
-				display: none;
-			}
-			.rotate {
-				transform: rotateY(180deg);
-				-webkit-transform:rotateY(180deg); /* Safari and Chrome */
-				-moz-transform:rotateY(180deg); /* Firefox */*/
+				display: none;				
 			}
 		</style>
 	</head>
 	<body>
-		<p>Mueve las manos por la zona izquierda o derecha de la imagen para flipear la imagen.</p>
 		<canvas id="outputCanvas" width="640" height="480"></canvas>
-		<video id="camera" class="rotate" width="640" height="480" autoplay></video>
 		<canvas id="blendedCanvas" width="640" height="480"></canvas>
+		<video id="camera" width="640" height="480" autoplay></video>
+		
 		<script src="camera.js"></script>
 		<script>
-			window.onload = run();
+			window.onload = init();
 		</script>
 	</body>
 </html>
