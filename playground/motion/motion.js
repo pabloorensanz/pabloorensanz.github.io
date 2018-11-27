@@ -24,6 +24,13 @@ function init () {
 	//get access to the camera!
 	if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+			camera.srcObject = stream;
+			stream.getTracks().forEach(function(track) {
+				if(track.getSettings().facingMode == 'user') {
+					camera.setAttribute('width', track.getSettings().width);
+					camera.setAttribute('height', track.getSettings().height);
+				}
+			})
 			try {
 				camera.srcObject = stream;
 			} catch (error) {
@@ -50,16 +57,17 @@ function setObjectArea () {
 function run () {
 	frame++;
 	//console.log('gameStatus: '+gameStatus);
+	
 	switch (gameStatus) {
 		case 'intro':
 			//draw
+			//outputContext.scale(-1, 1);
 			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
 			outputContext.drawImage(object, objectArea[0], objectArea[1]);
 			//layer
 			outputContext.fillStyle = 'rgba(0, 0, 0, 0.75)';
 			outputContext.fillRect(0, 0, 640, 480);
 			//text
-			//outputContext.scale(-1, 1, camera.width, camera.height);
 			outputContext.fillStyle = 'white';
 			outputContext.textAlign = 'center'; 
 			outputContext.font = '36px Arial';
@@ -77,7 +85,9 @@ function run () {
 			break;
 		case 'play':
 			//draw
+			
 			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
+			
 			outputContext.drawImage(object, objectArea[0], objectArea[1]);
 			//checking
 			if(isImageAreaChanged(objectArea) && !areaChanged) {
@@ -199,7 +209,8 @@ function isImageAreaChanged() {
 	}
 	//calculate an average between of the color values of the note area
 	average = Math.round(average / (blendedData.data.length * 0.25));
-	if(average > 50) {//over a small limit, consider that a movement is detected
+	//console.log(average);
+	if(average > 100) {//over a small limit, consider that a movement is detected
 		//console.log('moved in');
 		return true;
 	} else {

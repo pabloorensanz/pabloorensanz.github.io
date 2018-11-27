@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<meta name="author" content="@pabloorensanz"/>
+		<title>Table highlight</title>
+		<style>
+			table {
+				overflow: hidden;
+			}
+			/* FILA */
+			table tr:not(:first-child):hover {
+				background-color: #ffa;
+			}
+			/* COLUMNA */
+			td, th {
+				cursor: pointer;
+				position: relative;
+			}
+			td:hover::after { 
+				background-color: #ffa;
+				content: '\00a0';  
+				height: 10000px;    
+				left: 0;
+				position: absolute;  
+				top: -5000px;
+				width: 100%;
+				z-index: -1;        
+			}
+		</style>
+	</head>
+	<body>
+		<p>Lorem ipsum dolor amet mustache knausgaard +1, blue bottle waistcoat tbh semiotics artisan synth stumptown gastropub cornhole celiac swag. Brunch raclette vexillologist post-ironic glossier ennui XOXO mlkshk godard pour-over blog tumblr humblebrag. Blue bottle put a bird on it twee prism biodiesel brooklyn. Blue bottle ennui tbh succulents.</p>
+		<table border="1">
+				<tr>
+					<th></th>
+					<th>Columna 1</th>
+					<th>Columna 2</th>
+					<th>Columna 3</th>
+				</tr>
+				<tr>
+					<th>Fila 1</th>
+					<td>Lorem</td>
+					<td>Ipsum</td>
+					<td>Dolor</td>
+				</tr>
+				<tr>
+					<th>Fila 2</th>
+					<td>Lorem</td>
+					<td>Ipsum</td>
+					<td>Dolor</td>
+				</tr>
+				<tr>
+					<th>Fila 3</th>
+					<td>Lorem</td>
+					<td>Ipsum</td>
+					<td>Dolor</td>
+				</tr>
+				<tr>
+					<th>Fila 4</th>
+					<td>Lorem</td>
+					<td>Ipsum</td>
+					<td>Dolor</td>
+				</tr>
+				<tr>
+					<th>Fila 5</th>
+					<td>Lorem</td>
+					<td>Ipsum</td>
+					<td>Dolor</td>
+				</tr>
+
+		</table>
+		<p>Lorem ipsum dolor amet mustache knausgaard +1, blue bottle waistcoat tbh semiotics artisan synth stumptown gastropub cornhole celiac swag. Brunch raclette vexillologist post-ironic glossier ennui XOXO mlkshk godard pour-over blog tumblr humblebrag. Blue bottle put a bird on it twee prism biodiesel brooklyn. Blue bottle ennui tbh succulents.</p>
+	</body>
+</html>
