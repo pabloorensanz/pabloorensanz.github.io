@@ -1,5 +1,6 @@
 //camera
 var camera = document.getElementById('camera');
+var facingMode = null;
 //output
 var outputCanvas = document.getElementById('outputCanvas');
 var outputContext = outputCanvas.getContext('2d');
@@ -27,8 +28,15 @@ function init () {
 			camera.srcObject = stream;
 			stream.getTracks().forEach(function(track) {
 				if(track.getSettings().facingMode == 'user') {
-					camera.setAttribute('width', track.getSettings().width);
-					camera.setAttribute('height', track.getSettings().height);
+					facingMode = true;
+					var initialWidth = track.getSettings().width;
+					var initialHeight = track.getSettings().height;
+					camera.setAttribute('width', initialWidth);
+					camera.setAttribute('height', initialHeight);
+					outputCanvas.setAttribute('width', initialWidth);
+					outputCanvas.setAttribute('height', initialHeight);
+					blendedCanvas.setAttribute('width', initialWidth)
+					blendedCanvas.setAttribute('height', initialHeight);
 				}
 			})
 			try {
@@ -48,10 +56,27 @@ function frameToSecond () {
 }
 
 function setObjectArea () {
-	var x = Math.floor(Math.random() * (640-object.width));
-	var y = Math.floor(Math.random() * (480-object.height));
-	objectArea = [x, y, object.width, object.height];
-	//console.log(objectArea);
+	if(facingMode) {
+		var x = Math.floor(Math.random() * (640-object.width));
+		var y = Math.floor(Math.random() * (480-object.height));
+		objectArea = [x, y, object.width, object.height];
+		//console.log(objectArea);
+	} else {
+		var x = Math.floor(Math.random() * (640-object.width));
+		var y = Math.floor(Math.random() * (480-object.height));
+		objectArea = [x, y, object.width, object.height];
+	}
+}
+
+function drawCamera () {
+	if(facingMode) {
+		outputContext.save();
+		outputContext.scale(-1, 1);//mirroring/flipping
+		outputContext.drawImage(camera, -camera.width, 0);
+		outputContext.restore();
+	} else {
+		outputContext.drawImage(camera, -camera.width, 0);
+	}
 }
 
 function run () {
@@ -61,8 +86,7 @@ function run () {
 	switch (gameStatus) {
 		case 'intro':
 			//draw
-			//outputContext.scale(-1, 1);
-			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
+			drawCamera();
 			outputContext.drawImage(object, objectArea[0], objectArea[1]);
 			//layer
 			outputContext.fillStyle = 'rgba(0, 0, 0, 0.75)';
@@ -85,9 +109,7 @@ function run () {
 			break;
 		case 'play':
 			//draw
-			
-			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
-			
+			drawCamera();
 			outputContext.drawImage(object, objectArea[0], objectArea[1]);
 			//checking
 			if(isImageAreaChanged(objectArea) && !areaChanged) {
@@ -107,7 +129,7 @@ function run () {
 			break;
 		case 'pause':
 			//draw
-			outputContext.drawImage(camera, 0, 0, camera.width, camera.height);
+			drawCamera();
 			//layer
 			outputContext.fillStyle = 'rgba(0, 0, 0, 0.75)';
 			outputContext.fillRect(0, 0, 640, 480);
