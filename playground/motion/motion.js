@@ -69,14 +69,10 @@ function setObjectArea () {
 }
 
 function drawCamera () {
-	if(facingMode) {
-		outputContext.save();
-		outputContext.scale(-1, 1);//mirroring/flipping
-		outputContext.drawImage(camera, -camera.width, 0);
-		outputContext.restore();
-	} else {
-		outputContext.drawImage(camera, -camera.width, 0);
-	}
+	outputContext.save();
+	outputContext.scale(-1, 1);//mirroring/flipping
+	outputContext.drawImage(camera, -camera.width, 0);
+	outputContext.restore();
 }
 
 function run () {
@@ -217,7 +213,10 @@ function differenceAccuracy(target, data1, data2) {
 }
 
 function isImageAreaChanged() {
-	blendedContext.drawImage(camera, 0, 0, camera.width, camera.height);
+	blendedContext.save();
+	blendedContext.scale(-1, 1);//mirroring/flipping
+	blendedContext.drawImage(camera, -camera.width, 0);
+	blendedContext.restore();
 	blend();
 	//get the pixels in an area
 	var blendedData = blendedContext.getImageData(objectArea[0], objectArea[1], objectArea[2], objectArea[3]);
