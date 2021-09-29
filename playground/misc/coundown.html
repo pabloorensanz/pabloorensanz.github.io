@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Auntie Belen is coming</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <style>
+            body {
+                text-align: center;
+            }
+            #countdown {
+               position: relative;
+               font-size: 30px;
+               margin-top: -320px;
+               min-height: 360px;
+               text-shadow: 2px 2px #fff;
+            }
+            #piñata {
+                
+                
+            }
+            .rotate {
+                animation: rotation 4s;
+            }
+            .linear {
+                animation-timing-function: linear;
+            }
+            .infinite {
+                animation-iteration-count: infinite;
+            }
+            @keyframes rotation {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(359deg);
+                }
+            }
+        </style>
+        <script>
+            var countDownDate = new Date("Oct 17, 2021 00:00:00").getTime();
+
+            // Update the count down every 1 second
+            var x = setInterval(function() {
+              // Get today's date and time
+              var now = new Date().getTime();
+
+              // Find the distance between now and the count down date
+              var distance = countDownDate - now;
+
+              // Time calculations for days, hours, minutes and seconds
+              var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+              var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+              // Display the result in the element with id="demo"
+              document.getElementById('countdown').innerHTML = '<b>'+days+'</b> días<br/><b>'+hours+'</b> horas<br/><b>'+minutes+'</b> minutos<br/><b>'+seconds+'</b> segundos';
+
+              // If the count down is finished, write some text
+              if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("demo").innerHTML = "EXPIRED";
+              }
+            }, 1000);
+        </script>
+    </head>
+    <body>
+        <div class="">
+            <h1>Auntie Belen is coming 🥳</h1>
+            
+            <img id="piñata" src="piñata.png" class="rotate linear infinite" alt="" style="width: 300px;">
+            <div id="countdown" style=""></div>
+        </div>
+    </body>
+</html>
