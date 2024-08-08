@@ -121,7 +121,7 @@ function run () {
 			}
 			//points
 			outputContext.font = '14px Arial';
-			outputContext.fillText('Manzanas cogidas '+points, 320, 25);
+			outputContext.fillText('Apples grabbed '+points, 320, 25);
 			break;
 		case 'pause':
 			//draw
@@ -133,13 +133,13 @@ function run () {
 			outputContext.fillStyle = 'white';
 			outputContext.textAlign = 'center'; 
 			outputContext.font = '36px Arial';
-			outputContext.fillText('¡Perfecto has cogido '+points+' manzanas!', 320, 200);
+			outputContext.fillText('Well done! YOu got '+points+' Apples!', 320, 200);
 			outputContext.font = '18px Arial';
-			outputContext.fillText('Mueve las manos delante de la cámara hasta coger la manzana', 320, 250);
+			outputContext.fillText('Move your hands in front of the camera to grab some apples', 320, 250);
 			//countdown
 			pauseTime = 3;
 			countDown = pauseTime - Math.floor((frame - pauseFrame) / framesPerSecond );
-			outputContext.fillText('Volvemos a empezar en '+countDown+'...', 320, 300);
+			outputContext.fillText('We start again in '+countDown+'...', 320, 300);
 			if(countDown <= 1) {
 				setObjectArea();
 				gameStatus = 'play';	
