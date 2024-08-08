@@ -91,9 +91,9 @@ function run () {
 			outputContext.fillStyle = 'white';
 			outputContext.textAlign = 'center'; 
 			outputContext.font = '36px Arial';
-			outputContext.fillText('Let´s grab some apples!', 320, 200);
+			outputContext.fillText('Let´s grab some Apples!', 320, 200);
 			outputContext.font = '18px Arial';
-			outputContext.fillText('Move your hands in front of the camera to grab some apples', 320, 250);
+			outputContext.fillText('Move your hands in front of the camera to grab the Apples', 320, 250);
 			//countdown
 			pauseTime = 5;
 			countDown = pauseTime - Math.floor(frame / framesPerSecond);
@@ -133,9 +133,9 @@ function run () {
 			outputContext.fillStyle = 'white';
 			outputContext.textAlign = 'center'; 
 			outputContext.font = '36px Arial';
-			outputContext.fillText('Well done! YOu got '+points+' Apples!', 320, 200);
+			outputContext.fillText('Well done! You got '+points+' apples!', 320, 200);
 			outputContext.font = '18px Arial';
-			outputContext.fillText('Move your hands in front of the camera to grab some apples', 320, 250);
+			outputContext.fillText('Move your hands in front of the camera to grab the Apples', 320, 250);
 			//countdown
 			pauseTime = 3;
 			countDown = pauseTime - Math.floor((frame - pauseFrame) / framesPerSecond );
