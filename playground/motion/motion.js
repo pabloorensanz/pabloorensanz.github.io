@@ -17,7 +17,7 @@ object.src = 'apple.png';
 var gameStatus = 'intro';
 var areaChanged = false;
 var points = 0;
-var countDown = 3;
+var countDown = 2;
 var frame = 0;
 var framesPerSecond = 10;
 
@@ -47,7 +47,7 @@ function init () {
 			run();
 		});
 	} else {
-		alert('Your browser doesn´t support playing with your webcamera. Try latest Chrome version for example.');
+		alert('Your browser doesn´t support playing with your webcamera :(. Try latest Chrome version for example.');
 	}
 }
 
@@ -91,13 +91,13 @@ function run () {
 			outputContext.fillStyle = 'white';
 			outputContext.textAlign = 'center'; 
 			outputContext.font = '36px Arial';
-			outputContext.fillText('¡Vamos a coger manzanas!', 320, 200);
+			outputContext.fillText('Let´s grab some apples!', 320, 200);
 			outputContext.font = '18px Arial';
-			outputContext.fillText('Mueve las manos delante de la cámara hasta coger la manzana', 320, 250);
+			outputContext.fillText('Move your hands in front of the camera to grab some apples', 320, 250);
 			//countdown
 			pauseTime = 5;
 			countDown = pauseTime - Math.floor(frame / framesPerSecond);
-			outputContext.fillText('Empezamos en '+countDown+'...', 320, 300);
+			outputContext.fillText('Starting in '+countDown+'...', 320, 300);
 			if(countDown <= 1) {
 				setObjectArea();
 				gameStatus = 'play';	
